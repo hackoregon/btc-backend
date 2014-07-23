@@ -12,15 +12,15 @@ To install the backend:
 		See http://www.vagrantup.com/ for vagrant.
 
 	
-2) Unzip hackOregonBackEnd.zip, or copy git repository to your computer, make the folder your working directory
-Fhese files should be in the folder:
+2) Copy this git repository to a folder on your computer, make that folder your working directory
+These files should be in the folder:
 
-	install2.sh
-	install3.sh
+	install2.sh : installation of openresty and other configurations
+	install3.sh : installation of the Hack Oregon database
 	appendTo_bash.bashrc
-	install.sql
-	nginx.conf
-	Vagrantfile.final
+	install.sql : Connection of restful requests to postgres functions / postgres side
+	nginx.conf : Connection of restful requests to postgres functions / nginx side
+	Vagrantfile.final : Adds mapping of vagrant port 80 to host port 8080 so that web pages are available outside the vagrant machine
 	
 3) Run thesse commands (note: you may have to run chmod 777 installx.sh on each of the installx.sh scripts so that they can be executed):
 
