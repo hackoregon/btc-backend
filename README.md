@@ -31,7 +31,7 @@ Fhese files should be in the folder:
 	guest machine prompt> sudo /vagrant/install2.sh
 	guest machine prompt> sudo /vagrant/install3.sh
 
-4) enter ctrl + d then run these commands from the host machine's command prompt:
+4) enter ctrl + d then run these commands:
 
 	host machine prompt> vagrant reload
 	host machine prompt> vagrant ssh
