@@ -25,7 +25,8 @@ These files should be in the folder:
 3) Run thesse commands (note: you may have to run chmod 777 installx.sh on each of the installx.sh scripts so that they can be executed):
 
 
-	host machine prompt> vagrant init https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-i386-vagrant-disk1.box
+	host machine prompt> vagrant box add ubuntu14 https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-i386-vagrant-disk1.box
+	host machine prompt> vagrant init ubuntu14
 	host machine prompt> vagrant up
 	host machine prompt> vagrant ssh
 	guest machine prompt> sudo /vagrant/install2.sh
