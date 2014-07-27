@@ -1,7 +1,7 @@
 #!/bin/bash
 sudo aptitude update
 sudo aptitude install postgresql
-sudo cat /etc/bash.bashrc /vagrant/appendTo_bash.bashrc > /etc/bash.bashrc
+sudo cat /etc/bash.bashrc /vagrant/appendToBash.bashrc > /etc/bash.bashrc
 sudo locale-gen en_US.UTF-8
 sudo dpkg-reconfigure locales
 sudo pg_createcluster 9.3 main —start

@@ -11,8 +11,11 @@ fi
 sudo bunzip2 /vagrant/hackoregon.sql.bz2
 sudo -u postgres psql -c 'CREATE DATABASE hackoregon;'
 sudo -u postgres psql hackoregon < /vagrant/hackoregon.sql
+
 sudo -u postgres createlang plpgsql
 
 sudo -u postgres psql hackoregon <  /vagrant/install.sql
+
+sudo -u postgres psql hackoregon < /vagrant/campaign_detail.sql
 
 sudo -u postgres psql -c "alter user postgres password 'points';"
