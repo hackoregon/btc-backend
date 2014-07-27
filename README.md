@@ -17,12 +17,12 @@ These files should be in the folder:
 
 	install2.sh : installation of openresty and other configurations
 	install3.sh : installation of the Hack Oregon database
-	appendTo_bash.bashrc
+	appendToBash.bashrc
 	install.sql : Connection of restful requests to postgres functions / postgres side
 	nginx.conf : Connection of restful requests to postgres functions / nginx side
 	Vagrantfile.final : Adds mapping of vagrant port 80 to host port 8080 so that web pages are available outside the vagrant machine
 	
-3) Run thesse commands (note: you may have to run chmod 777 installx.sh on each of the installx.sh scripts so that they can be executed):
+3) Run these commands (note: you may have to run chmod 777 installx.sh on each of the installx.sh scripts so that they can be executed):
 
 
 	host machine prompt> vagrant box add ubuntu14 https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-i386-vagrant-disk1.box
