@@ -43,7 +43,9 @@ Go to:
 	http://localhost:8080/ 
 on the host machine’s browser, the nginx welcome page should be seen.
 Go to:
-	http://localhost:8080/hackoregon/http/one_committee/blank/
+
+	http://localhost:8080/hackoregon/http/top_committee_data/4/
+	
 on the host machine’s browser,  JSON output should be seen. 
 
 
