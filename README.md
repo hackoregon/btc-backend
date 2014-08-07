@@ -1,7 +1,9 @@
 hackOregonBackEnd
 =================
 
-Scripts to build hack oregon's back end in a vagrant virtual machine.
+The back end consists of a postgres database and an OpenResty/Nginx server. This is put together in such a way that all endpoints can be built entirely inside of postgres functions. See the file install.sql for an example of several of these functions. 
+
+This repo contains all scripts needed to build hack oregon's back end in a vagrant virtual machine.
 
 To install the backend:
 
