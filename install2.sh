@@ -29,5 +29,5 @@ ps aux | grep nginx
 wget localhost
 cat index.html
 
-sudo mv /vagrant/Vagrantfile /vagrant/Vagrantfile.initial
-sudo mv /vagrant/Vagrantfile.final /vagrant/Vagrantfile
+sudo cp /vagrant/Vagrantfile /vagrant/Vagrantfile.initial
+sudo cp /vagrant/Vagrantfile.final /vagrant/Vagrantfile
