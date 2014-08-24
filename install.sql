@@ -41,6 +41,24 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE FUNCTION http.get_current_transactions(name1 text, name2 text, candidate_id text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM 
+    (SELECT *
+    FROM raw_committee_transactions
+    WHERE filer_id = candidate_id::int
+    AND tran_date > '2010-01-01'::date
+    ORDER BY tran_date DESC) qres
+  INTO result;
+  
+  return result;
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE FUNCTION http.get(aschema text, afunction text, apath text, auser text) RETURNS json AS $$
 DECLARE
   args text;
