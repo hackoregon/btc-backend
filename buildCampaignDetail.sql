@@ -1,4 +1,5 @@
 ﻿
+drop table if exists campaign_detail;
 create table campaign_detail
 (candidate_name text, 
 race text, 
