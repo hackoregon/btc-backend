@@ -8,7 +8,7 @@ candidate search: Fuzzy string match to get candidate data by entering their app
           http://54.213.83.132/hackoregon/http/candidate_search/bil brad/
           
     will perform fuzzy matching with candidate names and will return a JSON document describing basic data for Bill Bradbury.
-  Example of a JSON document returned:
+  Example of returned JSON:
   
           [{"candidate_name":"Bill Bradbury",
           "race":"Governor statewide",
@@ -24,7 +24,7 @@ committee map: get mapping between commitee id to committee name to candidate na
     
     Usage:
     
-      http://54.213.83.132/hackoregon/http/committee_map/blnk/
+        http://54.213.83.132/hackoregon/http/committee_map/blnk/
       
     The argument "blnk" doesn't actually do anything but must be there
     
@@ -32,11 +32,12 @@ top committee data: get data for the top n committees, ordered by total money ra
 
   Usage:
   
-    http://54.213.83.132/hackoregon/http/top_committee_data/3/
+        http://54.213.83.132/hackoregon/http/top_committee_data/3/
     
   Will return data for the top 3 committees. 
   
-Example of returned JSON:
+  Example of returned JSON:
+
         [{"candidate_name":"Brad Avakian",
          "race":"Commissioner of the Bureau of Labor and Industries statewide",
          "website":null,
