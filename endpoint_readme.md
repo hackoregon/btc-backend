@@ -1,5 +1,5 @@
 Endpoints available:
-
+---------------------------------
 candidate search: Fuzzy string match to get candidate data by entering their approximate name.
   
   Usage:
@@ -19,7 +19,7 @@ candidate search: Fuzzy string match to get candidate data by entering their app
           "instate":1,
           "committee_names":"Friends of Bill Bradbury",
           "filer_id":3571}]
-    
+---------------------------------
 committee map: get mapping between commitee id to committee name to candidate name for all candidates in the current election cycle.
     
     Usage:
@@ -27,7 +27,7 @@ committee map: get mapping between commitee id to committee name to candidate na
         http://54.213.83.132/hackoregon/http/committee_map/blnk/
       
     The argument "blnk" doesn't actually do anything but must be there
-    
+---------------------------------  
 top committee data: get data for the top n committees, ordered by total money raised. 
 
   Usage:
