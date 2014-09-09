@@ -28,7 +28,7 @@ committee map: get mapping between commitee id to committee name to candidate na
       
     The argument "blnk" doesn't actually do anything but must be there
 ---------------------------------  
-top committee data: get data for the top n committees, ordered by total money raised. 
+top committee data: get data for the top n committees, ordered by total money raised in the current campaign cycle (everything since 2010-11-11). 
 
   Usage:
   
@@ -66,7 +66,7 @@ committee data: get data for a particular candidate committee, using the candida
        "committee_names":"Friends of Tina Kotek",
        "filer_id":4792}]
 --------------------------------- 
-current transactions: get transaction data for a particular candidate for the current campaign cycle
+current transactions: get transaction data for a particular candidate for the current campaign cycle (everything since 2010-11-11).
 
   Usage:
     
