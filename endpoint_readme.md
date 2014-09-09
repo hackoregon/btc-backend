@@ -47,3 +47,30 @@ top committee data: get data for the top n committees, ordered by total money ra
          "instate":0.890564080554832,
          "committee_names":"Committee to Elect Brad Avakian",
          "filer_id":4152}]
+--------------------------------- 
+committee data: get data for a particular candidate committee, using the candidate's name
+
+  Usage:
+    
+    http://54.213.83.132/hackoregon/http/committee_data/Tina Kotek/
+    
+  Will return this JSON, giving information for Tina Kotek:
+  
+      [{"candidate_name":"Tina Kotek",
+       "race":"State Representative 44th District",
+       "website":"",
+       "phone":"(503)449-9767",
+       "total":212932.19,
+       "grassroots":0.00503446660648162,
+       "instate":0.717790673171586,
+       "committee_names":"Friends of Tina Kotek",
+       "filer_id":4792}]
+--------------------------------- 
+current transactions: get transaction data for a particular candidate for the current campaign cycle
+
+  Usage:
+    
+    http://54.213.83.132/hackoregon/http/current_transactions/4792/
+  
+  This will return a JSON with all transactions for the current campaign cycle for the committee with committee id 4792 (That of Tina Kotek)
+  
