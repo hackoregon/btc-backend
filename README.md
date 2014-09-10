@@ -2,6 +2,7 @@ Hack Oregon Back End
 =================
 
 Endpoints
+----------------------------------------------
 
 Hack Oregon serves a collection of endpoints from an AWS instance using a combination of Postgresql and OpenResty.
 
@@ -13,6 +14,6 @@ To request access to the google docs spreadsheet, please send an email to sam at
 
 ----------------------------------------------
 Back end construction and installation
-
-	To build an instance of Hack Oregon's back end, please see backend_installation_readme.md . 
+----------------------------------------------
+To build an instance of Hack Oregon's back end, please see backend_installation_readme.md . 
 ----------------------------------------------
