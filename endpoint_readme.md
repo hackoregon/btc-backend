@@ -3,7 +3,7 @@ Endpoints available:
 ---------------------------------
 get candidate money by state
 ---------------------------------
-Two endpoints telling how much money a candidate (1) gave and (2) recieved from each state in the US. (note Washington DC is translated to Maryland)
+Two endpoints telling how much money a candidate (1) recieved from and (2) paid to each state in the US. (note Washington DC is translated to Maryland)
 
 To get the money donated to a candidate from entities in each state (in this example, Brad Avakian):
     
