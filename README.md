@@ -22,4 +22,4 @@ To build an instance of Hack Oregon's back end on your own machine, please see h
 ----------------------------------------------
 The scraper
 ----------------------------------------------
-We have a scraper and data cleaning infrastructure to get data from the Oregon Secretary of State's website (ORESTAR). The data cleaning consists of R and python scripts orchestrated by a central bash script. The scraper is built with bash scripts and node.js.
+We have a scraper and data cleaning infrastructure to import data from the Oregon Secretary of State website (ORESTAR). The data cleaning consists of R and python scripts orchestrated by a central bash script. The scraper is built with bash scripts and node.js.
