@@ -17,3 +17,9 @@ Back end construction and installation
 ----------------------------------------------
 To build an instance of Hack Oregon's back end on your own machine, please see https://github.com/hackoregon/backend/blob/master/backend_installation_readme.md . 
 
+
+
+----------------------------------------------
+The scraper
+----------------------------------------------
+We have a scraper and data cleaning infrastructure to get data from the Oregon Secretary of State's website (ORESTAR). The data cleaning consists of R and python scripts orchestrated by a central bash script. The scraper is built with bash scripts and node.js.
