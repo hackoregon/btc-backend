@@ -14,31 +14,15 @@ To get the money donated or paid by a candidate to entities in each state (in th
 
     http://54.213.83.132/hackoregon/http/candidate_out_by_state/Brad Avakian/
 
-Example output:
-    [{"state":"Arkansas",
-     "value":100},
-     {"state":"California",
-     "value":3282.69},
-     {"state":"Maryland",
-     "value":38333.12},
-     {"state":"Idaho",
-     "value":150},
-     {"state":"Maryland",
-     "value":12600},
-     {"state":"New Mexico",
-     "value":2500},
-     {"state":"Nevada",
-     "value":5000},
-     {"state":"New York",
-     "value":500},
-     {"state":"Ohio",
-     "value":1000},
-     {"state":"Oregon",
-     "value":960617.24},
-     {"state":"Pennsylvania",
-     "value":500},
-     {"state":"Washington",
-     "value":39400}]
+Example output from finding money donated to a candidate:
+
+        [{"state":"California",
+         "value":1000},
+         {"state":"Oregon",
+         "value":37799.03},
+         {"state":"Wyoming",
+         "value":500}]
+
 
 ---------------------------------
 candidate search
