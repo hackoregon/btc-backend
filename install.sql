@@ -6,6 +6,76 @@ CREATE FUNCTION http.get_args2(name1 text, name2 text, name3 text, name4 text, O
   'SELECT row_to_json(row(name1 , name2 ,  name3 , name4));'
 LANGUAGE SQL;
 
+DROP FUNCTION IF EXISTS http.get_candidate_in_by_state(name1 text, name2 text, cname text, name4 text);
+CREATE FUNCTION http.get_candidate_in_by_state(name1 text, name2 text, cname text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM
+    (SELECT state, value
+    FROM candidate_by_state
+    where candidate_name = cname
+    and direction = 'in') qres
+  INTO result;
+
+  return result;
+END;
+$$ LANGUAGE plpgsql;
+
+
+DROP FUNCTION IF EXISTS http.get_candidate_out_by_state(name1 text, name2 text, cname text, name4 text);
+CREATE FUNCTION http.get_candidate_out_by_state(name1 text, name2 text, cname text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM
+    (SELECT state, value
+    FROM candidate_by_state
+    where candidate_name = cname
+    and direction = 'out') qres
+  INTO result;
+
+  return result;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
+CREATE FUNCTION http.get_candidate_search(name1 text, name2 text, searchString text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM
+    (
+  select * from campaign_detail
+  where dmetaphone( candidate_name ) ilike '%'||dmetaphone( searchString )||'%'
+    ) qres
+  INTO result;
+
+  return result;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE FUNCTION http.get_committee_map(name1 text, name2 text, numRec text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM
+    (SELECT candidate_name, committee_names, filer_id
+    FROM campaign_detail) qres
+  INTO result;
+
+  return result;
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE FUNCTION http.get_top_committee_data(name1 text, name2 text, numRec text, name4 text) RETURNS json AS $$
 DECLARE

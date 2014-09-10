@@ -1,7 +1,50 @@
 Endpoints available:
+
 ---------------------------------
-candidate search: Fuzzy string match to get candidate data by entering their approximate name.
-  
+get candidate money by state
+---------------------------------
+Two endpoints telling how much money a candidate (1) gave and (2) recieved from each state in the US. (note Washington DC is translated to Maryland)
+
+To get the money donated to a candidate from entities in each state (in this example, Brad Avakian):
+    
+    http://54.213.83.132/hackoregon/http/candidate_in_by_state/Brad Avakian/
+
+
+To get the money donated or paid by a candidate to entities in each state (in this example, Brad Avakian):
+
+    http://54.213.83.132/hackoregon/http/candidate_out_by_state/Brad Avakian/
+
+Example output:
+    [{"state":"Arkansas",
+     "value":100},
+     {"state":"California",
+     "value":3282.69},
+     {"state":"Maryland",
+     "value":38333.12},
+     {"state":"Idaho",
+     "value":150},
+     {"state":"Maryland",
+     "value":12600},
+     {"state":"New Mexico",
+     "value":2500},
+     {"state":"Nevada",
+     "value":5000},
+     {"state":"New York",
+     "value":500},
+     {"state":"Ohio",
+     "value":1000},
+     {"state":"Oregon",
+     "value":960617.24},
+     {"state":"Pennsylvania",
+     "value":500},
+     {"state":"Washington",
+     "value":39400}]
+
+---------------------------------
+candidate search
+---------------------------------
+Fuzzy string match to get candidate data by entering their approximate name.
+
   Usage:
     Entering the search string "bil brad" using this URL pattern
     
@@ -20,7 +63,9 @@ candidate search: Fuzzy string match to get candidate data by entering their app
           "committee_names":"Friends of Bill Bradbury",
           "filer_id":3571}]
 ---------------------------------
-committee map: get mapping between commitee id to committee name to candidate name for all candidates in the current election cycle.
+committee map
+---------------------------------
+Get mapping between commitee id to committee name to candidate name for all candidates in the current election cycle.
     
     Usage:
     
@@ -28,7 +73,9 @@ committee map: get mapping between commitee id to committee name to candidate na
       
     The argument "blnk" doesn't actually do anything but must be there
 ---------------------------------  
-top committee data: get data for the top n committees, ordered by total money raised in the current campaign cycle (everything since 2010-11-11). 
+top committee data
+---------------------------------
+Get data for the top n committees, ordered by total money raised in the current campaign cycle (everything since 2010-11-11). 
 
   Usage:
   
@@ -48,7 +95,9 @@ top committee data: get data for the top n committees, ordered by total money ra
          "committee_names":"Committee to Elect Brad Avakian",
          "filer_id":4152}]
 --------------------------------- 
-committee data: get data for a particular candidate committee, using the candidate's name
+committee data
+---------------------------------
+Get data for a particular candidate committee, using the candidate's name
 
   Usage:
     
@@ -66,7 +115,9 @@ committee data: get data for a particular candidate committee, using the candida
        "committee_names":"Friends of Tina Kotek",
        "filer_id":4792}]
 --------------------------------- 
-current transactions: get transaction data for a particular candidate for the current campaign cycle (everything since 2010-11-11).
+current transactions
+---------------------------------
+Get transaction data for a particular candidate for the current campaign cycle (everything since 2010-11-11).
 
   Usage:
     
