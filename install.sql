@@ -6,6 +6,27 @@ CREATE FUNCTION http.get_args2(name1 text, name2 text, name3 text, name4 text, O
   'SELECT row_to_json(row(name1 , name2 ,  name3 , name4));'
 LANGUAGE SQL;
 
+
+DROP FUNCTION IF EXISTS http.get_competitors_from_name(name1 text, name2 text, cname text, name4 text);
+CREATE FUNCTION http.get_competitors_from_name(name1 text, name2 text, cname text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM
+    (SELECT * 
+  FROM campaign_detail 
+  WHERE race IN
+    (SELECT race 
+    FROM campaign_detail 
+    WHERE candidate_name =cname)) qres
+  INTO result;
+
+  return result;
+END;
+$$ LANGUAGE plpgsql;
+
 DROP FUNCTION IF EXISTS http.get_candidate_in_by_state(name1 text, name2 text, cname text, name4 text);
 CREATE FUNCTION http.get_candidate_in_by_state(name1 text, name2 text, cname text, name4 text) RETURNS json AS $$
 DECLARE

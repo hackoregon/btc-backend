@@ -23,6 +23,40 @@ Example output from finding money donated to a candidate:
          {"state":"Wyoming",
          "value":500}]
 
+---------------------------------
+competitors from name
+---------------------------------
+
+This endpoint will return all competitors in a race, given a candidate's name. If the given candidate is competing in more than one race, it will return all candidates competing in all the races inwhich the given candidate is competing. 
+
+Note that this will also return information for the candidate whos name was given.
+
+Example finding competitors for Bill Bradbury:
+
+    http://54.213.83.132/hackoregon/http/competitors_from_name/Bill Bradbury/
+
+Example output:
+
+    [{"candidate_name":"Bill Bradbury",
+     "race":"Governor statewide",
+     "website":"www.bradbury2010.com",
+     "phone":null,
+     "total":8032.88,
+     "grassroots":0,
+     "instate":1,
+     "committee_names":"Friends of Bill Bradbury",
+     "filer_id":3571},
+     {"candidate_name":"Ron Saxton",
+     "race":"Governor statewide",
+     "website":null,
+     "phone":"(503)478-4463",
+     "total":1.81,
+     "grassroots":1,
+     "instate":0,
+     "committee_names":"Friends of Ron Saxton",
+     "filer_id":3503}]
+
+
 
 ---------------------------------
 candidate search
