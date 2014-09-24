@@ -1,6 +1,6 @@
 #!/bin/bash
 sudo aptitude update
-sudo aptitude install postgresql postgresql-contrib postgis git
+sudo aptitude install postgresql postgresql-contrib postgis postgresql-9.3-postgis-scripts git
 sudo cat /etc/bash.bashrc /vagrant/appendToBash.bashrc > /etc/bash.bashrc
 sudo locale-gen en_US.UTF-8
 sudo dpkg-reconfigure locales
