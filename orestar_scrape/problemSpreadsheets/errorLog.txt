@@ -1,0 +1,3 @@
+"read.xls error: Error in special.read.xls(xlsName = srce) : 
+  could not find function \"xls2sep\"
+"	"08-12-2014_08-05-2014.xls"
