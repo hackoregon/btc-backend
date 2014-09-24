@@ -57,7 +57,6 @@ sudo -u postgres psql hackoregon < ./trimTransactionsTable.sql
 
 sudo -u postgres createlang plpgsql
 
-# sudo -u postgres psql hackoregon < ./campaign_detail.sql #will try building this on the fly... 
 
 sudo -u postgres psql -c "alter user postgres password 'points';"
 
