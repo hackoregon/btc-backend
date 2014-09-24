@@ -24,16 +24,20 @@ Example output from finding money donated to a candidate:
          "value":500}]
 
 ---------------------------------
-competitors from name
+competitors from name or filer_id
 ---------------------------------
 
 This endpoint will return all competitors in a race, given a candidate's name. If the given candidate is competing in more than one race, it will return all candidates competing in all the races inwhich the given candidate is competing. 
 
 Note that this will also return information for the candidate whos name was given.
 
-Example finding competitors for Bill Bradbury:
+Example finding competitors for Bill Bradbury by name:
 
     http://54.213.83.132/hackoregon/http/competitors_from_name/Bill Bradbury/
+    
+Example finding competitors for Bill Bradbury by filer_id:
+
+    http://54.213.83.132/hackoregon/http/competitors_from_filer_id/3571/
 
 Example output:
 
