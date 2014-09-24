@@ -27,6 +27,27 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP FUNCTION IF EXISTS http.get_competitors_from_filer_id(name1 text, name2 text, cname text, name4 text);
+CREATE FUNCTION http.get_competitors_from_filer_id(name1 text, name2 text, cname text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM
+    (
+  SELECT * 
+  FROM campaign_detail 
+  WHERE race IN
+    (SELECT race 
+    FROM campaign_detail 
+    WHERE filer_id = cname::integer)) qres
+  INTO result;
+
+  return result;
+END;
+$$ LANGUAGE plpgsql;
+
 DROP FUNCTION IF EXISTS http.get_candidate_in_by_state(name1 text, name2 text, cname text, name4 text);
 CREATE FUNCTION http.get_candidate_in_by_state(name1 text, name2 text, cname text, name4 text) RETURNS json AS $$
 DECLARE
@@ -64,24 +85,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
-CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
-CREATE FUNCTION http.get_candidate_search(name1 text, name2 text, searchString text, name4 text) RETURNS json AS $$
-DECLARE
-  result json;
-BEGIN
-
-  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
-  FROM
-    (
-  select * from campaign_detail
-  where dmetaphone( candidate_name ) ilike '%'||dmetaphone( searchString )||'%'
-    ) qres
-  INTO result;
-
-  return result;
-END;
-$$ LANGUAGE plpgsql;
 
 CREATE FUNCTION http.get_committee_map(name1 text, name2 text, numRec text, name4 text) RETURNS json AS $$
 DECLARE
@@ -140,9 +143,8 @@ BEGIN
   SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
   FROM 
     (SELECT *
-    FROM raw_committee_transactions
+    FROM cc_working_transactions
     WHERE filer_id = candidate_id::int
-    AND tran_date > '2010-01-01'::date
     ORDER BY tran_date DESC) qres
   INTO result;
   

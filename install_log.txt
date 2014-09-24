@@ -1,0 +1,513 @@
+hackoregon.sql.bz2 found
+This script should be run by entering the command: 
+buildOutFromGitRepo.sh
+from the backend git repo's directory.
+If the hack oregon back end is in a Vagrant machine, the git directory will be:
+ /vagrant 
+data_infrastructure folder already exists
+current working directory inside buildOutFromGitRepo:
+/vagrant
+‘./trimTransactionsTable.sql’ -> ‘/home/vagrant/data_infrastructure/trimTransactionsTable.sql’
+‘./install.sql’ -> ‘/home/vagrant/data_infrastructure/install.sql’
+‘./buildOutDBFromRawTables.sh’ -> ‘/home/vagrant/data_infrastructure/buildOutDBFromRawTables.sh’
+‘./.Rprofile’ -> ‘/home/vagrant/.Rprofile’
+‘./endpoints’ -> ‘/home/vagrant/data_infrastructure/endpoints/endpoints’
+‘./endpoints/.DS_Store’ -> ‘/home/vagrant/data_infrastructure/endpoints/endpoints/.DS_Store’
+‘./endpoints/campaign_detail’ -> ‘/home/vagrant/data_infrastructure/endpoints/endpoints/campaign_detail’
+‘./endpoints/campaign_detail/productionCampaignDetail.sql’ -> ‘/home/vagrant/data_infrastructure/endpoints/endpoints/campaign_detail/productionCampaignDetail.sql’
+‘./endpoints/candidateByState’ -> ‘/home/vagrant/data_infrastructure/endpoints/endpoints/candidateByState’
+‘./endpoints/candidateByState/.DS_Store’ -> ‘/home/vagrant/data_infrastructure/endpoints/endpoints/candidateByState/.DS_Store’
+‘./endpoints/candidateByState/buildCandidateByStateEndpoint.sh’ -> ‘/home/vagrant/data_infrastructure/endpoints/endpoints/candidateByState/buildCandidateByStateEndpoint.sh’
+‘./endpoints/candidateByState/candidate_by_state.sql’ -> ‘/home/vagrant/data_infrastructure/endpoints/endpoints/candidateByState/candidate_by_state.sql’
+‘./endpoints/candidateByState/ExampleChoroData.csv’ -> ‘/home/vagrant/data_infrastructure/endpoints/endpoints/candidateByState/ExampleChoroData.csv’
+‘./endpoints/candidateByState/StateAbbreviations.csv’ -> ‘/home/vagrant/data_infrastructure/endpoints/endpoints/candidateByState/StateAbbreviations.csv’
+‘./endpoints/fuzzyMatch’ -> ‘/home/vagrant/data_infrastructure/endpoints/endpoints/fuzzyMatch’
+‘./endpoints/fuzzyMatch/fuzzyMatchPostgres.sql’ -> ‘/home/vagrant/data_infrastructure/endpoints/endpoints/fuzzyMatch/fuzzyMatchPostgres.sql’
+‘./endpoints/fuzzyMatch/installFuzzyStringMatchEndpoint.sql’ -> ‘/home/vagrant/data_infrastructure/endpoints/endpoints/fuzzyMatch/installFuzzyStringMatchEndpoint.sql’
+‘./endpoints/makeGrassState.R’ -> ‘/home/vagrant/data_infrastructure/endpoints/endpoints/makeGrassState.R’
+‘./orestar_scrape’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape’
+‘./orestar_scrape/.DS_Store’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/.DS_Store’
+‘./orestar_scrape/.gitignore’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/.gitignore’
+‘./orestar_scrape/affiliationScrapeErrorlog.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/affiliationScrapeErrorlog.txt’
+‘./orestar_scrape/bulkAddTransactions.R’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/bulkAddTransactions.R’
+‘./orestar_scrape/bulkLoadScrapedCommitteeData.R’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/bulkLoadScrapedCommitteeData.R’
+‘./orestar_scrape/candidateFilingsDateRange19850317to20140917.xls’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/candidateFilingsDateRange19850317to20140917.xls’
+‘./orestar_scrape/candidates_filings_raw_dumps’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/candidates_filings_raw_dumps’
+‘./orestar_scrape/candidates_filings_raw_dumps/candidateFilings09172014import.xls’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/candidates_filings_raw_dumps/candidateFilings09172014import.xls’
+‘./orestar_scrape/cleanCandidateFilings.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/cleanCandidateFilings.txt’
+‘./orestar_scrape/dbi.R’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/dbi.R’
+‘./orestar_scrape/filterRawImport.sql’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/filterRawImport.sql’
+‘./orestar_scrape/finDataImport.R’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/finDataImport.R’
+‘./orestar_scrape/getMostRecentTransactions.R’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/getMostRecentTransactions.R’
+‘./orestar_scrape/notes_on_candidate_filings.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/notes_on_candidate_filings.txt’
+‘./orestar_scrape/orestar_scrape.Rproj’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/orestar_scrape.Rproj’
+‘./orestar_scrape/orestar_scrape_committees’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/orestar_scrape_committees’
+‘./orestar_scrape/orestar_scrape_committees/.DS_Store’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/orestar_scrape_committees/.DS_Store’
+‘./orestar_scrape/orestar_scrape_committees/package.json’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/orestar_scrape_committees/package.json’
+‘./orestar_scrape/orestar_scrape_committees/scraper.js’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/orestar_scrape_committees/scraper.js’
+‘./orestar_scrape/package.json’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/package.json’
+‘./orestar_scrape/problemSpreadsheets’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/problemSpreadsheets’
+‘./orestar_scrape/problemSpreadsheets/.DS_Store’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/problemSpreadsheets/.DS_Store’
+‘./orestar_scrape/problemSpreadsheets/errorLog.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/problemSpreadsheets/errorLog.txt’
+‘./orestar_scrape/productionCandidateCommitteeDataWithGrassroots.R’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/productionCandidateCommitteeDataWithGrassroots.R’
+‘./orestar_scrape/productionLoadCandidateFilings.R’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/productionLoadCandidateFilings.R’
+‘./orestar_scrape/raw_committee_data’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data’
+‘./orestar_scrape/raw_committee_data/2278.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/2278.txt’
+‘./orestar_scrape/raw_committee_data/2362.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/2362.txt’
+‘./orestar_scrape/raw_committee_data/245.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/245.txt’
+‘./orestar_scrape/raw_committee_data/2452.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/2452.txt’
+‘./orestar_scrape/raw_committee_data/247.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/247.txt’
+‘./orestar_scrape/raw_committee_data/257.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/257.txt’
+‘./orestar_scrape/raw_committee_data/26.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/26.txt’
+‘./orestar_scrape/raw_committee_data/2731.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/2731.txt’
+‘./orestar_scrape/raw_committee_data/275.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/275.txt’
+‘./orestar_scrape/raw_committee_data/2829.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/2829.txt’
+‘./orestar_scrape/raw_committee_data/283.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/283.txt’
+‘./orestar_scrape/raw_committee_data/290.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/290.txt’
+‘./orestar_scrape/raw_committee_data/293.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/293.txt’
+‘./orestar_scrape/raw_committee_data/295.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/295.txt’
+‘./orestar_scrape/raw_committee_data/298.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/298.txt’
+‘./orestar_scrape/raw_committee_data/299.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/299.txt’
+‘./orestar_scrape/raw_committee_data/302.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/302.txt’
+‘./orestar_scrape/raw_committee_data/304.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/304.txt’
+‘./orestar_scrape/raw_committee_data/307.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/307.txt’
+‘./orestar_scrape/raw_committee_data/3073.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/3073.txt’
+‘./orestar_scrape/raw_committee_data/3077.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/3077.txt’
+‘./orestar_scrape/raw_committee_data/3087.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/3087.txt’
+‘./orestar_scrape/raw_committee_data/3099.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/3099.txt’
+‘./orestar_scrape/raw_committee_data/312.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/312.txt’
+‘./orestar_scrape/raw_committee_data/314.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/314.txt’
+‘./orestar_scrape/raw_committee_data/315.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/315.txt’
+‘./orestar_scrape/raw_committee_data/3161.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/3161.txt’
+‘./orestar_scrape/raw_committee_data/318.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/318.txt’
+‘./orestar_scrape/raw_committee_data/320.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/320.txt’
+‘./orestar_scrape/raw_committee_data/321.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/321.txt’
+‘./orestar_scrape/raw_committee_data/324.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/324.txt’
+‘./orestar_scrape/raw_committee_data/325.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/325.txt’
+‘./orestar_scrape/raw_committee_data/326.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/326.txt’
+‘./orestar_scrape/raw_committee_data/331.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/331.txt’
+‘./orestar_scrape/raw_committee_data/332.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/332.txt’
+‘./orestar_scrape/raw_committee_data/333.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/333.txt’
+‘./orestar_scrape/raw_committee_data/335.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/335.txt’
+‘./orestar_scrape/raw_committee_data/3362.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/3362.txt’
+‘./orestar_scrape/raw_committee_data/338.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/338.txt’
+‘./orestar_scrape/raw_committee_data/339.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/339.txt’
+‘./orestar_scrape/raw_committee_data/340.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/340.txt’
+‘./orestar_scrape/raw_committee_data/342.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/342.txt’
+‘./orestar_scrape/raw_committee_data/347.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/347.txt’
+‘./orestar_scrape/raw_committee_data/348.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/348.txt’
+‘./orestar_scrape/raw_committee_data/3481.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/3481.txt’
+‘./orestar_scrape/raw_committee_data/349.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/349.txt’
+‘./orestar_scrape/raw_committee_data/351.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/351.txt’
+‘./orestar_scrape/raw_committee_data/3591.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/3591.txt’
+‘./orestar_scrape/raw_committee_data/3816.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/3816.txt’
+‘./orestar_scrape/raw_committee_data/3860.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/3860.txt’
+‘./orestar_scrape/raw_committee_data/39.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/39.txt’
+‘./orestar_scrape/raw_committee_data/4.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/4.txt’
+‘./orestar_scrape/raw_committee_data/4100.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/4100.txt’
+‘./orestar_scrape/raw_committee_data/4155.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/4155.txt’
+‘./orestar_scrape/raw_committee_data/4221.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/4221.txt’
+‘./orestar_scrape/raw_committee_data/4241.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/4241.txt’
+‘./orestar_scrape/raw_committee_data/4311.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/4311.txt’
+‘./orestar_scrape/raw_committee_data/4507.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/4507.txt’
+‘./orestar_scrape/raw_committee_data/4554.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/4554.txt’
+‘./orestar_scrape/raw_committee_data/4556.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/4556.txt’
+‘./orestar_scrape/raw_committee_data/4583.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/4583.txt’
+‘./orestar_scrape/raw_committee_data/4586.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/4586.txt’
+‘./orestar_scrape/raw_committee_data/4680.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/4680.txt’
+‘./orestar_scrape/raw_committee_data/4681.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/4681.txt’
+‘./orestar_scrape/raw_committee_data/4741.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/4741.txt’
+‘./orestar_scrape/raw_committee_data/4747.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/4747.txt’
+‘./orestar_scrape/raw_committee_data/4752.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/4752.txt’
+‘./orestar_scrape/raw_committee_data/4831.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/4831.txt’
+‘./orestar_scrape/raw_committee_data/5049.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/5049.txt’
+‘./orestar_scrape/raw_committee_data/5072.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/5072.txt’
+‘./orestar_scrape/raw_committee_data/5089.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/5089.txt’
+‘./orestar_scrape/raw_committee_data/51.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/51.txt’
+‘./orestar_scrape/raw_committee_data/5410.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/5410.txt’
+‘./orestar_scrape/raw_committee_data/5585.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/5585.txt’
+‘./orestar_scrape/raw_committee_data/5667.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/5667.txt’
+‘./orestar_scrape/raw_committee_data/5785.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/5785.txt’
+‘./orestar_scrape/raw_committee_data/6004.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/6004.txt’
+‘./orestar_scrape/raw_committee_data/618.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/618.txt’
+‘./orestar_scrape/raw_committee_data/622.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/622.txt’
+‘./orestar_scrape/raw_committee_data/7485.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/7485.txt’
+‘./orestar_scrape/raw_committee_data/8686.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/8686.txt’
+‘./orestar_scrape/raw_committee_data/944.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/944.txt’
+‘./orestar_scrape/raw_committee_data/97.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/97.txt’
+‘./orestar_scrape/raw_committee_data/failedScrapes’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/failedScrapes’
+‘./orestar_scrape/raw_committee_data/failedScrapes/.DS_Store’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/failedScrapes/.DS_Store’
+‘./orestar_scrape/raw_committee_data/failedScrapes/16666.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/failedScrapes/16666.txt’
+‘./orestar_scrape/raw_committee_data/failedScrapes/16857.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/failedScrapes/16857.txt’
+‘./orestar_scrape/raw_committee_data/failedScrapes/16901.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/failedScrapes/16901.txt’
+‘./orestar_scrape/raw_committee_data/failedScrapes/16910.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/failedScrapes/16910.txt’
+‘./orestar_scrape/raw_committee_data/failedScrapes/17047.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/failedScrapes/17047.txt’
+‘./orestar_scrape/raw_committee_data/failedScrapes/17099.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/failedScrapes/17099.txt’
+‘./orestar_scrape/raw_committee_data/failedScrapes/17135.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/failedScrapes/17135.txt’
+‘./orestar_scrape/raw_committee_data/15497.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15497.txt’
+‘./orestar_scrape/raw_committee_data/15500.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15500.txt’
+‘./orestar_scrape/raw_committee_data/15508.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15508.txt’
+‘./orestar_scrape/raw_committee_data/15523.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15523.txt’
+‘./orestar_scrape/raw_committee_data/15553.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15553.txt’
+‘./orestar_scrape/raw_committee_data/15573.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15573.txt’
+‘./orestar_scrape/raw_committee_data/15577.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15577.txt’
+‘./orestar_scrape/raw_committee_data/15584.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15584.txt’
+‘./orestar_scrape/raw_committee_data/15616.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15616.txt’
+‘./orestar_scrape/raw_committee_data/15627.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15627.txt’
+‘./orestar_scrape/raw_committee_data/15628.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15628.txt’
+‘./orestar_scrape/raw_committee_data/15633.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15633.txt’
+‘./orestar_scrape/raw_committee_data/15643.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15643.txt’
+‘./orestar_scrape/raw_committee_data/15659.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15659.txt’
+‘./orestar_scrape/raw_committee_data/15670.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15670.txt’
+‘./orestar_scrape/raw_committee_data/15705.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15705.txt’
+‘./orestar_scrape/raw_committee_data/15708.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15708.txt’
+‘./orestar_scrape/raw_committee_data/15728.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15728.txt’
+‘./orestar_scrape/raw_committee_data/15741.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15741.txt’
+‘./orestar_scrape/raw_committee_data/15749.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15749.txt’
+‘./orestar_scrape/raw_committee_data/15780.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15780.txt’
+‘./orestar_scrape/raw_committee_data/15802.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15802.txt’
+‘./orestar_scrape/raw_committee_data/15808.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15808.txt’
+‘./orestar_scrape/raw_committee_data/15830.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15830.txt’
+‘./orestar_scrape/raw_committee_data/159.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/159.txt’
+‘./orestar_scrape/raw_committee_data/15940.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15940.txt’
+‘./orestar_scrape/raw_committee_data/16015.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16015.txt’
+‘./orestar_scrape/raw_committee_data/16042.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16042.txt’
+‘./orestar_scrape/raw_committee_data/16051.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16051.txt’
+‘./orestar_scrape/raw_committee_data/16057.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16057.txt’
+‘./orestar_scrape/raw_committee_data/16073.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16073.txt’
+‘./orestar_scrape/raw_committee_data/161.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/161.txt’
+‘./orestar_scrape/raw_committee_data/16205.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16205.txt’
+‘./orestar_scrape/raw_committee_data/16206.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16206.txt’
+‘./orestar_scrape/raw_committee_data/16209.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16209.txt’
+‘./orestar_scrape/raw_committee_data/16404.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16404.txt’
+‘./orestar_scrape/raw_committee_data/16408.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16408.txt’
+‘./orestar_scrape/raw_committee_data/16409.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16409.txt’
+‘./orestar_scrape/raw_committee_data/16480.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16480.txt’
+‘./orestar_scrape/raw_committee_data/16490.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16490.txt’
+‘./orestar_scrape/raw_committee_data/16501.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16501.txt’
+‘./orestar_scrape/raw_committee_data/16502.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16502.txt’
+‘./orestar_scrape/raw_committee_data/16503.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16503.txt’
+‘./orestar_scrape/raw_committee_data/16508.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16508.txt’
+‘./orestar_scrape/raw_committee_data/16510.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16510.txt’
+‘./orestar_scrape/raw_committee_data/16520.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16520.txt’
+‘./orestar_scrape/raw_committee_data/16550.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16550.txt’
+‘./orestar_scrape/raw_committee_data/16590.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16590.txt’
+‘./orestar_scrape/raw_committee_data/16601.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16601.txt’
+‘./orestar_scrape/raw_committee_data/16602.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16602.txt’
+‘./orestar_scrape/raw_committee_data/16603.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16603.txt’
+‘./orestar_scrape/raw_committee_data/16606.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16606.txt’
+‘./orestar_scrape/raw_committee_data/16609.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16609.txt’
+‘./orestar_scrape/raw_committee_data/16610.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16610.txt’
+‘./orestar_scrape/raw_committee_data/16630.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16630.txt’
+‘./orestar_scrape/raw_committee_data/16650.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16650.txt’
+‘./orestar_scrape/raw_committee_data/16680.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16680.txt’
+‘./orestar_scrape/raw_committee_data/16690.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16690.txt’
+‘./orestar_scrape/raw_committee_data/16707.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16707.txt’
+‘./orestar_scrape/raw_committee_data/16708.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16708.txt’
+‘./orestar_scrape/raw_committee_data/16709.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16709.txt’
+‘./orestar_scrape/raw_committee_data/16750.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16750.txt’
+‘./orestar_scrape/raw_committee_data/16760.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16760.txt’
+‘./orestar_scrape/raw_committee_data/16790.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16790.txt’
+‘./orestar_scrape/raw_committee_data/16800.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16800.txt’
+‘./orestar_scrape/raw_committee_data/16801.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16801.txt’
+‘./orestar_scrape/raw_committee_data/16802.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16802.txt’
+‘./orestar_scrape/raw_committee_data/16803.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16803.txt’
+‘./orestar_scrape/raw_committee_data/16807.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16807.txt’
+‘./orestar_scrape/raw_committee_data/16808.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16808.txt’
+‘./orestar_scrape/raw_committee_data/16809.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16809.txt’
+‘./orestar_scrape/raw_committee_data/16830.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16830.txt’
+‘./orestar_scrape/raw_committee_data/16880.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16880.txt’
+‘./orestar_scrape/raw_committee_data/16902.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16902.txt’
+‘./orestar_scrape/raw_committee_data/16904.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16904.txt’
+‘./orestar_scrape/raw_committee_data/16907.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16907.txt’
+‘./orestar_scrape/raw_committee_data/16908.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16908.txt’
+‘./orestar_scrape/raw_committee_data/16940.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16940.txt’
+‘./orestar_scrape/raw_committee_data/16950.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16950.txt’
+‘./orestar_scrape/raw_committee_data/16970.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16970.txt’
+‘./orestar_scrape/raw_committee_data/16980.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16980.txt’
+‘./orestar_scrape/raw_committee_data/16990.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/16990.txt’
+‘./orestar_scrape/raw_committee_data/17001.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17001.txt’
+‘./orestar_scrape/raw_committee_data/17003.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17003.txt’
+‘./orestar_scrape/raw_committee_data/17007.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17007.txt’
+‘./orestar_scrape/raw_committee_data/17008.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17008.txt’
+‘./orestar_scrape/raw_committee_data/17010.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17010.txt’
+‘./orestar_scrape/raw_committee_data/17012.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17012.txt’
+‘./orestar_scrape/raw_committee_data/17013.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17013.txt’
+‘./orestar_scrape/raw_committee_data/17015.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17015.txt’
+‘./orestar_scrape/raw_committee_data/17017.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17017.txt’
+‘./orestar_scrape/raw_committee_data/17018.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17018.txt’
+‘./orestar_scrape/raw_committee_data/17022.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17022.txt’
+‘./orestar_scrape/raw_committee_data/17026.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17026.txt’
+‘./orestar_scrape/raw_committee_data/17031.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17031.txt’
+‘./orestar_scrape/raw_committee_data/17033.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17033.txt’
+‘./orestar_scrape/raw_committee_data/17034.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17034.txt’
+‘./orestar_scrape/raw_committee_data/17045.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17045.txt’
+‘./orestar_scrape/raw_committee_data/17049.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17049.txt’
+‘./orestar_scrape/raw_committee_data/17054.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17054.txt’
+‘./orestar_scrape/raw_committee_data/17065.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17065.txt’
+‘./orestar_scrape/raw_committee_data/17073.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17073.txt’
+‘./orestar_scrape/raw_committee_data/17076.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17076.txt’
+‘./orestar_scrape/raw_committee_data/17082.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17082.txt’
+‘./orestar_scrape/raw_committee_data/17084.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17084.txt’
+‘./orestar_scrape/raw_committee_data/17090.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17090.txt’
+‘./orestar_scrape/raw_committee_data/17091.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17091.txt’
+‘./orestar_scrape/raw_committee_data/17096.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17096.txt’
+‘./orestar_scrape/raw_committee_data/17097.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17097.txt’
+‘./orestar_scrape/raw_committee_data/17100.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17100.txt’
+‘./orestar_scrape/raw_committee_data/17107.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17107.txt’
+‘./orestar_scrape/raw_committee_data/17108.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17108.txt’
+‘./orestar_scrape/raw_committee_data/17109.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/17109.txt’
+‘./orestar_scrape/raw_committee_data/172.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/172.txt’
+‘./orestar_scrape/raw_committee_data/175.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/175.txt’
+‘./orestar_scrape/raw_committee_data/180.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/180.txt’
+‘./orestar_scrape/raw_committee_data/191.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/191.txt’
+‘./orestar_scrape/raw_committee_data/197.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/197.txt’
+‘./orestar_scrape/raw_committee_data/212.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/212.txt’
+‘./orestar_scrape/raw_committee_data/2225.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/2225.txt’
+‘./orestar_scrape/raw_committee_data/.DS_Store’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/.DS_Store’
+‘./orestar_scrape/raw_committee_data/10367.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/10367.txt’
+‘./orestar_scrape/raw_committee_data/11528.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/11528.txt’
+‘./orestar_scrape/raw_committee_data/11748.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/11748.txt’
+‘./orestar_scrape/raw_committee_data/12047.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/12047.txt’
+‘./orestar_scrape/raw_committee_data/12127.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/12127.txt’
+‘./orestar_scrape/raw_committee_data/12452.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/12452.txt’
+‘./orestar_scrape/raw_committee_data/12468.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/12468.txt’
+‘./orestar_scrape/raw_committee_data/12594.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/12594.txt’
+‘./orestar_scrape/raw_committee_data/126.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/126.txt’
+‘./orestar_scrape/raw_committee_data/12683.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/12683.txt’
+‘./orestar_scrape/raw_committee_data/12688.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/12688.txt’
+‘./orestar_scrape/raw_committee_data/12708.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/12708.txt’
+‘./orestar_scrape/raw_committee_data/12845.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/12845.txt’
+‘./orestar_scrape/raw_committee_data/12848.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/12848.txt’
+‘./orestar_scrape/raw_committee_data/12891.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/12891.txt’
+‘./orestar_scrape/raw_committee_data/12902.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/12902.txt’
+‘./orestar_scrape/raw_committee_data/12940.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/12940.txt’
+‘./orestar_scrape/raw_committee_data/12986.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/12986.txt’
+‘./orestar_scrape/raw_committee_data/130.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/130.txt’
+‘./orestar_scrape/raw_committee_data/13130.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13130.txt’
+‘./orestar_scrape/raw_committee_data/13156.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13156.txt’
+‘./orestar_scrape/raw_committee_data/13163.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13163.txt’
+‘./orestar_scrape/raw_committee_data/1318.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/1318.txt’
+‘./orestar_scrape/raw_committee_data/13289.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13289.txt’
+‘./orestar_scrape/raw_committee_data/13408.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13408.txt’
+‘./orestar_scrape/raw_committee_data/135.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/135.txt’
+‘./orestar_scrape/raw_committee_data/13544.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13544.txt’
+‘./orestar_scrape/raw_committee_data/13571.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13571.txt’
+‘./orestar_scrape/raw_committee_data/13619.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13619.txt’
+‘./orestar_scrape/raw_committee_data/13628.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13628.txt’
+‘./orestar_scrape/raw_committee_data/13635.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13635.txt’
+‘./orestar_scrape/raw_committee_data/13647.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13647.txt’
+‘./orestar_scrape/raw_committee_data/13649.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13649.txt’
+‘./orestar_scrape/raw_committee_data/13774.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13774.txt’
+‘./orestar_scrape/raw_committee_data/138.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/138.txt’
+‘./orestar_scrape/raw_committee_data/13873.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13873.txt’
+‘./orestar_scrape/raw_committee_data/13907.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13907.txt’
+‘./orestar_scrape/raw_committee_data/13920.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13920.txt’
+‘./orestar_scrape/raw_committee_data/13926.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13926.txt’
+‘./orestar_scrape/raw_committee_data/13940.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13940.txt’
+‘./orestar_scrape/raw_committee_data/13963.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13963.txt’
+‘./orestar_scrape/raw_committee_data/13966.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13966.txt’
+‘./orestar_scrape/raw_committee_data/13972.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13972.txt’
+‘./orestar_scrape/raw_committee_data/13982.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13982.txt’
+‘./orestar_scrape/raw_committee_data/13983.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13983.txt’
+‘./orestar_scrape/raw_committee_data/13997.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13997.txt’
+‘./orestar_scrape/raw_committee_data/13998.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/13998.txt’
+‘./orestar_scrape/raw_committee_data/14035.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14035.txt’
+‘./orestar_scrape/raw_committee_data/14041.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14041.txt’
+‘./orestar_scrape/raw_committee_data/14044.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14044.txt’
+‘./orestar_scrape/raw_committee_data/14046.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14046.txt’
+‘./orestar_scrape/raw_committee_data/14052.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14052.txt’
+‘./orestar_scrape/raw_committee_data/14072.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14072.txt’
+‘./orestar_scrape/raw_committee_data/14121.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14121.txt’
+‘./orestar_scrape/raw_committee_data/14148.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14148.txt’
+‘./orestar_scrape/raw_committee_data/14187.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14187.txt’
+‘./orestar_scrape/raw_committee_data/14198.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14198.txt’
+‘./orestar_scrape/raw_committee_data/142.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/142.txt’
+‘./orestar_scrape/raw_committee_data/14201.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14201.txt’
+‘./orestar_scrape/raw_committee_data/14211.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14211.txt’
+‘./orestar_scrape/raw_committee_data/14232.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14232.txt’
+‘./orestar_scrape/raw_committee_data/14243.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14243.txt’
+‘./orestar_scrape/raw_committee_data/14245.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14245.txt’
+‘./orestar_scrape/raw_committee_data/14252.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14252.txt’
+‘./orestar_scrape/raw_committee_data/14253.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14253.txt’
+‘./orestar_scrape/raw_committee_data/14265.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14265.txt’
+‘./orestar_scrape/raw_committee_data/14268.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14268.txt’
+‘./orestar_scrape/raw_committee_data/14280.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14280.txt’
+‘./orestar_scrape/raw_committee_data/14295.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14295.txt’
+‘./orestar_scrape/raw_committee_data/14364.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14364.txt’
+‘./orestar_scrape/raw_committee_data/14369.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14369.txt’
+‘./orestar_scrape/raw_committee_data/14377.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14377.txt’
+‘./orestar_scrape/raw_committee_data/14380.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14380.txt’
+‘./orestar_scrape/raw_committee_data/14490.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14490.txt’
+‘./orestar_scrape/raw_committee_data/14523.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14523.txt’
+‘./orestar_scrape/raw_committee_data/14528.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14528.txt’
+‘./orestar_scrape/raw_committee_data/14575.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14575.txt’
+‘./orestar_scrape/raw_committee_data/14598.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14598.txt’
+‘./orestar_scrape/raw_committee_data/14661.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14661.txt’
+‘./orestar_scrape/raw_committee_data/14679.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14679.txt’
+‘./orestar_scrape/raw_committee_data/14743.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14743.txt’
+‘./orestar_scrape/raw_committee_data/14751.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14751.txt’
+‘./orestar_scrape/raw_committee_data/14807.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14807.txt’
+‘./orestar_scrape/raw_committee_data/14905.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14905.txt’
+‘./orestar_scrape/raw_committee_data/14931.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14931.txt’
+‘./orestar_scrape/raw_committee_data/14943.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/14943.txt’
+‘./orestar_scrape/raw_committee_data/15.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15.txt’
+‘./orestar_scrape/raw_committee_data/15022.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15022.txt’
+‘./orestar_scrape/raw_committee_data/15035.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15035.txt’
+‘./orestar_scrape/raw_committee_data/15089.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15089.txt’
+‘./orestar_scrape/raw_committee_data/15104.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15104.txt’
+‘./orestar_scrape/raw_committee_data/15109.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15109.txt’
+‘./orestar_scrape/raw_committee_data/15125.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15125.txt’
+‘./orestar_scrape/raw_committee_data/15160.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15160.txt’
+‘./orestar_scrape/raw_committee_data/15181.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15181.txt’
+‘./orestar_scrape/raw_committee_data/15182.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15182.txt’
+‘./orestar_scrape/raw_committee_data/15192.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15192.txt’
+‘./orestar_scrape/raw_committee_data/15199.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15199.txt’
+‘./orestar_scrape/raw_committee_data/15200.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15200.txt’
+‘./orestar_scrape/raw_committee_data/15237.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15237.txt’
+‘./orestar_scrape/raw_committee_data/15242.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15242.txt’
+‘./orestar_scrape/raw_committee_data/15255.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15255.txt’
+‘./orestar_scrape/raw_committee_data/15272.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15272.txt’
+‘./orestar_scrape/raw_committee_data/153.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/153.txt’
+‘./orestar_scrape/raw_committee_data/15323.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15323.txt’
+‘./orestar_scrape/raw_committee_data/15330.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15330.txt’
+‘./orestar_scrape/raw_committee_data/15348.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15348.txt’
+‘./orestar_scrape/raw_committee_data/15351.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15351.txt’
+‘./orestar_scrape/raw_committee_data/15397.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15397.txt’
+‘./orestar_scrape/raw_committee_data/15402.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15402.txt’
+‘./orestar_scrape/raw_committee_data/15406.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15406.txt’
+‘./orestar_scrape/raw_committee_data/15409.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15409.txt’
+‘./orestar_scrape/raw_committee_data/15424.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15424.txt’
+‘./orestar_scrape/raw_committee_data/15469.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15469.txt’
+‘./orestar_scrape/raw_committee_data/15477.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15477.txt’
+‘./orestar_scrape/raw_committee_data/15485.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15485.txt’
+‘./orestar_scrape/raw_committee_data/15492.txt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/raw_committee_data/15492.txt’
+‘./orestar_scrape/README.md’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/README.md’
+‘./orestar_scrape/RecordsConvertedToTxt’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/RecordsConvertedToTxt’
+‘./orestar_scrape/runScraper.R’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/runScraper.R’
+‘./orestar_scrape/scrapeAffiliation.R’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/scrapeAffiliation.R’
+‘./orestar_scrape/scraper.js’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/scraper.js’
+‘./orestar_scrape/test_curls.sh’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/test_curls.sh’
+‘./orestar_scrape/testReadXls.R’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/testReadXls.R’
+‘./orestar_scrape/transConvertedToTsv’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/transConvertedToTsv’
+‘./orestar_scrape/transConvertedToTsv/.DS_Store’ -> ‘/home/vagrant/data_infrastructure/orestar_scrape/orestar_scrape/transConvertedToTsv/.DS_Store’
+‘./addDirectionCodes.sh’ -> ‘/home/vagrant/data_infrastructure/addDirectionCodes.sh’
+‘./moneyDirectionCodes.txt’ -> ‘/home/vagrant/data_infrastructure/moneyDirectionCodes.txt’
+‘./workingTableCreation.sh’ -> ‘/home/vagrant/data_infrastructure/workingTableCreation.sh’
+‘./workingTransactionsTableCreation.sql’ -> ‘/home/vagrant/data_infrastructure/workingTransactionsTableCreation.sql’
+‘./makeWorkingCandidateFilings.R’ -> ‘/home/vagrant/data_infrastructure/makeWorkingCandidateFilings.R’
+‘./buildEndpointTables.sh’ -> ‘/home/vagrant/data_infrastructure/buildEndpointTables.sh’
+‘./postSchemaInstallationEndpoints.sh’ -> ‘/home/vagrant/data_infrastructure/postSchemaInstallationEndpoints.sh’
+‘./workingCommitteesFromInitialRaw.sql’ -> ‘/home/vagrant/data_infrastructure/workingCommitteesFromInitialRaw.sql’
+install3.sh changed the working directory to:
+/home/vagrant/data_infrastructure
+SET
+SET
+SET
+SET
+SET
+SET
+CREATE EXTENSION
+COMMENT
+SET
+SET
+SET
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+SELECT 528261
+DROP TABLE
+SELECT 528261
+DROP TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+SELECT 2596
+DROP TABLE
+SELECT 2596
+DROP TABLE
+ALTER ROLE
+Running buildOutDBFromRawTables.sh
+---------------------------------
+Running workingTableCreation.sh
+---------------------------------
+Working directory:
+/home/vagrant/data_infrastructure
+calling addDirectionCodes.sh
+Running addDirectionCodes.sh
+This script should only be envoked after ~/data_infrastructure/
+has been built with buildOutFromGitRepo.sh
+DROP TABLE
+CREATE TABLE
+COPY 31
+making db call to add the working_transactions table
+with script ./workingTransactionsTableCreation.sql
+DROP TABLE
+SELECT 528261
+calling makeWorkingCandidateFilings.R
+
+
+sourcing ~/data_infrastructure/orestar_scrape/productionLoadCandidateFilings.R ..
+For this script to run correctly, there must be a file with the substring 'candidateFilings'
+in its name, which should be placed in the ~/data_infrastructure/orestar_scrape/ folder.
+
+
+Inside productionLoadCandidateFilings.R
+
+current working directory: /home/vagrant/data_infrastructure/orestar_scrape 
+
+Inside finDataImport.R
+Working directory:
+ /home/vagrant/data_infrastructure/orestar_scrape 
+calling workingCommitteesFromInitialRaw.sql
+DROP TABLE
+SELECT 2628
+calling bulkLoadScrapedCommitteeData.R
+    Running script: buildEndpointTables.sh
+Building out tables for endpoints...
+This script should be run from the directory
+~/data_infrastructure/
+Current working directory:
+/home/vagrant/data_infrastructure
+Calling sudo ./endpoints/makeGrassState.R,
+the script which orchestrates construction of
+percent grass roots and percent instate data.
+
+Inside makeGrassState.R: finding percent grass roots and percent in state...
+ This script should be run with the args <current campaign cycle> and <database name>,
+ provided in this manner:
+ makeGrassState.R '2010-11-15' hackoregon
+Running ./endpoints/campaign_detail/productionCampaignDetail.sql,
+the script that produces the working campaign detail data.
+DROP TABLE
+SELECT 1752
+DROP TABLE
+SELECT 509
+Running ./endpoints/candidateByState/buildCandidateByStateEndpoint.sh,
+the script that produces data for candidates by state.
+Building state_translation table
+DROP TABLE
+CREATE TABLE
+COPY 51
+BEGIN
+DROP SCHEMA
+CREATE SCHEMA
+CREATE FUNCTION
+DROP FUNCTION
+CREATE FUNCTION
+DROP FUNCTION
+CREATE FUNCTION
+DROP FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+COMMIT
+running postSchemaInstallationEndpoints.sh
+CREATE EXTENSION
+CREATE FUNCTION
