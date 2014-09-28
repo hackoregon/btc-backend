@@ -10,6 +10,22 @@ To install the backend:
 		See https://www.virtualbox.org/ for virtual box.
 	
 		See http://www.vagrantup.com/ for vagrant.
+		
+Important notes on vagrant usage:
+
+a) never run vagrant commands from your home machine as root. 
+ie, if you run anything with the pattern 
+
+	host machine prompt> sudo vagrant xxx
+	
+you will probably need to read this: http://stackoverflow.com/questions/25652769/should-vagrant-require-sudo-for-each-command
+
+Running code as root from inside of the vagrant machine, ( ex: after >vagrant ssh and before ctrl-d ), is fine. 
+
+b) If you are re-installing the back end and wish to re-install the vagrant instance (the first two commands in step 3), you need to first destroy the previously installed vagrant box
+	> vagrant destroy
+Then remove the vagrant config file found in the installation directory. 
+	> rm Vagrantfile
 
 	
 2) Copy this git repository to a folder on your computer and make that folder your working directory.
@@ -24,7 +40,9 @@ These files should be in the folder:
 	
 3) Run these commands (note: you may have to run chmod 777 installx.sh on each of the installx.sh scripts so that they can be executed. Also, you may have to enter Y partway through the installation of postgres; haven't found what option I need to use to skip that):
 
-
+	#note: if there is already a file named Vagrantfile in the directory, 
+	#the command "vagrant destroy" must be run and the Vagrantfile must be removed 
+	#before executing the following steps.
 	host machine prompt> vagrant box add ubuntu14 https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-i386-vagrant-disk1.box
 	host machine prompt> vagrant init ubuntu14
 	host machine prompt> vagrant up
