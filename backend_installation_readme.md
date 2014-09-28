@@ -12,7 +12,7 @@ To install the backend:
 		See http://www.vagrantup.com/ for vagrant.
 
 	
-2) Copy this git repository to a folder on your computer, make that folder your working directory
+2) Copy this git repository to a folder on your computer and make that folder your working directory.
 These files should be in the folder:
 
 	install2.sh : installation of openresty and other configurations
