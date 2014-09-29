@@ -13,23 +13,25 @@ To install the backend:
 	
 		See http://www.vagrantup.com/ for vagrant.
 		
-Important notes on vagrant usage:
-
-a) never run vagrant commands from your home machine as root. 
-ie, if you run anything with the pattern 
-
-	host machine prompt> sudo vagrant xxx
+	-----------------------
+	Important notes on vagrant usage:
 	
-you will probably need to read this: http://stackoverflow.com/questions/25652769/should-vagrant-require-sudo-for-each-command
-
-Running code as root from inside of the vagrant machine, ( ex: after >vagrant ssh and before ctrl-d ), is fine. 
-
-b) If you are re-installing the back end and wish to re-install the vagrant instance (the first two commands in step 3), you need to first destroy the previously installed vagrant box
-	> vagrant destroy
-Then remove the vagrant config file found in the installation directory. 
-	> rm Vagrantfile
-
+	a) never run vagrant commands from your home machine as root. 
+	ie, if you run anything with the pattern 
 	
+		host machine prompt> sudo vagrant xxx
+		
+	you will probably need to read this: http://stackoverflow.com/questions/25652769/should-vagrant-require-sudo-for-each-command
+	
+	Running code as root from inside of the vagrant machine, ( ex: after >vagrant ssh and before ctrl-d ), is fine. 
+	
+	b) If you are re-installing the back end and wish to re-install the vagrant instance 
+	(the first two commands in step 3), you need to first destroy the previously installed vagrant box
+		> vagrant destroy
+	Then remove the vagrant config file found in the installation directory. 
+		> rm Vagrantfile
+
+	-----------------------
 2) Copy this git repository to a folder on your computer and make that folder your working directory.
 These files should be in the folder:
 
@@ -50,13 +52,14 @@ These files should be in the folder:
 	host machine prompt> vagrant up
 	host machine prompt> vagrant ssh
 	guest machine prompt> sudo /vagrant/install2.sh
-	guest machine prompt> sudo /vagrant/install3.sh
 
 4) enter ctrl + d then run these commands:
-
+	
 	host machine prompt> vagrant reload
 	host machine prompt> vagrant ssh
+	guest machine prompt> sudo /vagrant/install3.sh
 	guest machine prompt> sudo /usr/local/openresty/nginx/sbin/nginx
+	
 5) Enter ctrl + d to exit ssh
 
 Go to:
