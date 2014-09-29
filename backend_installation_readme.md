@@ -45,7 +45,10 @@ These files should be in the folder:
 	#note: if there is already a file named Vagrantfile in the directory, 
 	#the command "vagrant destroy" must be run and the Vagrantfile must be removed 
 	#before executing the following steps.
+	
+	#do not run this step if you are updating and have already run '> vagrant box add ... '
 	host machine prompt> vagrant box add ubuntu14 https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-i386-vagrant-disk1.box
+	
 	host machine prompt> vagrant init ubuntu14
 	host machine prompt> vagrant up
 	host machine prompt> vagrant ssh
