@@ -14,7 +14,7 @@ To get the money donated or paid by a candidate to entities in each state (in th
 
     http://54.213.83.132/hackoregon/http/candidate_out_by_state_by_id/470/
 
-Example output from finding money from a candidate (Peter Courtney) to various other states:
+Example output from finding money from a candidate (Peter Courtney) to various states:
 
         [{"state":"Maryland",
          "value":4175.85},
@@ -119,25 +119,25 @@ Get data for the top n committees, ordered by total money raised in the current 
          "committee_names":"Committee to Elect Brad Avakian",
          "filer_id":4152}]
 --------------------------------- 
-committee data
+committee data by id
 ---------------------------------
-Get data for a particular candidate committee, using the candidate's name
+Get data for a particular candidate committee, using the candidate's committee ID
 
   Usage:
     
-    http://54.213.83.132/hackoregon/http/committee_data/Tina Kotek/
+    http://54.213.83.132/hackoregon/http/committee_data/470/
     
-  Will return this JSON, giving information for Tina Kotek:
+  Will return this JSON, giving information for Peter Courtney:
   
-      [{"candidate_name":"Tina Kotek",
-       "race":"State Representative 44th District",
-       "website":"",
-       "phone":"(503)449-9767",
-       "total":212932.19,
-       "grassroots":0.00503446660648162,
-       "instate":0.717790673171586,
-       "committee_names":"Friends of Tina Kotek",
-       "filer_id":4792}]
+      [{"candidate_name":"Peter Courtney",
+     "committee_name":"Peter Courtney for State Senate",
+     "race":"2014 Primary Election State Senator 11th District",
+     "website":"votepetercourtney.com",
+     "phone":"wk:(503)986-1600 hm: fx:",
+     "total":485302.58,
+     "grassroots":0.00409775278754957,
+     "instate":0.84772386744781,
+     "filer_id":470}]
 --------------------------------- 
 current transactions
 ---------------------------------
