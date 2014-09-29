@@ -1,27 +1,29 @@
 Endpoints available:
 
 ---------------------------------
-get candidate money by state
+get candidate money by state using committee IDs
 ---------------------------------
 Two endpoints telling how much money a candidate (1) recieved from and (2) paid to each state in the US. (note Washington DC is translated to Maryland)
 
-To get the money donated to a candidate from entities in each state (in this example, Brad Avakian):
+To get the money donated to a candidate from entities in each state (in this example, Peter Courtney, who's committee id is 470):
     
-    http://54.213.83.132/hackoregon/http/candidate_in_by_state/Brad Avakian/
+    http://54.213.83.132/hackoregon/http/candidate_in_by_state_by_id/470/
 
 
-To get the money donated or paid by a candidate to entities in each state (in this example, Brad Avakian):
+To get the money donated or paid by a candidate to entities in each state (in this example, Peter Courtney, who's committee id is 470):
 
-    http://54.213.83.132/hackoregon/http/candidate_out_by_state/Brad Avakian/
+    http://54.213.83.132/hackoregon/http/candidate_out_by_state_by_id/470/
 
-Example output from finding money donated to a candidate:
+Example output from finding money from a candidate (Peter Courtney) to various other states:
 
-        [{"state":"California",
-         "value":1000},
+        [{"state":"Maryland",
+         "value":4175.85},
+         {"state":"New Jersey",
+         "value":288.55},
          {"state":"Oregon",
-         "value":37799.03},
-         {"state":"Wyoming",
-         "value":500}]
+         "value":327198.64},
+         {"state":"Washington",
+         "value":117}]
 
 ---------------------------------
 competitors from name or filer_id
