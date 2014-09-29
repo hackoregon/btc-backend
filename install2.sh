@@ -6,7 +6,8 @@ echo "in the directory"
 echo " /vagrant/ "
 
 packageDir=$(pwd)
-
+echo "Original directory:"
+echo "${packageDir}"
 sudo aptitude update
 sudo aptitude install postgresql postgresql-contrib postgis postgresql-9.3-postgis-scripts git
 
@@ -27,7 +28,12 @@ sudo apt-get -y install build-essential libpq-dev libpcre3-dev
 make
 sudo make install
 
+echo "Current directory:"
+pwd
+echo "Switching to directory ${packageDir}"
 cd $packageDir
+echo "Current directory:"
+pwd
 
 echo "Installing nginx... "
 #configure nginx
