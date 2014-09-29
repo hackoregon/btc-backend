@@ -25,12 +25,13 @@ bulkLoadScrapedCommitteeData<-function(committeefolder, dbname, comTabName){
 		rawScrapeDat = rawScrapeToTable(committeeNumbers=comids, rawdir=committeefolder, 
 																		attemptRetry=F, 
 																		moveErrantScrapes=T)
-		cat("Loaded scrape data for",nrow(rawScrapeDat),"committees.\n")
-		sendCommitteesToDb( comtab=rawScrapeDat, dbname=dbname, comTabName=comTabName )
+		cat("\nLoaded scrape data for",nrow(rawScrapeDat),"committees.\n")
+		sendCommitteesToDb( comtab=rawScrapeDat, dbname=dbname, rawScrapeComTabName=comTabName )
 		updateWorkingCommitteesTableWithScraped(dbname=dbname)
 	}else{
 		if(!file.exists(committeefolder)) dir.create(committeefolder)
 		message("No scraped committee files found in folder\n'",committeefolder,"'")
+		message("Current working directory:", getwd())
 	}
 	cat("\n..\n")
 }
@@ -172,6 +173,7 @@ rmWhiteSpace<-function(strin){
 
 tabulateRecs<-function(lout){
 	
+	if( !length(lout) ) return(NULL)
 	ukeys = c()
 	
 	for(i in names(lout)){
@@ -292,7 +294,7 @@ fillMissingWorkingCommitteesTableWithScraped<-function(dbname){
 }
 
 
-rawScrapeToTable<-function(committeeNumbers, rawdir="", attemptRetry=T, moveErrantScrapes=T){
+rawScrapeToTable<-function(committeeNumbers, rawdir="", attemptRetry=T, moveErrantScrapes=F){
 
 	lout = list()
 	notDownloaded = c()
@@ -311,6 +313,8 @@ rawScrapeToTable<-function(committeeNumbers, rawdir="", attemptRetry=T, moveErra
 				if( grepl(pattern="error", x=class(recvec)) ){
 					logError(err=recvec, additionalData=paste("committee download file:",comfile) )
 					cat("Error in conversion of record to JSON, see",ERRORLOGFILENAME,"..")
+				}else if(is.null(recvec)){
+					notDownloaded = c(notDownloaded, cn)
 				}else{
 					lout[[as.character(cn)]] = recvec
 				}
@@ -318,9 +322,10 @@ rawScrapeToTable<-function(committeeNumbers, rawdir="", attemptRetry=T, moveErra
 		}else{
 			notDownloaded = c(notDownloaded, cn)
 			message("..comm id not found by rawScrapeToTable() function!!:",cn,"..\n")
-			warning("..comm id not found by rawScrapeToTable() function!!:",cn,"..\n")
+			# 			warning("..comm id not found by rawScrapeToTable() function!!:",cn,"..\n")
 		}
 	}
+	
 	notDownloaded = unique(notDownloaded)
 	rectab = tabulateRecs(lout=lout)
 	
@@ -330,11 +335,18 @@ rawScrapeToTable<-function(committeeNumbers, rawdir="", attemptRetry=T, moveErra
 				"\nTrying again..\n")
 		scrapeTheseCommittees(committeeNumbers=notDownloaded, commfold="raw_committee_data", forceRedownload=TRUE)
 		logWarnings(warnings())
-		rectab2 = rawScrapeToTable(committeeNumbers=notDownloaded, rawdir="raw_committee_data", attemptRetry=F, moveErrantScrapes=F)
-		rectab = rbind.fill.matrix(rectab, rectab2)
+		rectab2 = rawScrapeToTable(committeeNumbers=notDownloaded, rawdir="raw_committee_data", attemptRetry=F, moveErrantScrapes=T)
+		if(is.null(rectab)){
+			rectab = rectab2
+		}else if(is.null(rectab2)){
+			rectab = rectab
+		}else{
+			rectab = rbind.fill.matrix(rectab, rectab2)
+		}
+		
 	}
 	
-	if(moveErrantScrapes) moveErrantScrapesFun(rectab=rectab, rawdir=rawdir)
+	if( length(notDownloaded) & moveErrantScrapes ) moveErrantScrapesFun(comIDs=notDownloaded, rawdir=rawdir)
 	
 	rectab = unique(rectab)
 	
@@ -342,7 +354,22 @@ rawScrapeToTable<-function(committeeNumbers, rawdir="", attemptRetry=T, moveErra
 	
 }
 
-moveErrantScrapesFun<-function(rectab, rawdir){
+moveErrantScrapesFun<-function(comIDs, rawdir){ #note: rectab cannot just be records from current scrape.. it must be reflect all records from all scrapes
+
+	cat("Attempting to move errant scrape files for these committees:\n", comIDs, "\n")
+	if( length(comIDs) ){
+		toMove = comIDs[ file.exists(paste0(rawdir, "/", comIDs, ".txt")) ] #find all the files that actually exists. 
+		if( length(toMove) ){
+			cat("\nThese corresponding files will be moved to the failedScrapes folder:\n")
+			print(paste0(rawdir,"/",toMove,".txt"))
+			dir.create(paste0(rawdir,"/failedScrapes/"), showWarnings=FALSE)
+			for(fi in toMove) file.rename(to=paste0(rawdir,"/failedScrapes/",fi,".txt"), 
+																		from=paste0(rawdir,"/",fi,".txt") )
+		}
+	}
+}
+
+moveSuccessfullScrapes<-function(rectab, rawdir){
 	cat("\nDimensions of raw committee data from scrape:\n", dim(rectab), "\n")
 	#determine which of the committeeNumbers cannot be found in the
 	#rectab but can be found as dl file names
@@ -352,17 +379,17 @@ moveErrantScrapesFun<-function(rectab, rawdir){
 	comfnms = allfnms[grep(pattern=".txt$", x=allfnms)]
 	committeeNumbers = as.integer(gsub(pattern=".txt$",replacement="", x=comfnms))
 	
-	notInrectab = setdiff(committeeNumbers, as.integer(rectab[,"ID"]) )
+	inrectab = intersect(committeeNumbers, as.integer(rectab[,"ID"]) )
 	
-	if(length(notInrectab)){
-		cat("\nThe import failed for these committees:\n")
-		print(notInrectab)
-		toMove = notInrectab[file.exists(paste0(rawdir,"/" ,notInrectab, ".txt"))]
-		if(length(toMove)){
-			cat("\nThese corresponding files will be moved to the failedScrapes folder:\n")
+	if(length(inrectab)){
+		cat("\nThe import succeeded with these committees:\n")
+		print(inrectab)
+		toMove = inrectab[file.exists(paste0(rawdir,"/" ,inrectab, ".txt"))]
+		if( length(toMove) ){
+			cat("\nThese corresponding files will be moved to the successfullCommitteeScrapes folder:\n")
 			print(paste0(rawdir,"/",toMove,".txt"))
-			dir.create(paste0(rawdir,"/failedScrapes/"), showWarnings=FALSE)
-			for(fi in toMove) file.rename(to=paste0(rawdir,"/failedScrapes/",fi,".txt"), 
+			dir.create(paste0(rawdir,"/successfullCommitteeScrapes/"), showWarnings=FALSE)
+			for(fi in toMove) file.rename(to=paste0(rawdir,"/successfullCommitteeScrapes/",fi,".txt"), 
 																					 from=paste0(rawdir,"/",fi,".txt") )
 		}
 	}

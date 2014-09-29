@@ -218,9 +218,9 @@ makeNumericColumn<-function(colVals, tab){
 	uam2 = as.numeric(colVals)
 	errorIndexes = which(is.na(uam2))
 	#display error indexes
-	if(length(errorIndexes)){
+	if( length(errorIndexes) ){
 		cat(length(errorIndexes), "values could not easily be coorsed to numeric\n")
-		View(tab[errorIndexes,])	
+		if(!grepl(file.exists("~/data_infrastructre"))) View(tab[errorIndexes,])	
 	}else{
 		cat("\nColumns transformed to numeric data type..\n")
 	}
@@ -257,7 +257,8 @@ importAllXLSFiles<-function(indir="~/prog/hack_oregon/orestar/fins",
 														destDir=NULL, 
 														forceImport=F, 
 														remQuotes=F, 
-														remEscapes=T){
+														remEscapes=T, 
+														grepPattern=".xls$"){
 	
 	indir = gsub(pattern="[/]$", replacement="", x=indir)
 	
@@ -278,7 +279,7 @@ importAllXLSFiles<-function(indir="~/prog/hack_oregon/orestar/fins",
 	errorlog = c()
 	errorFileNames = c()
 	
-	files = files[grepl(pattern=".xls$", files)]
+	files = files[grepl(pattern=grepPattern, files)]
 	convertedFileNames = gsub(pattern=".xls",replacement=".txt",x=files)
 	convertedFiles = c()
 	

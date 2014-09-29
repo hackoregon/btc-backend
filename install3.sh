@@ -37,15 +37,14 @@ pwd
 sudo mkdir ~/data_infrastructure
 
 sudo cp ./hackoregon.sql.bz2 ~/data_infrastructure/hackoregon.sql.bz2
-sudo chmod 777 ./buildOutFromGitRepo.sh
-
+sudo chmod 755 ./buildoutFromGitRepo.sh
 sudo ./buildOutFromGitRepo.sh
 
-
-cd ~
-cwd=$(pwd)
-datadir="${cwd}/data_infrastructure"
-cd $datadir
+# cd ~
+# cwd=$(pwd)
+# datadir="${cwd}/data_infrastructure"
+# cd $datadir
+cd ~/data_infrastructure
 
 echo "install3.sh changed the working directory to:"
 pwd
@@ -59,11 +58,12 @@ sudo -u postgres psql hackoregon < ./trimTransactionsTable.sql
 
 sudo -u postgres createlang plpgsql
 
+# sudo -u postgres psql hackoregon < ./campaign_detail.sql #will try building this on the fly... 
 
 sudo -u postgres psql -c "alter user postgres password 'points';"
 
-sudo chmod 777 ./orestar_scrape/bulkAddTransactions.R
+sudo chmod 755 ./orestar_scrape/bulkAddTransactions.R
 sudo ./orestar_scrape/bulkAddTransactions.R ~/data_infrastructure/successfullyMerged/joinedTables.tsv skipRebuild
-sudo chmod 777 ./buildOutDBFromRawTables.sh
+sudo chmod 755 ./buildOutDBFromRawTables.sh
 sudo ./buildOutDBFromRawTables.sh
 

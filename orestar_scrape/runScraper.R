@@ -18,9 +18,24 @@ ERRORLOGFILENAME="affiliationScrapeErrorlog.txt"
 # endDate = "05/21/2014"
 # dateRangeControler(startDate="05/21/2014", endDate="07/01/2014", tableName="test_raw_transactions")
 # dateRangeControler(startDate="6/22/2014", endDate="6/30/2014")
+# dateRangeControler(startDate="1/1/2013", endDate="12/31/2013", dbname="hack_oregon") #stopped; last date range: 09-01-2013_08-25-2013
+# dateRangeControler(startDate="9/2/2013", endDate="12/31/2013", dbname="hack_oregon") #stopped at 10/2/2013
+# dateRangeControler(startDate="10/2/2013", endDate="12/31/2013", dbname="hack_oregon")
+# dateRangeControler(startDate="12/2/2013", endDate="3/14/2014", dbname="hack_oregon") #error at 1/2/2014
+# dateRangeControler(startDate="1/2/2014", endDate="3/14/2014", dbname="hack_oregon")
+# dateRangeControler(startDate="12/2/2013", endDate="12/9/2013", dbname="hack_oregon")
+# dateRangeControler(startDate="1/1/2012", endDate="6/1/2012", dbname="hack_oregon") #didn't get past 5/1/12, had issue with 05-01-2012_04-24-2012 range: 4999 records
+# dateRangeControler(startDate="4/24/2012", endDate="5/1/2012", dbname="hack_oregon") 
+# dateRangeControler(startDate="5/2/2012", endDate="6/1/2012", dbname="hack_oregon")
+# dateRangeControler(startDate="6/2/2012", endDate="7/1/2012", dbname="hack_oregon")
+# dateRangeControler(startDate="7/2/2012", endDate="8/1/2012", dbname="hack_oregon")
 # dbname = "hack_oregon"
 # tableName="raw_committee_transactions"
-dateRangeControler<-function(tranTableName="raw_committee_transactions", startDate=NULL, endDate=NULL, dbname="hackoregon", commTabName="working_committees"){
+dateRangeControler<-function(tranTableName="raw_committee_transactions", 
+														 startDate=NULL, 
+														 endDate=NULL, 
+														 dbname="hackoregon", 
+														 workingComTabName="working_committees"){
 
 	DBNAME=dbname #a check for the DBNAME artifact
 	
@@ -49,9 +64,11 @@ dateRangeControler<-function(tranTableName="raw_committee_transactions", startDa
 	for(i in 1:(length(dseq)-1) ){
 		scrapeDateRange(startDate=dseq[i], endDate=dseq[i+1], destDir=transactionsFolder)
 		scrapedTransactionsToDatabase(tsvFolder=transactionsFolder, tableName=tranTableName, dbname=dbname)
-		getMissingCommittees(transactionsTable=tranTableName, dbname=dbname, comtabName=commTabName)
 	}
 	
+	getMissingCommittees(transactionsTable=tranTableName, 
+											 dbname=dbname, 
+											 workingComTabName=workingComTabName)
 }
 
 
@@ -78,7 +95,6 @@ logWarnings<-function(wns,warningSource=""){
 	mess = paste(as.character(Sys.time())," ",warningSource,"\n",names(wns))
 	message("Warnings found in committee data import, see error log: ",ERRORLOGFILENAME)
 	print(mess)
-	warning("Warnings found in committee data import, see error log: ",ERRORLOGFILENAME)
 	write.table(file=ERRORLOGFILENAME, x=mess, 
 							append=TRUE, 
 							col.names=FALSE, 
@@ -87,35 +103,76 @@ logWarnings<-function(wns,warningSource=""){
 }
 
 # raw_committee_transactions="transactionsTable"
-# commTabName = raw_committee_transactions
-getMissingCommittees<-function(transactionsTable, commTabName, dbname, appendTo=T, rawCommitteeDataFolder = "raw_committee_data"){
+# comTabName = raw_committee_transactions
+getMissingCommittees<-function(transactionsTable, 
+															 workingComTabName, 
+															 dbname, 
+															 appendTo=T, 
+															 rawCommitteeDataFolder = "raw_committee_data", 
+															 rawScrapeComTabName = "raw_committees_scraped"){
 	# 	wdtmp = getwd()
-	
+	#find ids missing from working_committees
 	q1 = paste("select distinct filer_id from",transactionsTable,
 						 "where filer_id not in (select distinct committee_id from", 
-						 commTabName,")")
+						 workingComTabName,")")
 	dbres = dbiRead(query=q1, dbname=dbname)
-	dbres = dbres[,1,drop=TRUE]
+	if(nrow(dbres)){
+		dbres = dbres[,1,drop=TRUE]
+	}else{ dbres = c() }
+	
+	#find ids missing from raw_committees_scraped
+	q2 = paste("select distinct filer_id from",transactionsTable,
+						 "where filer_id not in (select distinct id from", 
+						 rawScrapeComTabName,")")
+	dbres2 = dbiRead(query=q2, dbname=dbname)
+	
+	if(nrow(dbres2)){
+		dbres2 = dbres2[,1,drop=TRUE]
+	}else{ dbres2 = c() }
+	
+	#find committees missing from both
+	missingCommittees = intersect(dbres, dbres2)
+	if(length(missingCommittees)){
+		scrapeTheseCommittees(committeeNumbers=missingCommittees, commfold=rawCommitteeDataFolder)
+		logWarnings(warnings())
+		rectab = rawScrapeToTable(committeeNumbers=missingCommittees, rawdir=rawCommitteeDataFolder)
+		sendCommitteesToDb( comtab=rectab, dbname=dbname, appendTo=appendTo , rawScrapeComTabName=rawScrapeComTabName)
+	}else{
+		cat("\nNo missing committees found\n")
+	}
 
-	scrapeTheseCommittees(committeeNumbers=dbres, commfold=rawCommitteeDataFolder)
-	logWarnings(warnings())
-	rectab = rawScrapeToTable(committeeNumbers=dbres, rawdir=rawCommitteeDataFolder)
-	sendCommitteesToDb( comtab=rectab, dbname=dbname, appendTo=appendTo )
 	# 	setwd(wdtmp)
 }
 
-sendCommitteesToDb<-function(comtab, dbname, comTabName="raw_committees_scraped", appendTo=T){
-	cat("\nPreping scraped committee data for entry into database.\n")
-	comtab = prepCommitteeTableData(comtab=comtab)
-	cat("\nUploading committee data from scraping to the database,",dbname,"\n")
-	uploadCommitteeDataToDatabase(comtab=comtab, comTabName=comTabName, dbname=dbname, appendTo=appendTo)
-	cat(".")
+sendCommitteesToDb<-function(comtab, dbname, rawScrapeComTabName="raw_committees_scraped", appendTo=T){
+	if( is.null(nrow(comtab)) ){
+		cat("\nNo new committee Records to send to database!\n")
+	}else{
+		cat("\nPreping scraped committee data for entry into database.\n")
+		comtab = prepCommitteeTableData(comtab=comtab)
+		cat("\nUploading committee data from scraping to the database,",dbname,"\n")
+		writeCommitteeDataToDatabase(comtab=comtab, rawScrapeComTabName=rawScrapeComTabName, dbname=dbname, appendTo=appendTo)
+		cat(".")
+	}
 }
 
-uploadCommitteeDataToDatabase<-function(comtab, comTabName, dbname, appendTo){
+writeCommitteeDataToDatabase<-function(comtab, rawScrapeComTabName, dbname, appendTo){
 	
-	dbiWrite(tabla=comtab, name=comTabName, appendToTable=appendTo, dbname=dbname)
-	
+	#check that committee data is unique
+	#check if the table exists
+	if(dbTableExists(tableName=rawScrapeComTabName, dbname=dbname)){
+		#get the current set of records
+		fromdb = dbiRead(query=paste("select * from",rawScrapeComTabName), dbname=dbname)
+		#delete any from the database that are in the current set
+		alreadyInDb = intersect(fromdb$id, comtab$id)
+		if(length(alreadyInDb)) dropRecordsFromDb(tname=rawScrapeComTabName, dbname=dbname, colname="id", ids=alreadyInDb)
+	}
+	dbiWrite(tabla=comtab, name=rawScrapeComTabName, appendToTable=appendTo, dbname=dbname)
+}
+
+dropRecordsFromDb<-function(tname, dbname, colname, ids){
+	dropq = paste("DELETE FROM", tname, "WHERE", colname, "IN", "(", paste(ids, collapse=", "), ")") 
+	dbCall(sql=dropq, dbname=dbname)
 }
 
 prepCommitteeTableData<-function(comtab){
@@ -157,13 +214,13 @@ scrapeDateRange<-function(startDate, endDate, destDir = "./transConvertedToTsv/"
 	if(!file.exists(destDir)) dir.create(path=destDir)
 	scrapeByDate(sdate=startDate, edate=endDate)
 	converted = importAllXLSFiles(remEscapes=T,
+																grepPattern="^[0-9]+(-)[0-9]+(-)[0-9]+(_)[0-9]+(-)[0-9]+(-)[0-9]+(.xls)$",
 																remQuotes=T,
 																forceImport=T,
 																indir=indir,
 																destDir=destDir)
 	checkHandleDlLimit(converted=converted)
-	#move the converted xls documents to another folder so they don't clutter.  
-	storeConvertedXLS(converted=converted)	
+	
 	
 }
 
@@ -325,15 +382,49 @@ storeConvertedXLS<-function(converted){
 
 #check each of the converted to see if they have 4999 rows
 checkHandleDlLimit<-function(converted){
+	
+	oldestRecs = c()
+	maxedFn = c()
+	
 	for(cf in converted){
 		# 	cf = converted[1]
 		tab = read.table(cf, header=T, stringsAsFactors=F)
 		print(nrow(tab))
+
 		if(nrow(tab)==4999){
 			cat("\nFound exactly 4999 records, this may indicate the record return limit was reached...")
-			getAdditionalRecords(fname=cf, tb=tab)
+			oldestRecs = c(oldestRecs, as.character(min(as.Date(x=tab$Tran.Date, format="%m/%d/%Y"))))
+			maxedFn = c(maxedFn, cf)
 		}
 	}
+	#move the converted xls documents to another folder so they don't clutter.  
+	storeConvertedXLS(converted=converted)
+	
+	if(length(maxedFn)){
+		for( mi in 1:length(maxedFn) ){
+			cfn = maxedFn[mi]
+			cold = oldestRecs[mi]
+			getAdditionalRecords(fname=cfn, oldestRec=cold)
+		}
+	}
+	
+}
+
+getAdditionalRecords<-function(fname, oldestRec){
+	
+	cat("\nAttempting to get remaining records in the date range that should be found in the file named\n",fname,"\n")
+	#get the date range that would be expected
+	drange = getStartAndEndDates(fname=fname)
+	
+	#figure out the new date range
+	sdate = drange$start
+	edate = drange$end
+	
+	#find oldest record that was retreived
+	
+	cat("\nRe-scraping to fill in date range.\nScrape limits:",as.character(sdate), as.character(oldest),"\n")
+	scrapeDateRange(startDate=sdate, endDate=as.Date(oldestRec))
+	
 }
 
 getStartAndEndDates<-function(fname){
@@ -346,35 +437,7 @@ getStartAndEndDates<-function(fname){
 
 # getAdditionalRecords(fname=fname, tb=tab)
 
-getAdditionalRecords<-function(fname, tb){
-	
-	cat("\nAttempting to get remaining records in date range from file\n",fname,"\n")
-	#get the date range that would be expected
-	drange = getStartAndEndDates(fname=fname)
-	
-	#figure out the new date range
-	sdate = drange$start
-	edate = drange$end
-	
-	#find oldest record that was retreived
-	oldest = min(as.Date(x=tb$Tran.Date, format="%m/%d/%Y"))
 
-	#if there is a gap, oldest will be newer than sdate
-	if(oldest>sdate){
-		
-		scrapeDateRange(startDate=sdate, endDate=oldest, destDir=)
-		
-	}else{
-		#it is possible there were exactly 4999 records in the originally requested date range
-		#if this was the case, warn the user it happened
-		warning("A rare case seems to have occured -- there were exactly 4999 records in one of the requested date ranges\n",
-						"(start: ",sdate, " end: ", edate,")\n",
-						"Though though it is possible for this to happen under normal circumstances, it would be",
-						"prudent to manually\ndownload transactions that date range from ORESTAR and check the number of records.")
-		
-	}
-	
-}
 
 # dates should be entered in in the format:
 # 07/01/2014 (month/day/year)

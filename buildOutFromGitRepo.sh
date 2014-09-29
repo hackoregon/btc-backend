@@ -21,18 +21,19 @@ fi
 echo "current working directory inside buildOutFromGitRepo:"
 pwd
 
-sudo chmod 777 addDirectionCodes.sh
-sudo chmod 777 buildEndpointTables.sh
-sudo chmod 777 buildOutDBFromRawTables.sh
-sudo chmod 777 buildScraper.sh
-sudo chmod 777 workingTableCreation.sh
-sudo chmod 777 makeWorkingCandidateFilings.R
-sudo chmod 777 endpoints/makeGrassState.R
-sudo chmod 777 postSchemaInstallationEndpoints.sh
-sudo chmod 777 orestar_scrape/bulkLoadScrapedCommitteeData.R
-sudo chmod 777 endpoints/candidateByState/buildCandidateByStateEndpoint.sh
-sudo chmod 777 makeCCWorkingTransactions.sh
-
+sudo chmod 755 addDirectionCodes.sh
+sudo chmod 755 buildEndpointTables.sh
+sudo chmod 755 buildOutDBFromRawTables.sh
+sudo chmod 755 buildScraper.sh
+sudo chmod 755 workingTableCreation.sh
+sudo chmod 755 makeWorkingCandidateFilings.R
+sudo chmod 755 endpoints/makeGrassState.R
+sudo chmod 755 postSchemaInstallationEndpoints.sh
+sudo chmod 755 orestar_scrape/bulkLoadScrapedCommitteeData.R
+sudo chmod 755 endpoints/candidateByState/buildCandidateByStateEndpoint.sh
+sudo chmod 755 makeCCWorkingTransactions.sh
+sudo chmod 755 ./orestar_scrape/bulkAddTransactions.R
+sudo chmod 755 ./orestar_scrape/getMostRecentTransactions.R
 #core raw database files
 sudo cp -vu ./trimTransactionsTable.sql ~/data_infrastructure/trimTransactionsTable.sql
 sudo cp -vu ./install.sql ~/data_infrastructure/install.sql
@@ -43,8 +44,8 @@ sudo cp -vu ./.Rprofile ~/.Rprofile
 
 #scraper infrastructure
 sudo cp -avru ./endpoints ~/data_infrastructure/endpoints 
-sudo cp -avru ./orestar_scrape ~/data_infrastructure/orestar_scrape
-sudo chmod 777 orestar_scrape/bulkAddTransactions.R
+sudo cp -avru ./orestar_scrape ~/data_infrastructure/
+sudo chmod 755 orestar_scrape/bulkAddTransactions.R
 
 #working tables
 sudo cp -vu ./addDirectionCodes.sh ~/data_infrastructure/addDirectionCodes.sh
