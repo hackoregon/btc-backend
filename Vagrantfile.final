@@ -124,7 +124,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provider :virtualbox do |virtualbox|
     # allocate 1024 mb RAM
-    virtualbox.customize ["modifyvm", :id, "--memory", "2024"] 
+    virtualbox.customize ["modifyvm", :id, "--memory", "2048"] 
   end
 
 
