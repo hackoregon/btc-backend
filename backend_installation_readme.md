@@ -51,13 +51,15 @@ These files should be in the folder:
 	host machine prompt> vagrant init ubuntu14
 	host machine prompt> vagrant up
 	host machine prompt> vagrant ssh
-	guest machine prompt> sudo /vagrant/install2.sh
+	guest machine prompt> cd /vagrant
+	guest machine prompt> sudo ./install2.sh
 
-4) enter ctrl + d then run these commands:
+4) enter ctrl + d, then run these commands:
 	
 	host machine prompt> vagrant reload
 	host machine prompt> vagrant ssh
-	guest machine prompt> sudo /vagrant/install3.sh
+	guest machine prompt> cd /vagrant
+	guest machine prompt> sudo ./install3.sh
 	guest machine prompt> sudo /usr/local/openresty/nginx/sbin/nginx
 	
 5) Enter ctrl + d to exit ssh
