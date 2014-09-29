@@ -125,7 +125,7 @@ Get data for a particular candidate committee, using the candidate's committee I
 
   Usage:
     
-    http://54.213.83.132/hackoregon/http/committee_data/470/
+    http://54.213.83.132/hackoregon/http/committee_data_by_id/470/
     
   Will return this JSON, giving information for Peter Courtney:
   
