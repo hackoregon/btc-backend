@@ -1,7 +1,7 @@
 hackOregonBackEnd
 =================
 There is a bug in this current version of the backend, preventing it from correctly installing. The bug is being fixed and everything should be working soon. (Sep. 28th, 2014, 7pm)
-=================
+-----------------
 
 Scripts to build Hack Oregon's back end in a vagrant virtual machine.
 
