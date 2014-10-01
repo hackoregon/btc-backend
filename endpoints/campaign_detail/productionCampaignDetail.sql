@@ -30,7 +30,8 @@ CREATE TABLE campaign_detail AS
 		total_money as total,
 		percent_grassroots as grassroots,
 		percent_instate as instate, 
-		filer_id
+		filer_id, 
+		party_affiliation as party
 	FROM 
 		(SELECT filer_id, total_money, percent_grassroots, percent_instate
 		FROM cc_grass_roots_in_state) as sub1

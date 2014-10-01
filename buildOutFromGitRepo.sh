@@ -21,6 +21,8 @@ fi
 echo "current working directory inside buildOutFromGitRepo:"
 pwd
 
+
+sudo chmod 755 orestar_scrape/getMissingCommittees.R
 sudo chmod 755 addDirectionCodes.sh
 sudo chmod 755 buildEndpointTables.sh
 sudo chmod 755 buildOutDBFromRawTables.sh
@@ -34,18 +36,32 @@ sudo chmod 755 endpoints/candidateByState/buildCandidateByStateEndpoint.sh
 sudo chmod 755 makeCCWorkingTransactions.sh
 sudo chmod 755 ./orestar_scrape/bulkAddTransactions.R
 sudo chmod 755 ./orestar_scrape/getMostRecentTransactions.R
+
+
 #core raw database files
+sudo cp -vu ./.Rprofile ~/.Rprofile
 sudo cp -vu ./trimTransactionsTable.sql ~/data_infrastructure/trimTransactionsTable.sql
 sudo cp -vu ./install.sql ~/data_infrastructure/install.sql
-sudo cp -avru ./successfullyMerged ~/data_infrastructure/successfullyMerged
+sudo cp -avru ./successfullyMerged ~/data_infrastructure/
+
 #control script
 sudo cp -vu ./buildOutDBFromRawTables.sh ~/data_infrastructure/buildOutDBFromRawTables.sh
-sudo cp -vu ./.Rprofile ~/.Rprofile
+sudo chmod 755 getMissingCommittees.sh
+sudo cp -vu getMissingCommittees.sh ~/getMissingCommittees.sh
+sudo chmod 755 loadEndpoints.sh
+sudo cp -vu loadEndpoints.sh ~/loadEndpoints.sh
+sudo chmod 755 bulkAddTransactions.sh
+sudo cp -vu bulkAddTransactions.sh ~/bulkAddTransactions.sh
+sudo chmod 755 ./bulkLoadCommitteeData.sh
+sudo cp -vu bulkLoadCommitteeData.sh ~/bulkLoadCommitteeData.sh
+sudo chmod 755 loadCandidateFilings.sh
+sudo cp -vu loadCandidateFilings.sh ~/loadCandidateFilings.sh
 
 #scraper infrastructure
-sudo cp -avru ./endpoints ~/data_infrastructure/endpoints 
+sudo cp -avru ./endpoints ~/data_infrastructure/ 
 sudo cp -avru ./orestar_scrape ~/data_infrastructure/
 sudo chmod 755 orestar_scrape/bulkAddTransactions.R
+
 
 #working tables
 sudo cp -vu ./addDirectionCodes.sh ~/data_infrastructure/addDirectionCodes.sh
@@ -55,6 +71,7 @@ sudo cp -vu ./workingTransactionsTableCreation.sql ~/data_infrastructure/working
 sudo cp -vu ./makeWorkingCandidateFilings.R ~/data_infrastructure/makeWorkingCandidateFilings.R
 sudo cp -vu ./buildEndpointTables.sh ~/data_infrastructure/buildEndpointTables.sh
 sudo cp -vu ./makeCCWorkingTransactions.sh ~/data_infrastructure/makeCCWorkingTransactions.sh
+
 #endpoints
 sudo cp -vu ./postSchemaInstallationEndpoints.sh ~/data_infrastructure/postSchemaInstallationEndpoints.sh
 sudo cp -vu ./workingCommitteesFromInitialRaw.sql ~/data_infrastructure/workingCommitteesFromInitialRaw.sql

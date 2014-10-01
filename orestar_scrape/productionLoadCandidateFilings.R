@@ -68,7 +68,11 @@ setColumnDataTypesForCandidateFilings<-function(tab){
 	return(tab)
 }
 
-candidateFilingsExcelToDb<-function(fname=NULL, cfTableName="test_candidate_filings", returnTable=F, dbname="hackoregon"){
+candidateFilingsExcelToDb<-function(fname=NULL, 
+																		cfTableName="test_candidate_filings", 
+																		returnTable=F, 
+																		dbname="hackoregon"){
+	
 	rawTab = findLoadCandidateFilings(cfilingsfname=fname)
 	
 	cleanTab = cleanCells(rawTab=rawTab)
@@ -96,8 +100,8 @@ getMostRecent<-function(apres, dfcol="party_descr",dateCol="filed_date"){
 }
 
 
-makeWorkingCandidateFilings<-function(dbname){
-	candidateFilingsExcelToDb(cfTableName="raw_candidate_filings", 
+makeWorkingCandidateFilings<-function(dbname,fname=NULL){
+	candidateFilingsExcelToDb(cfTableName="raw_candidate_filings", fname=fname,
 														returnTable=FALSE, dbname=dbname)
 	cffdb = dbiRead(query="select * from raw_candidate_filings", dbname=dbname)
 	cat("Dimensions of retreived candidate filings:",dim(cffdb),"\n")

@@ -13,6 +13,7 @@ DBNAME="hackoregon"
 args <- commandArgs(trailingOnly=TRUE)
 fname = args[1]
 skipDbUpdate = args[2]
+if(is.null(skipDbUpdate)|is.na(skipDbUpdate)) skipDbUpdate = "don't skip update"
 cat("\nAttempting to load transactions in bulk from the file\n",fname,"\n")
 cat("\nRebuild working tables?", skipDbUpdate!="skipRebuild", "\n")
 #import to raw tables
@@ -23,7 +24,8 @@ if(skipDbUpdate!="skipRebuild"){
 	#rebuild working tables
 	
 	#make base working tables
-	setwd(".building out database to include the recently imported raw tables.")
+	cat("\nBuilding out database to include data from the the recently imported raw transaction tables.\n")
+	setwd("..")
 	system("sudo ./buildOutDBFromRawTables.sh")
 	#if this is run from the hackoregonbackend dir (from the mac), buildOutDBFromRawTables.sh will be in the parent dir.
 	#if this is run from the data_infrastructure folder, (from an ubuntu install) buildOutDBFromRawTables.sh will

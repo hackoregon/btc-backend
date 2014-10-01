@@ -6,6 +6,59 @@ CREATE FUNCTION http.get_args2(name1 text, name2 text, name3 text, name4 text, O
   'SELECT row_to_json(row(name1 , name2 ,  name3 , name4));'
 LANGUAGE SQL;
 
+CREATE FUNCTION http.get_committee_data_by_id(name1 text, name2 text, commID text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM 
+    (SELECT *
+    FROM campaign_detail
+    WHERE filer_id=commID::integer
+    ORDER BY total DESC) qres
+  INTO result;
+  
+  return result;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION IF EXISTS http.get_candidate_in_by_state_by_id(name1 text, name2 text, cid text, name4 text);
+CREATE FUNCTION http.get_candidate_in_by_state_by_id(name1 text, name2 text, cid text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM
+    (SELECT state, value
+    FROM candidate_by_state
+    where filer_id = cid::integer
+    and direction = 'in') qres
+  INTO result;
+
+  return result;
+END;
+$$ LANGUAGE plpgsql;
+
+
+DROP FUNCTION IF EXISTS http.get_candidate_out_by_state_by_id(name1 text, name2 text, cid text, name4 text);
+CREATE FUNCTION http.get_candidate_out_by_state_by_id(name1 text, name2 text, cid text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM
+    (SELECT state, value
+    FROM candidate_by_state
+    where filer_id = cid::integer
+    and direction = 'out') qres
+  INTO result;
+
+  return result;
+END;
+$$ LANGUAGE plpgsql;
 
 DROP FUNCTION IF EXISTS http.get_competitors_from_name(name1 text, name2 text, cname text, name4 text);
 CREATE FUNCTION http.get_competitors_from_name(name1 text, name2 text, cname text, name4 text) RETURNS json AS $$
@@ -134,6 +187,7 @@ BEGIN
   return result;
 END;
 $$ LANGUAGE plpgsql;
+
 
 CREATE FUNCTION http.get_current_transactions(name1 text, name2 text, candidate_id text, name4 text) RETURNS json AS $$
 DECLARE
