@@ -17,6 +17,9 @@ Back end construction and installation
 ----------------------------------------------
 To build an instance of Hack Oregon's back end on your own machine, please see https://github.com/hackoregon/backend/blob/master/backend_installation_readme.md . 
 
+Once the back end is installed, there are several helper scripts that can help you run key functionality. 
+Documentation for these scripts can be found here:
+https://github.com/hackoregon/backend/blob/master/runningTheBackend.md
 
 
 ----------------------------------------------
