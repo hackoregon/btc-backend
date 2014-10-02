@@ -29,6 +29,8 @@ ERRORLOGFILENAME="affiliationScrapeErrorlog.txt"
 # dateRangeControler(startDate="5/2/2012", endDate="6/1/2012", dbname="hack_oregon")
 # dateRangeControler(startDate="6/2/2012", endDate="7/1/2012", dbname="hack_oregon")
 # dateRangeControler(startDate="7/2/2012", endDate="8/1/2012", dbname="hack_oregon")
+# dateRangeControler(startDate="1/1/2011", endDate="12/31/2011", dbname="hackoregon") #run on hack oregon my micro #crashed cause it was out of memory.
+# dateRangeControler(startDate="12/1/2011", endDate="12/31/2011", dbname="hackoregon") #had issue/crash with additional record download.
 # dbname = "hack_oregon"
 # tableName="raw_committee_transactions"
 dateRangeControler<-function(tranTableName="raw_committee_transactions", 
@@ -65,11 +67,8 @@ dateRangeControler<-function(tranTableName="raw_committee_transactions",
 		scrapeDateRange(startDate=dseq[i], endDate=dseq[i+1], destDir=transactionsFolder)
 		scrapedTransactionsToDatabase(tsvFolder=transactionsFolder, tableName=tranTableName, dbname=dbname)
 	}
-	
-	getMissingCommittees(transactionsTable=tranTableName, 
-											 dbname=dbname, 
-											 workingComTabName=workingComTabName)
 }
+
 
 
 readme<-function(){
@@ -152,8 +151,17 @@ sendCommitteesToDb<-function(comtab, dbname, rawScrapeComTabName="raw_committees
 		comtab = prepCommitteeTableData(comtab=comtab)
 		cat("\nUploading committee data from scraping to the database,",dbname,"\n")
 		writeCommitteeDataToDatabase(comtab=comtab, rawScrapeComTabName=rawScrapeComTabName, dbname=dbname, appendTo=appendTo)
+		makeRawCommitteesUnique(dbname=dbname,rawScrapeComTabName=rawScrapeComTabName)
 		cat(".")
 	}
+}
+
+makeRawCommitteesUnique<-function(dbname, rawScrapeComTabName){
+	
+	dbr = dbiRead(query=paste('select * from',rawScrapeComTabName), dbname=dbname)
+	dbr = unique(dbr)
+	dbiWrite(tabla=dbr, name=rawScrapeComTabName, appendToTable=F, dbname=dbname)
+	
 }
 
 writeCommitteeDataToDatabase<-function(comtab, rawScrapeComTabName, dbname, appendTo){
@@ -422,7 +430,7 @@ getAdditionalRecords<-function(fname, oldestRec){
 	
 	#find oldest record that was retreived
 	
-	cat("\nRe-scraping to fill in date range.\nScrape limits:",as.character(sdate), as.character(oldest),"\n")
+	cat("\nRe-scraping to fill in date range.\nScrape limits:",as.character(sdate), as.character(oldestRec),"\n")
 	scrapeDateRange(startDate=sdate, endDate=as.Date(oldestRec))
 	
 }
