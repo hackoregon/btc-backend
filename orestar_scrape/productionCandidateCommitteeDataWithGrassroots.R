@@ -1,6 +1,44 @@
 #productionCandidateCommitteeDataWithGrassroots.R
 
-getCurrentCycleCCtrasactions<-function(minDate="2012-11-15", numCommittees=10, dbname="hackoregon"){
+getCCtrasactions<-function(tranTabName, numCommittees=10, dbname="hackoregon"){
+	q1 = paste0("select * 
+			from ",tranTabName," 
+			where filer_id in 
+				(select filer_id
+					from ",tranTabName," 
+					join working_committees
+					on filer_id = committee_id
+					and committee_type = 'CC'
+					and direction = 'in'
+					group by filer_id
+					order by sum(amount) desc
+					limit ",numCommittees,")
+			and direction ='in'")
+	
+	dbres = dbiRead(query=q1, dbname=dbname)
+	return(dbres)
+}
+
+getCurrentCycleCCtrasactions<-function(numCommittees=10, dbname="hackoregon"){
+	
+	q1 = paste0("select * 
+			from cc_working_transactions 
+			where filer_id in 
+				(select filer_id
+					from cc_working_transactions 
+					join working_committees
+					on filer_id = committee_id
+					and committee_type = 'CC'
+					and direction = 'in'
+					group by filer_id
+					order by sum(amount) desc
+					limit ",numCommittees,")
+			and direction ='in'")
+	dbres = dbiRead(query=q1, dbname=dbname)
+	return(dbres)
+}
+
+getAllCycleCCtrasactions<-function( numCommittees=10, dbname="hackoregon"){
 	
 	q1 = paste0("select * 
 			from working_transactions 
@@ -9,13 +47,11 @@ getCurrentCycleCCtrasactions<-function(minDate="2012-11-15", numCommittees=10, d
 					from working_transactions 
 					join working_committees
 					on filer_id = committee_id
-					where tran_date > '",minDate,"'::date
 					and committee_type = 'CC'
 					and direction = 'in'
 					group by filer_id
 					order by sum(amount) desc
 					limit ",numCommittees,")
-			and  tran_date > '",minDate,"'::date
 			and direction ='in'")
 	dbres = dbiRead(query=q1, dbname=dbname)
 	return(dbres)
@@ -84,18 +120,71 @@ getGrassState<-function(ctran){
 }
 
 
-exeGetCommitteeStatsIncGrass<-function(minDate="2012-11-15",numCommittees=10000, dbname="hackoregon"){
+exeGetCommitteeStatsIncGrass<-function(cycle="current",numCommittees=10000, dbname="hackoregon"){
 	
-	ctran = getCurrentCycleCCtrasactions(numCommittees=numCommittees, minDate=minDate, dbname=dbname)
+	if(cycle=="current"){
+		ttn = "cc_working_transactions"
+	}else if(cycle=="all"){
+		ttn = "working_transactions"
+	}else{
+		stop("Campaign cycle not understood (in exeGetCommitteeStatsIncGrass() function.) ")
+	}
+	
+	comms = getUniqueCommittees(tranTabName=ttn,dbname=dbname)
+	
+	ctran = getCCtrasactions(tranTabName=ttn, numCommittees=numCommittees, dbname=dbname)
 	
 	grassSum = getGrassState(ctran=ctran)
+	
+	print("colnames grassSum:")
+	print(colnames(grassSum))
+	print("colnames comms:")
+	print(colnames(comms))
+	grassSum = merge(x=comms, y=grassSum, by.x="filer_id", by.y="candidates", all.x=TRUE )
+	
+	grassSum = addTotalSpent(tin=grassSum, tranTabName=ttn, dbname)
 	
 	candIds = unique(ctran[,c("filer","filer_id")])
 	
 	candIds = candIds[!duplicated(candIds$filer_id),]
+	colnames(grassSum)[colnames(grassSum)=="filer_id"]<-"candidates"
 	
-	grassSum = merge(x=candIds, grassSum, by.x="filer_id",by.y="candidates")
+	grassSum = merge(x=candIds, y=grassSum, by.x="filer_id", by.y="candidates")
+	
+	grassSum = replaceNA(tin=grassSum, replacementValue=0)
+	
 	return(grassSum)
+	
+}
+
+replaceNA<-function(tin, replacementValue=0){
+	for(ci in 1:ncol(tin)) tin[is.na(tin[,ci]),ci] = replacementValue
+	return(tin)
+}
+
+getUniqueCommittees<-function(tranTabName,dbname){
+	
+	q1  = paste("select distinct filer_id, sub1.candidate_name
+							from ",tranTabName,"
+							join (select committee_id, candidate_name
+								from working_committees 
+								where committee_type='CC') sub1
+							on sub1.committee_id=filer_id;")
+	dbres = dbiRead(query=q1, dbname=dbname)
+	return(dbres)
+	
+}
+
+addTotalSpent<-function(tin,tranTabName,dbname){
+	
+	 q1 = paste("select filer_id, sum(amount) as total_money_out 
+	 					 from", tranTabName,
+	 					 "where filer_id in", paste("(",paste(tin$filer_id, collapse=", "), ")"), 
+	 					 "and direction='out'
+	 					 group by filer_id")
+	dbr=dbiRead(query=q1, dbname=dbname)
+	out = merge(x=tin, y=dbr, by.x="filer_id", by.y="filer_id", all.x=TRUE)
+	return(out)
 }
 
 # displayDistContAmount(ctran=ctran,fname="./distributionOfContributionAmounts.png")

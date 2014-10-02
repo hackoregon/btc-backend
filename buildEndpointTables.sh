@@ -12,7 +12,7 @@ echo "Calling sudo ./endpoints/makeGrassState.R,"
 echo "the script which orchestrates construction of"
 echo "percent grass roots and percent instate data."
 #build the endpoints table.
-sudo ./endpoints/makeGrassState.R '2010-11-11' hackoregon
+sudo ./endpoints/makeGrassState.R hackoregon
 
 echo "Running ./endpoints/campaign_detail/productionCampaignDetail.sql,"
 echo "the script that produces the working campaign detail data."

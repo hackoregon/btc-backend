@@ -28,12 +28,13 @@ CREATE TABLE campaign_detail AS
 		web_address as website,
 		phone,
 		total_money as total,
+		total_money_out as total_spent,
 		percent_grassroots as grassroots,
 		percent_instate as instate, 
 		filer_id, 
 		party_affiliation as party
 	FROM 
-		(SELECT filer_id, total_money, percent_grassroots, percent_instate
+		(SELECT filer_id, total_money, total_money_out, percent_grassroots, percent_instate
 		FROM cc_grass_roots_in_state) as sub1
 	JOIN working_candidate_committees
 	ON committee_id = sub1.filer_id);

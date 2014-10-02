@@ -8,7 +8,7 @@ echo "-Run the post schema installation endpoints found in postSchemaInstallatio
 echo "If the argument 'nt' is passed, endpoint tables will not be rebuilt"
 cd ~/data_infrastructure/
 
-if [ $1 == "nt" ]
+if [ "${1}" == "nt" ]
 then
 	echo "Skipping table rebuild.."
 else

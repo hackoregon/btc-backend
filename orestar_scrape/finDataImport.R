@@ -282,7 +282,7 @@ importAllXLSFiles<-function(indir="~/prog/hack_oregon/orestar/fins",
 	files = files[grepl(pattern=grepPattern, files)]
 	convertedFileNames = gsub(pattern=".xls",replacement=".txt",x=files)
 	convertedFiles = c()
-	
+	if(!length(files)) return(convertedFiles)
 	for(i in 1:length(files)){	
 		
 		srce = paste(indir, files[i], sep="/") 
@@ -292,7 +292,7 @@ importAllXLSFiles<-function(indir="~/prog/hack_oregon/orestar/fins",
 			curtab = try(expr=special.read.xls(xlsName=srce), silent=TRUE)
 			
 			if( is.null(nrow(curtab)) ){
-				cat("..error while reading file\n")
+				cat("\nerror while reading file\n")
 				addToErrorLog(errorLogFname=paste0(errorDir,"/","errorLog.txt"),
 											vals=c(paste("read.xls error:", curtab), 
 														 files[i]))
@@ -315,7 +315,7 @@ importAllXLSFiles<-function(indir="~/prog/hack_oregon/orestar/fins",
 					file.rename(from=srce, to=paste(errorDir, basename(path=srce), sep="/"))
 				}else{
 					convertedFiles = c(convertedFiles, dest)
-					cat("successfull read..\n")
+					cat("successfully read..\n")
 				}
 			}
 		}else{
@@ -330,6 +330,7 @@ scrubEscapes<-function(tab){
 	for(cr in 1:nrow(tab)){
 		tab[cr,]  = gsub(pattern="\n", replacement=" | ", x=tab[cr,])
 		tab[cr,] = gsub(pattern="\t", replacement=" ", x=tab[cr,])
+		tab[cr,] = gsub(pattern="^[\\]{1}$", replacement="", x=tab[cr,])
 	}	
 	return(tab)
 }

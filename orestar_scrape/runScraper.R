@@ -31,6 +31,9 @@ ERRORLOGFILENAME="affiliationScrapeErrorlog.txt"
 # dateRangeControler(startDate="7/2/2012", endDate="8/1/2012", dbname="hack_oregon")
 # dateRangeControler(startDate="1/1/2011", endDate="12/31/2011", dbname="hackoregon") #run on hack oregon my micro #crashed cause it was out of memory.
 # dateRangeControler(startDate="12/1/2011", endDate="12/31/2011", dbname="hackoregon") #had issue/crash with additional record download.
+# dateRangeControler(startDate="8/1/2012", endDate="1/3/2013", dbname="hackoregon") #run inside of local vagrant instance
+# dateRangeControler(startDate="1/1/2010", endDate="1/1/2011", dbname="hackoregon") #run inside of local vagrant instance; stopped at 2010/09/20 2010/09/16 because of cell containing "\"
+# dateRangeControler(startDate="9/16/2010", endDate="1/1/2011", dbname="hackoregon") #run inside of local vagrant instance
 # dbname = "hack_oregon"
 # tableName="raw_committee_transactions"
 dateRangeControler<-function(tranTableName="raw_committee_transactions", 
@@ -229,7 +232,6 @@ scrapeDateRange<-function(startDate, endDate, destDir = "./transConvertedToTsv/"
 																destDir=destDir)
 	checkHandleDlLimit(converted=converted)
 	
-	
 }
 
 reImportXLS<-function(tableName, dbname, destDir="./transConvertedToTsv/", indir="./"){
@@ -283,6 +285,8 @@ checkAmmendedTransactions<-function(tableName, dbname){
 	tids = getAmmendedTransactionIds(tableName=tableName, dbname=dbname)
 	if(!length(tids)) return()
 	message("Ammended transaction issue found!")
+	cat("\nAmmended transaction IDs:\n")
+	print(tids)
 	#copy the originals to the ammended to the ammended_transactions table
 	amendedTableName = paste0(tableName,"_ammended_transactions")
 	if( !dbTableExists( tableName=amendedTableName, dbname=dbname ) ){
@@ -291,13 +295,14 @@ checkAmmendedTransactions<-function(tableName, dbname){
 																							 select * from ",tableName,"
 																							 where filer='abraham USA lincoln';") )
 	}
-	cat(" . ")
+	cat(" . adding original trasactions to table '", amendedTableName, "'.\n")
 	q2 = paste("insert into", amendedTableName,
 							"select * from ",tableName,
 						 "where tran_id in (",paste(tids,collapse=", "), ")")
 	dbCall(sql=q2, dbname=dbname)
 	#remove the originals from the tableName table
-	cat(" . ")
+
+	cat(" . deleting original transactions from main transactions table, '",tableName,"'\n")
 	q2 = paste("delete from",tableName,
 						 "where tran_id in (",paste(tids,collapse=", "), ")")
 	dbCall(sql=q2, dbname=dbname)
@@ -390,7 +395,7 @@ storeConvertedXLS<-function(converted){
 
 #check each of the converted to see if they have 4999 rows
 checkHandleDlLimit<-function(converted){
-	
+	if(!length(converted)) return()
 	oldestRecs = c()
 	maxedFn = c()
 	
