@@ -1,5 +1,5 @@
 #!/usr/bin/Rscript
-# getMostRecentMissingTransactions.R
+# getMostRecentTransactions.R
 #assure the correct working directory is used.
 if( !grepl( pattern="orestar_scrape", x=getwd() ) ){
 	if( file.exists( "~/data_infrastructure/orestar_scrape/" ) ){ setwd("~/data_infrastructure/orestar_scrape/") 

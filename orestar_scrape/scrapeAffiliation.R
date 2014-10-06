@@ -395,18 +395,6 @@ moveSuccessfullScrapes<-function(rectab, rawdir){
 	}
 }
 
-logError<-function(err,additionalData=""){
-	mess = paste(as.character(Sys.time())," ",additionalData,"\n",as.character(err))
-	message("Errors found in committee data import, see error log: ",ERRORLOGFILENAME)
-	print(mess)
-	warning("Errors found in committee data import, see error log: ",ERRORLOGFILENAME)
-	write.table(file=ERRORLOGFILENAME, x=mess, 
-							append=TRUE, 
-							col.names=FALSE, 
-							row.names=FALSE, 
-							quote=FALSE)
-	cat("\nError log written to file '",ERRORLOGFILENAME,"'\n")
-}
 
 # 
 # #the first block

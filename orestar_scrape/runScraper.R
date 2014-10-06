@@ -34,6 +34,7 @@ ERRORLOGFILENAME="affiliationScrapeErrorlog.txt"
 # dateRangeControler(startDate="8/1/2012", endDate="1/3/2013", dbname="hackoregon") #run inside of local vagrant instance
 # dateRangeControler(startDate="1/1/2010", endDate="1/1/2011", dbname="hackoregon") #run inside of local vagrant instance; stopped at 2010/09/20 2010/09/16 because of cell containing "\"
 # dateRangeControler(startDate="9/16/2010", endDate="1/1/2011", dbname="hackoregon") #run inside of local vagrant instance
+# dateRangeControler(startDate="3/1/2014", endDate="10/1/2014", dbname="hackoregon")
 # dbname = "hack_oregon"
 # tableName="raw_committee_transactions"
 dateRangeControler<-function(tranTableName="raw_committee_transactions", 
@@ -264,6 +265,7 @@ scrapedTransactionsToDatabase<-function(tableName, dbname, tsvFolder="./transCon
 importTransactionsTableToDb<-function(tab, tableName, dbname){
 	
 	tab = setColumnDataTypesForDB(tab=tab)
+	# 	tabtmp  = tab
 	badRows = safeWrite(tab=tab, tableName=tableName, dbname=dbname, append=T)
 	if( !is.null(badRows) ){
 		badRowFile = "./orestar_scrape/problemSpreadsheets/notPutIntoDb.txt"
@@ -339,7 +341,7 @@ removeDuplicateRecords<-function(tableName, dbname, keycol="tran_id"){
 		cat(".")
 		dbCall(sql=queryString1, dbname=dbname)
 	}
-	cat("\n")
+	cat("duplicates checked\n")
 }
 
 #run this function if there are errors that you corrected
@@ -526,7 +528,7 @@ logProblemDuplicates<-function(pd){
 }
 
 filterDupTransFromDB<-function(tableName, dbname){
-	
+	cat("\nDouble checking for duplicate transactions..\n")
 	#get the duplicated records
 	q1 = paste0("select * 
 								from ",tableName,"
@@ -538,7 +540,7 @@ filterDupTransFromDB<-function(tableName, dbname){
 	dbires = dbiRead(query=q1,dbname=dbname)
 	if( !nrow(dbires) )	 return(FALSE)
 	write.finance.txt(dat=dbires, fname="./duplicatedTransactionRecordsFound.txt")
-	cat(nrow(dbires), "unique transaction ids were found multiple times in the database.\nAttempting to repair..\n")
+	cat(nrow(dbires), "Some transaction ids were found multiple times in the database.\nAttempting to repair..\n")
 	#figure out the correct set
 	udbires = unique(dbires)
 	eluent = filterDuplicates(dr=dbires)

@@ -203,9 +203,69 @@ safeWrite<-function(tab, tableName, dbname, port=5432, append=F){
 }
 
 
+#safeWrite will write a table to a postgres database, while attempting to fix non-standard/latin characters.
+safeWrite2<-function(tab, tableName, dbname, port=5432, append=F){
+	cat("\nWriting table",tableName,"to database",dbname,"...")
+	exRows = c()
+	goodRows = 1:nrow(tab)
+	badRows = NULL
+	res = try(expr=dbiWrite(tabla=tab, name=tableName, dbname=dbname, port=port, appendToTable=append), silent=T)
+	if( !length(grep(pattern="error", x=class(res))) ) return(NULL)
+	
+	badline=-1
+	if(class(res)=="try-error"){
+		while(T){
+			cat("error:\n")
+			cat(res)
+			#handle error: try to extract the line and skip it
+			res = as.character(res)
+			if(grepl(pattern="line [0-9]+", x=res)){ #if a bad line is found, remove and try again
+				
+				badlineTmp = findBadLineFromError(errmess=res) #pull out the bad line number
+				cat("Pulling out bad line:",
+						tab[badline,],"\n")
+				exRows=c(exRows, badline) #then add the bad line number to exRows
+				goodRows = setdiff(goodRows, exRows) #remove all of exRows from goodRows
+				#try the write again
+				
+			}else if(grepl(pattern="TRUE", as.character(res))){ #got it
+				cat("\nSuccess!!\n")
+				break
+			}else{ #couldn't fix it
+				print("Bad rows found:")
+				print(badRows)
+				stop(paste("Could not find line number in error:\n", 
+						res,"\n"))
+			}
+			res = try(expr=dbiWrite(tabla=tab[goodRows,,drop=FALSE], name=tableName, dbname=dbname, port=port, appendToTable=append), silent=T)
+			
+		}
+		}else{
+		cat("\nSuccess!!\n")
+	}
+	if(length(badRows)){
+		badBlock=tab[badRows,,drop=FALSE]
+		attemptToFixBadLines(badlines=badBlock, dbname=dbname, tableName=tableName)
+	}
+
+	return(badRows)
+	
+}
+
+
+attemptToFixBadLines<-function(badlines,dbname,tableName){
+	
+	badline=badlineTmp
+	cat("attempting to remove latin characters...")
+	badlines = removeLatin(bad=badlines)
+	res = try(expr=dbiWrite(tabla=tab[goodRows,], name=tableName, dbname=dbname, port=port, appendToTable=append), silent=T)
+	
+}
+
+
 findBadLineFromError<-function(errmess){
 	errmess = as.character(errmess)
-	sError = strsplit(x=errmess, split="\n")[[1]]
+	sError = strsplit(x=errmess, split="\n|,")[[1]]
 	index = grep(pattern="line", x=sError)
 	pl1 = strsplit(x=sError[index], split="line ")[[1]][2]
 	pl2 = as.numeric(gsub(pattern="[a-zA-Z(){}\n]",replacement="",x=pl1))
@@ -213,7 +273,12 @@ findBadLineFromError<-function(errmess){
 }
 
 removeLatin<-function(bad){
-	iconv(x=bad, from="latin1", to="UTF-8")
+	
+	tabClasses = sapply(bad, class)
+	charcols = tabClasses=="character"
+	
+	for(i in 1:nrow(bad)) iconv(x=bad[i,charcols], from="latin1", to="UTF-8")
+	
 }
 
 makeStacked<-function(dfin){

@@ -26,29 +26,83 @@ if(basename(getwd())=="orestar_scrape"){
 	source("./orestar_scrape/dbi.R")
 }
 
+logError<-function(err,additionalData="",errorLogFname=NULL){
+	if(!is.null(errorLogFname)) ERRORLOGFILENAME = errorLogFname
+	mess = paste(as.character(Sys.time())," ",additionalData,"\n",as.character(err))
+	message("Errors found in committee data import, see error log: ",ERRORLOGFILENAME)
+	print(mess)
+	warning("Errors found in committee data import, see error log: ",ERRORLOGFILENAME)
+	write.table(file=ERRORLOGFILENAME, x=mess, 
+							append=TRUE, 
+							col.names=FALSE, 
+							row.names=FALSE, 
+							quote=FALSE)
+	cat("\nError log written to file '",ERRORLOGFILENAME,"'\n")
+}
+
+
+test.bulkImportTransactions<-function(){
+	fname="./transaction_sets/"
+	bulkImportTransactions(fname=fname, dbname="hack_oregon", tablename="raw_committee_transactions")
+}
 
 bulkImportTransactions<-function(fname, dbname="hackoregon", tablename="raw_committee_transactions"){
+	if( file.info(fname)[1,"isdir"] ){
+		bulkImportFolder(fname=fname, dbname=dbname, tablename=tablename)
+	}else{
+		bulkImportSingleFile(fname=fname, dbname=dbname, tablename=tablename)
+	}
+}
+
+bulkImportFolder<-function(fname, dbname, tablename){
+	errorLogFname = paste0(fname,"/importErrors.txt")
+	errorLogFname = gsub(pattern="//",replacement="/", x=errorLogFname)
+	failedImports=c()
+	cat("\nImporting .tsv and .csv files in folder : \n",fname,"\n")
+	setwd(fname)
+	allFiles = dir()
+	allFiles = allFiles[grepl(pattern="[.]tsv$|[.]csv$", x=allFiles, ignore.case=T)]
+	if(!length(allFiles)) stop("Could not find any .tsv or .csv files in the directory: ",fname)
+	for(fn in allFiles){
+		cat("\nCurrent file:",fn,"\n")
+		tres = try(expr={
+							bulkImportSingleFile(fname=fn, dbname=dbname, tablename=tablename)
+						}, silent=TRUE )
+		if(grepl(pattern="error", x=class(tres), ignore.case=T)){
+			failedImports = c(failedImports, fn)
+			logError(err=tres, additionalData=fn, errorLogFname=errorLogFname)
+		}
+	}
+	if(length(failedImports)){
+		cat("\n----------------------------------------------------------------------\n")
+		cat("\nThere were errors while attempting to import records from these files:\n")
+		print(failedImports)
+		cat("\nSee file\n",errorLogFname,"\nfor details on import errors\n")
+	}
+}
+
+bulkImportSingleFile<-function(fname, dbname, tablename){
 	#open the table
-	fintab = read.finance.txt(fname=fname)
+	tab = read.finance.txt(fname=fname)
+	cat("\nOpened transactions table with",nrow(tab),"rows of transactions\n(ncol=",ncol(tab),")\n")
 	#adjust column data types
 	#add to database
 	#check duplicates
-	importTransactionsTableToDb(tab=fintab, tableName=tablename, dbname=dbname)
-	cat("\nChecking if the import was successfull..\n")
+	importTransactionsTableToDb(tab=tab, tableName=tablename, dbname=dbname)
+	cat("\nImport successfull?\n")
 	#test read
-	dbTableExists(tableName=tablename, dbname=dbname)
+	print(dbTableExists(tableName=tablename, dbname=dbname))
 	#move the input file to the /loadedTransactions folder?
-	
 }
 
 exportTransactionsTable<-function(dbname, destFileName=NULL){
-	if(is.null(dbname)) dbname = dbname
+
 	if(is.null(destFileName)) destFileName = paste0("rawtransactionsdump",gsub(pattern=":|-|[ ]", replacement="_", x=Sys.time()),".txt")
 	tab = dbiRead(query="select * from raw_committee_transactions;", dbname=dbname)
 	cat("\nTransactions table found with dimensions",dim(tab),".\n")
 	write.finance.txt(dat=tab, fname=destFileName)
+	
 }
-
 
 checkRemoveNonStandardCharacters<-function(df,encodings=c("latin1","latin2")){
 	
@@ -64,25 +118,44 @@ checkRemoveNonStandardCharacters<-function(df,encodings=c("latin1","latin2")){
 
 
 read.finance.txt<-function(fname){
-	return(read.table(file=fname,
-										allowEscapes=T,
-										strip.white=T,
-										comment.char="",
-										check.names=F,
-										header=T, 
-										sep="\t", 
-										stringsAsFactors=F))
+	
+	if(grepl(pattern=".csv$", x=fname)){
+		return(read.csv(file=fname, 
+										stringsAsFactors=F, 
+										strip.white=T))
+	}else{
+		
+		return(read.table(file=fname,
+											allowEscapes=T,
+											strip.white=T,
+											comment.char="",
+											check.names=F,
+											header=T, 
+											sep="\t", 
+											stringsAsFactors=F))
+		
+	}
+	
 }
 
 write.finance.txt<-function(dat,fname){
-	write.table(x=dat,
+
+	if(grepl(pattern=".csv$", x=fname)){
+		write.csv(x=dat, 
 							file=fname, 
-							append=F, 
-							quote=T, 
-							sep="\t", 
-							row.names=F, 
-							col.names=T, 
-							qmethod="escape")
+							row.names=F)
+	}else{
+	
+		write.table(x=dat,
+								file=fname, 
+								append=F, 
+								quote=T, 
+								sep="\t", 
+								row.names=F, 
+								col.names=T, 
+								qmethod="escape")
+	}
+	
 }
 
 debug.importAllXLSFiles<-function(){
@@ -151,9 +224,9 @@ setColumnDataTypesForCommittees<-function(tab){
 setColumnDataTypesForDB<-function(tab){
 	#fix amount column
 	cat("Converting 'amount' column to numeric...\n")
-	tab$amount = makeNumericColumn(colVals=tab$amount, tab=tab)
+	tab$amount = makeNumericColumn(colVals=tab$amount)
 	cat("Converting 'aggregate_amount' column to numeric..\n")
-	tab$aggregate_amount = makeNumericColumn(colVals=tab$aggregate_amount, tab=tab)
+	tab$aggregate_amount = makeNumericColumn(colVals=tab$aggregate_amount)
 	tab = makeDateColumns(tab=tab)
 	tab = makeBoolcolumns(tab=tab, boolcols=c("employ_ind","tran_stsfd_ind","self_employ_ind"))
 	return(tab)
@@ -213,18 +286,20 @@ makeIntegerColumn<-function(colVals, tab, printErrors=T, printErrorValues=F){
 	return(uam2)
 }
 
-makeNumericColumn<-function(colVals, tab){
+makeNumericColumn<-function(colVals){
 	
 	uam2 = as.numeric(colVals)
 	errorIndexes = which(is.na(uam2))
 	#display error indexes
 	if( length(errorIndexes) ){
 		cat(length(errorIndexes), "values could not easily be coorsed to numeric\n")
-		if(!grepl(file.exists("~/data_infrastructre"))) View(tab[errorIndexes,])	
+		if(!grepl(file.exists("~/data_infrastructre"))) View(colVals[errorIndexes,])
+		cat("These are the indexes:\n")
+		print(errorIndexes)
 	}else{
 		cat("\nColumns transformed to numeric data type..\n")
 	}
-
+	cat("Returning converted column values...\n")
 	return(uam2)
 }
 

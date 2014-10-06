@@ -21,7 +21,7 @@ fi
 echo "current working directory inside buildOutFromGitRepo:"
 pwd
 
-
+sudo chmod 755 exportTableToTsv.R
 sudo chmod 755 orestar_scrape/getMissingCommittees.R
 sudo chmod 755 addDirectionCodes.sh
 sudo chmod 755 buildEndpointTables.sh
@@ -56,6 +56,7 @@ sudo chmod 755 ./bulkLoadCommitteeData.sh
 sudo cp -vu bulkLoadCommitteeData.sh ~/bulkLoadCommitteeData.sh
 sudo chmod 755 loadCandidateFilings.sh
 sudo cp -vu loadCandidateFilings.sh ~/loadCandidateFilings.sh
+sudo cp -vu exportTableToTsv.R ~/exportTableToTsv.R
 
 #scraper infrastructure
 sudo cp -avru ./endpoints ~/data_infrastructure/ 
