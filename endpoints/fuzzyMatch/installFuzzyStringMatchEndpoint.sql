@@ -9,7 +9,8 @@ BEGIN
     (
 		select *
 		from campaign_detail
-		order by levenshtein(searchString, candidate_name, 1, 9, 4) 
+    where levenshtein(lower(searchString), lower(candidate_name), 1, 30, 20) < 26
+		order by levenshtein(lower(searchString), lower(candidate_name), 1, 30, 20) 
 		limit 20
     ) qres
   INTO result;
