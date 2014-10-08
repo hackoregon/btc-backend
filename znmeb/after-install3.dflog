@@ -1,0 +1,10 @@
+Filesystem     Type      Size  Used Avail Use% Mounted on
+/dev/sda1      ext4       40G  2.5G   36G   7% /
+none           tmpfs     4.0K     0  4.0K   0% /sys/fs/cgroup
+udev           devtmpfs 1005M   12K 1005M   1% /dev
+tmpfs          tmpfs     202M  336K  202M   1% /run
+none           tmpfs     5.0M     0  5.0M   0% /run/lock
+none           tmpfs    1008M     0 1008M   0% /run/shm
+none           tmpfs     100M     0  100M   0% /run/user
+vagrant        vboxsf    110G   48G   63G  43% /vagrant
+441M	/var/lib/postgresql/9.3/main
