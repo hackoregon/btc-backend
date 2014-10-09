@@ -23,3 +23,5 @@ setwd("..")
 cat("Running buildOutDBFromRawTables.sh\n")
 system(command="sudo ./buildOutDBFromRawTables.sh")
 cat("\ngetMostRecentTransactions.R complete")
+
+system(command="sudo ~/hackOregonDbStatusLogger.R getMostRecentTransactions.R")

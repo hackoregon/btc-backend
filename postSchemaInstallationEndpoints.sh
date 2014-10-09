@@ -2,3 +2,9 @@
 echo "running postSchemaInstallationEndpoints.sh"
 
 sudo -u postgres psql hackoregon < ~/data_infrastructure/endpoints/fuzzyMatch/installFuzzyStringMatchEndpoint.sql
+
+#time slider endpoints
+echo "Running ./endpoints/sliderEndPoint/sliderEndPointTableCreation.sql"
+echo "The script that produces data for the time slider"
+sudo -u postgres psql hackoregon < ./endpoints/sliderEndPoint/sliderEndPointTableCreation.sql
+

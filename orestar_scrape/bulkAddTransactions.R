@@ -39,3 +39,5 @@ if(skipDbUpdate!="skipRebuild"){
 	
 }
 
+system(command="sudo ~/hackOregonDbStatusLogger.R bulkLoadScrapedCommitteeData.R")
+

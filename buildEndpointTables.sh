@@ -22,3 +22,4 @@ sudo -u postgres psql hackoregon < ./endpoints/campaign_detail/productionCampaig
 echo "Running ./endpoints/candidateByState/buildCandidateByStateEndpoint.sh,"
 echo "the script that produces data for candidates by state."
 sudo ./endpoints/candidateByState/buildCandidateByStateEndpoint.sh
+

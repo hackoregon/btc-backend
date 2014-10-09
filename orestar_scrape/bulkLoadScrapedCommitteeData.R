@@ -12,3 +12,6 @@ bulkLoadScrapedCommitteeData(committeefolder="raw_committee_data",
 														 dbname=dbname, 
 														 comTabName="raw_committees_scraped")
 cat("\n..\n")
+
+cat("\nLogging db status\n")
+system(command="sudo ~/hackOregonDbStatusLogger.R bulkLoadScrapedCommitteeData.R")
