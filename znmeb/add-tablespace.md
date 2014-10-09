@@ -13,4 +13,4 @@ cd /vagrant/znmeb
 ./guest-add-tablespace.bash 2>&1 | tee tablespace.log
 ```
 
-If all goes well you'll have a 100 GB 'spatial' tablespace for PostgreSQL!
+If all goes well you'll have a 100 GB 'spatial' tablespace for PostgreSQL! You should probably CTL-d out of the guest now, do `vagrant halt`, go back to the VirtualBox GUI and take another snapshot.
