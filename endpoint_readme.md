@@ -1,6 +1,33 @@
 Endpoints available:
+=================================
 
+Get candidate/committee total in and total out by day
 ---------------------------------
+Retreives total money in and total money out for every day of the current election cycle for a particular candiate. This is primarily for the time slider. 
+
+The endpoint can be accessed using this URL pattern (in this example, we get data for Peter Courtney, who's committee id is 470):
+
+    http://54.213.83.132/hackoregon/http/candidate_sum_by_date/470/
+    
+example output:
+
+    [{"filer_id":470,
+     "tran_date":"2010-11-16",
+     "total_in":1000,
+     "total_out":null},
+     {"filer_id":470,
+     "tran_date":"2010-11-19",
+     "total_in":null,
+     "total_out":18.86},
+     ...
+     truncated due to large number of records
+     ...
+     {"filer_id":470,
+     "tran_date":"2014-10-03",
+     "total_in":3500,
+     "total_out":1050}]
+     
+
 get candidate money by state using committee IDs
 ---------------------------------
 Two endpoints telling how much money a candidate (1) recieved from and (2) paid to each state in the US. (note Washington DC is translated to Maryland)
