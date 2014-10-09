@@ -64,3 +64,9 @@ joinedTab2DateGraph(fileName="joinedTablesFullCamp.tsv")
 joinedTab2DateGraph(fileName="./raw_committee_transactions.csv")
 
 
+fname = "./transactionsPerDateKitzDennis.txt"
+dk = read.table(fname, header=T, sep="\t", stringsAsFactors=F)
+dk$tran_date = as.Date(dk$tran_date, format="%Y-%m-%d")
+ggplot(data=dk, aes(y=count, x=tran_date))+geom_point()+ggtitle(fname)
+
+
