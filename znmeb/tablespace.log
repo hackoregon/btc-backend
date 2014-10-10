@@ -3,7 +3,27 @@
 # create the filesystem
 sudo mkfs -t ext4 -L tablespace /dev/sdb1
 mke2fs 1.42.9 (4-Feb-2014)
-/dev/sdb1 is mounted; will not make a filesystem here!
+Filesystem label=tablespace
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+Stride=0 blocks, Stripe width=0 blocks
+6553600 inodes, 26214392 blocks
+1310719 blocks (5.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=0
+800 block groups
+32768 blocks per group, 32768 fragments per group
+8192 inodes per group
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+	4096000, 7962624, 11239424, 20480000, 23887872
+
+Allocating group tables:   0/800       done                            
+Writing inode tables:   0/800       done                            
+Creating journal (32768 blocks): done
+Writing superblocks and filesystem accounting information:   0/800       done
+
 
 # create the mount point
 sudo mkdir -p /tablespace
@@ -21,11 +41,11 @@ Filesystem     Type      Size  Used Avail Use% Mounted on
 /dev/sda1      ext4       40G  2.5G   36G   7% /
 none           tmpfs     4.0K     0  4.0K   0% /sys/fs/cgroup
 udev           devtmpfs 1005M   12K 1005M   1% /dev
-tmpfs          tmpfs     202M  348K  202M   1% /run
+tmpfs          tmpfs     202M  352K  202M   1% /run
 none           tmpfs     5.0M     0  5.0M   0% /run/lock
 none           tmpfs    1008M     0 1008M   0% /run/shm
 none           tmpfs     100M     0  100M   0% /run/user
-vagrant        vboxsf    110G   48G   63G  43% /vagrant
+vagrant        vboxsf    291G  101G  191G  35% /vagrant
 /dev/sdb1      ext4       99G   60M   94G   1% /tablespace
 
 # now do the PostgreSQL commands
@@ -44,3 +64,10 @@ CREATE TABLESPACE
  spatial    | postgres | /tablespace |                   | 
 (3 rows)
 
+
+sudo ls -altr /tablespace
+total 28
+drwx------  2 postgres postgres 16384 Oct 10 02:37 lost+found
+drwxr-xr-x 23 root     root      4096 Oct 10 02:37 ..
+drwx------  2 postgres postgres  4096 Oct 10 02:37 PG_9.3_201306121
+drwx------  4 postgres postgres  4096 Oct 10 02:37 .

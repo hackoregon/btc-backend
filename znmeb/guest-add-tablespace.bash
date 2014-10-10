@@ -23,3 +23,5 @@ for i in \
 do
   sudo su - postgres -c "psql -d postgres -c \"${i}\""
 done
+
+sudo ls -altr /tablespace
