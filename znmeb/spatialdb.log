@@ -1,0 +1,62 @@
+NOTICE:  extension "adminpack" already exists, skipping
+CREATE EXTENSION
+NOTICE:  extension "plpgsql" already exists, skipping
+CREATE EXTENSION
+NOTICE:  database "or_geocoder" does not exist, skipping
+DROP DATABASE
+CREATE DATABASE
+NOTICE:  database "us_geocoder" does not exist, skipping
+DROP DATABASE
+CREATE DATABASE
+CREATE EXTENSION
+CREATE EXTENSION
+CREATE EXTENSION
+CREATE EXTENSION
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+ALTER DEFAULT PRIVILEGES
+CREATE EXTENSION
+CREATE EXTENSION
+CREATE EXTENSION
+CREATE EXTENSION
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+ALTER DEFAULT PRIVILEGES
+NOTICE:  database "districts" does not exist, skipping
+DROP DATABASE
+CREATE DATABASE
+CREATE EXTENSION
+CREATE EXTENSION
+CREATE SCHEMA
+vacuumdb: vacuuming database "districts"
+vacuumdb: vacuuming database "hackoregon"
+vacuumdb: vacuuming database "or_geocoder"
+vacuumdb: vacuuming database "postgres"
+vacuumdb: vacuuming database "template1"
+vacuumdb: vacuuming database "us_geocoder"
+vacuumdb: vacuuming database "vagrant"
+
+real	0m20.850s
+user	0m0.032s
+sys	0m0.012s
+                                                                     List of databases
+    Name     |  Owner   | Encoding |   Collate   |    Ctype    |   Access privileges   |  Size   | Tablespace |                Description                 
+-------------+----------+----------+-------------+-------------+-----------------------+---------+------------+--------------------------------------------
+ districts   | vagrant  | UTF8     | en_US.UTF-8 | en_US.UTF-8 |                       | 11 MB   | spatial    | 
+ hackoregon  | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 |                       | 299 MB  | pg_default | 
+ or_geocoder | vagrant  | UTF8     | en_US.UTF-8 | en_US.UTF-8 |                       | 14 MB   | spatial    | 
+ postgres    | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 |                       | 6202 kB | pg_default | default administrative connection database
+ template0   | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +| 5969 kB | pg_default | unmodifiable empty database
+             |          |          |             |             | postgres=CTc/postgres |         |            | 
+ template1   | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +| 6202 kB | pg_default | default template for new databases
+             |          |          |             |             | postgres=CTc/postgres |         |            | 
+ us_geocoder | vagrant  | UTF8     | en_US.UTF-8 | en_US.UTF-8 |                       | 14 MB   | spatial    | 
+ vagrant     | vagrant  | UTF8     | en_US.UTF-8 | en_US.UTF-8 |                       | 6202 kB | pg_default | 
+(8 rows)
+
