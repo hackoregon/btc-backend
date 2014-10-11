@@ -8,3 +8,8 @@ echo "Running ./endpoints/sliderEndPoint/sliderEndPointTableCreation.sql"
 echo "The script that produces data for the time slider"
 sudo -u postgres psql hackoregon < ./endpoints/sliderEndPoint/sliderEndPointTableCreation.sql
 
+
+#get transactions endpoint
+
+echo "Adding get transactions endpoint"
+sudo -u postgres psql hackoregon < ./endpoints/getTransactions/get_current_candidate_transactions.sql
