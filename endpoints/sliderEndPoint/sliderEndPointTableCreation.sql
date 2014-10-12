@@ -38,7 +38,8 @@ BEGIN
   FROM 
     (SELECT *
     FROM candidate_sum_by_date
-    WHERE filer_id=commID::integer) qres
+    WHERE filer_id=commID::integer
+    ORDER BY tran_date ASC) qres
   INTO result;
   
   return result;
