@@ -136,6 +136,7 @@ getMissingCommittees<-function(transactionsTable,
 	#find committees missing from both
 	missingCommittees = intersect(dbres, dbres2)
 	if(length(missingCommittees)){
+		cat("\n",length(missingCommittees),"committee IDs found to be in transaction records but not in committee records...\n")
 		scrapeTheseCommittees(committeeNumbers=missingCommittees, commfold=rawCommitteeDataFolder)
 		logWarnings(warnings())
 		rectab = rawScrapeToTable(committeeNumbers=missingCommittees, rawdir=rawCommitteeDataFolder)

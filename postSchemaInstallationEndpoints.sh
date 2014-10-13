@@ -13,3 +13,7 @@ sudo -u postgres psql hackoregon < ./endpoints/sliderEndPoint/sliderEndPointTabl
 
 echo "Adding get transactions endpoint"
 sudo -u postgres psql hackoregon < ./endpoints/getTransactions/get_current_candidate_transactions.sql
+
+echo "Building all Oregon aggregate summary tables and endpoints"
+sudo -u postgres psql hackoregon < ./endpoints/all_oregon_summary/all_oregon.sql
+
