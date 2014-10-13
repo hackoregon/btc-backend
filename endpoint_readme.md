@@ -1,6 +1,60 @@
 Endpoints available:
 =================================
 
+All oregon summary
+---------------------------------
+
+Gets summary statistics for all transactions in the current campaign cycle, for all of Oregon.
+
+URL pattern: 
+
+    http://54.213.83.132/hackoregon/http/all_oregon_sum/_/
+    *note: this endpoint takes no argument, but the _ must be left in place. 
+
+Example output:
+
+    [{"in":212636760.45,
+     "out":201910584.52,
+     "from_within":56988212.71,
+     "to_within":47640180.8399999,
+     "from_outside":155648547.74,
+     "to_outside":154270403.68,
+     "total_grass_roots":10543857.78,
+     "total_from_in_state":151870563.37}]
+
+    in: money recieved by all sources
+    out: money transfered from all sources
+    from_within: money coming from entities within the political system.
+    to_within: money transfered to entities within the political system. 
+    from_outside: money coming from outside the political system. 
+    to_outside: money going to entities outside the political system. 
+    total_grass_roots: total money from grass roots donations (those less than $200)
+    total_from_in_state: total donations coming from withing Oregon.  
+
+Get transactions by day for all of Oregon
+---------------------------------
+Retreives several metrics describing transactions aggregated by day for all of Oregon. 
+Data includes one row for each day in the current campaign cycle. 
+
+URL pattern:
+
+    http://54.213.83.132/hackoregon/http/state_sum_by_date/_/
+
+Example output:
+
+    [{"tran_date":"2010-11-12",
+     "total_in":102880.69,
+     "total_out":113078.47,
+     "total_from_within":29485.08,
+     "total_to_within":2447,
+     "total_from_the_outside":73395.6099999999,
+     "total_to_the_outside":110631.47,
+     "total_grass_roots":3853.02,
+     "total_from_in_state":45544.12},
+    ...
+
+Fields are as described above in the 'All oregon summary' endpoint. 
+
 Get candidate/committee total in and total out by day
 ---------------------------------
 Retreives total money in and total money out for every day of the current election cycle for a particular candiate. This is primarily for the time slider. 
