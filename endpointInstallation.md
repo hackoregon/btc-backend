@@ -1,6 +1,6 @@
 To add an endpoint:
 
-1) Place the endpoint creation scrip in the ./endpoints/<endpoint name>/ folder in the git repo and/or in the ~/data_infrastructure/endpoints/<endpoint name>/ in the actual server.
+1) Place the endpoint creation script in the ./endpoints/<endpoint name>/ folder in the git repo and/or in the ~/data_infrastructure/endpoints/<endpoint name>/ in the actual server.
 
 	1.5) 	If the script references any supplemental files, they should be placed in the endpoints folder along with the script. 
 			The path to the endpoint's folder will be:
