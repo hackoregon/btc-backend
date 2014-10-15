@@ -1,5 +1,8 @@
-Endpoints available:
+Endpoints available
 =================================
+This page provides a list of available endpoints available from Hack Oregon. These are currently served from an AWS instance using a combination of Postgresql and OpenResty.
+
+To request additional endpoints or to report issues concerning those available please create a git hub issue here: https://github.com/hackoregon/backend/issues
 
 All oregon summary
 ---------------------------------
