@@ -157,16 +157,9 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-DROP FUNCTION IF EXISTS http.get_oregon_by_contributions(name1 text, name2 text, cname text, name4 text);
-CREATE FUNCTION http.get_oregon_by_contributions(name1 text, name2 text, cname text, name4 text) RETURNS json AS $$
-DECLARE
-  result json;
-BEGIN
-
-  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
-  FROM
-    (
-
+DROP TABLE IF EXISTS oregon_by_contributions;
+CREATE TABLE oregon_by_contributions AS
+(
 		WITH cc_working_transactions_agg AS (
 		  SELECT t.book_type, CASE
 		                        WHEN t.book_type IS NULL OR t.book_type = 'Individual' THEN
@@ -185,6 +178,19 @@ BEGIN
 		GROUP BY a.contribution_type
 		ORDER BY total
 
+);
+
+DROP FUNCTION IF EXISTS http.get_oregon_by_contributions(name1 text, name2 text, cname text, name4 text);
+CREATE FUNCTION http.get_oregon_by_contributions(name1 text, name2 text, cname text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM
+    (
+    	SELECT * 
+    	FROM oregon_by_contributions
     	) qres
   INTO result;
 
@@ -192,6 +198,38 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TABLE IF EXISTS oregon_by_purpose_codes;
+CREATE TABLE oregon_by_purpose_codes AS
+(
+	WITH trans_split_codes AS (
+	SELECT tran_id, 
+	       amount,
+	       trim(regexp_split_to_table(purpose_codes, E';')) AS purpose_code
+	FROM cc_working_transactions
+	WHERE 
+	  purpose_codes IS NOT NULL
+	  AND direction = 'out'
+	), trans_split_codes_with_counts AS (
+	  SELECT a.tran_id,
+		 a.amount,
+		 count(a.tran_id) OVER (PARTITION BY a.tran_id) as count_trans,
+		 a.purpose_code
+	  FROM trans_split_codes a
+	  
+	), trans_codes_with_sub_amounts AS (
+	  SELECT b.tran_id,
+		 b.amount,
+		 b.purpose_code,
+		 b.count_trans,
+		 b.amount / b.count_trans as sub_amount
+	  FROM trans_split_codes_with_counts b
+	)
+	SELECT c.purpose_code,
+	       SUM(c.sub_amount) as total
+	FROM trans_codes_with_sub_amounts c
+	GROUP BY c.purpose_code
+	ORDER BY c.purpose_code
+);
 
 DROP FUNCTION IF EXISTS http.get_oregon_by_purpose_codes(name1 text, name2 text, cname text, name4 text);
 CREATE FUNCTION http.get_oregon_by_purpose_codes(name1 text, name2 text, cname text, name4 text) RETURNS json AS $$
@@ -202,37 +240,8 @@ BEGIN
   SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
   FROM
     (
-
-		WITH trans_split_codes AS (
-		SELECT tran_id, 
-		       amount,
-		       trim(regexp_split_to_table(purpose_codes, E';')) AS purpose_code
-		FROM cc_working_transactions
-		WHERE 
-		  purpose_codes IS NOT NULL
-		  AND direction = 'out'
-		LIMIT 10000
-		), trans_split_codes_with_counts AS (
-		  SELECT a.tran_id,
-		         a.amount,
-		         count(a.tran_id) OVER (PARTITION BY a.tran_id) as count_trans,
-		         a.purpose_code
-		  FROM trans_split_codes a
-		  
-		), trans_codes_with_sub_amounts AS (
-		  SELECT b.tran_id,
-		         b.amount,
-		         b.purpose_code,
-		         b.count_trans,
-		         b.amount / b.count_trans as sub_amount
-		  FROM trans_split_codes_with_counts b
-		)
-		SELECT c.purpose_code,
-		       SUM(c.sub_amount) as total
-		FROM trans_codes_with_sub_amounts c
-		GROUP BY c.purpose_code
-		ORDER BY c.purpose_code
-
+    	SELECT * 
+    	FROM oregon_by_purpose_codes
    ) qres
   INTO result;
 
