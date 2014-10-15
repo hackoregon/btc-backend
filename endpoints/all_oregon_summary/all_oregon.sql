@@ -118,6 +118,45 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
+
+DROP FUNCTION IF EXISTS http.get_oregon_in_by_state(name1 text, name2 text, cname text, name4 text);
+CREATE FUNCTION http.get_oregon_in_by_state(name1 text, name2 text, cname text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM
+    (SELECT state, sum(value)
+    FROM candidate_by_state 
+    where direction = 'in'
+    group by state) qres
+  INTO result;
+
+  return result;
+END;
+$$ LANGUAGE plpgsql;
+
+
+DROP FUNCTION IF EXISTS http.get_oregon_out_by_state(name1 text, name2 text, cname text, name4 text);
+CREATE FUNCTION http.get_oregon_out_by_state(name1 text, name2 text, cname text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM
+    (SELECT state, sum(value)
+    FROM candidate_by_state 
+    WHERE direction = 'out'
+    GROUP BY state) qres
+  INTO result;
+
+  return result;
+END;
+$$ LANGUAGE plpgsql;
+
 /*select http.get_all_oregon_sum('','','','');*/
 
 /* select * from all_oregon_sum */
