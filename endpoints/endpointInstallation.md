@@ -13,7 +13,9 @@ can be accessed from the URL
 http://54.213.83.132/hackoregon/http/current_candidate_transactions/470/
 
 where 470 is the candidate's committee ID number. 
-Note that the function takes 4 parameters but only the third, candidate_id, is accessed in the acctual endpoint URL
+
+Note that the function takes 4 parameters but only the third, candidate_id, is accessed in the acctual endpoint URL. 
+Note also that every endpoint function must begin with 'http.get', but that part of the function name is omitted from the URL pattern. 
 
 For details on how Openresty is used to connect postgres functions to URL endpoints, see the nginx config file/location subsection ( https://github.com/hackoregon/backend/blob/master/nginx.conf ) and the install.sql file ( https://github.com/hackoregon/backend/blob/master/install.sql ), specifically the function http.get(aschema text, afunction text, apath text, auser text) . 
 
