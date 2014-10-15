@@ -10,6 +10,11 @@ if(!require("rjson")){
 	library("rjson")
 }
 
+if(!require("stringr")){
+	install.packages("stringr", repos="http://ftp.osuosl.org/pub/cran/")
+	library("stringr")
+}
+
 ERRORLOGFILENAME="affiliationScrapeErrorlog.txt"
 
 
@@ -26,7 +31,9 @@ bulkLoadScrapedCommitteeData<-function(committeefolder, dbname, comTabName){
 																		attemptRetry=F, 
 																		moveErrantScrapes=T)
 		cat("\nLoaded scrape data for",nrow(rawScrapeDat),"committees.\n")
-		sendCommitteesToDb( comtab=rawScrapeDat, dbname=dbname, rawScrapeComTabName=comTabName )
+		sendCommitteesToDb( comtab=rawScrapeDat, 
+												dbname=dbname, 
+												rawScrapeComTabName=comTabName )
 		updateWorkingCommitteesTableWithScraped(dbname=dbname)
 	}else{
 		if(!file.exists(committeefolder)) dir.create(committeefolder)
@@ -111,16 +118,23 @@ cleanRes2<-function(sres){
 	return(vout)
 }
 
-convertToJSON<-function(sres){
+convertFromJSON<-function(sres){
 	gsr00 = gsub(pattern="\"", replacement="", x=sres)
 	gsr0 = gsub(pattern="\\\\n|(\\s)+",replacement=" ", x=gsr00, perl=TRUE)
-	gsr1=gsub(pattern="'",replace="\"",x=gsr0)
+	gsr1=gsub(perl=TRUE, pattern="\\\\'", replace="<tmp00>", x=gsr0)
+	gsr1=gsub(perl=TRUE, pattern="'", replace="\"", x=gsr1)
+	gsr1=gsub(fixed=TRUE, pattern="<tmp00>", replace="\'", x=gsr1)
 	gsr2 = paste0(gsr1, collapse=" ")
 	gsr3 = gsub(pattern="(\\s)+", replacement=" ", x=gsr2 )
-	jsl = fromJSON(json_str=gsr3)
+	gsr4 = gsub(pattern="\\\\", replacement=" ", x=gsr3)
+	gsr5 = gsub(pattern="[", replacement=" ", x=gsr4, fixed=T)
+	gsr5 = gsub(pattern="]", replacement=" ", x=gsr5)
+	gsr6 = gsub(pattern="{ measures:", replacement="{ \"measures\":", x=gsr5, fixed=T)
+	jsl = fromJSON(json_str=gsr6)
+	# 	jsl = fromJSON(txt=gsr6, flatten=T, simplifyVector=T)
 }
 
-flattenList<-function(jsl2){
+flattenList_depricated<-function(jsl2){
 	#first see if some slot names are repeated
 	snames=c()
 	for(nm in names(jsl2)) snames = c(snames, names(jsl2[[nm]]))
@@ -138,9 +152,25 @@ flattenList<-function(jsl2){
 	return(unlist(flattened))
 }
 
+flattenList<-function(jsl2){
+
+	flattened = c()
+	#go through each list slot, adding its contents
+	for(i in 1:length(jsl2)){
+		nm = names(jsl2)[i]
+		#if the sub key is already there, append the slot name
+		tmp = jsl2[[nm]]
+		alreadyIn = names(tmp)%in%names(flattened)
+		if(i>1)	names(tmp)= paste(nm, names(tmp))
+		flattened = c(flattened, tmp)
+	}
+
+	return(unlist(flattened))
+}
+
 scrubConvertedJson<-function(jsl){
 	
-	names(jsl) <- gsub( pattern="Information$", replacement="", x=names(jsl) )
+	names(jsl) <- gsub( pattern="Information", replacement="", x=names(jsl) )
 	names(jsl) <- rmWhiteSpace(strin=names(jsl))
 	names(jsl) <- gsub(pattern=":$", replacement="", x=names(jsl))
 	jsout = list()
@@ -191,6 +221,8 @@ tabulateRecs<-function(lout){
 }
 
 scrapeTheseCommittees<-function(committeeNumbers, commfold = "raw_committee_data", forceRedownload=F){
+	cat("Attempting to obtain records for these committees:\n")
+	print(committeeNumbers)
 	
 	if( !file.exists(commfold) ) dir.create(path=commfold)
 	
@@ -240,11 +272,31 @@ makeTableFromScrape<-function(committeeNumbers, rawdir=""){
 }
 
 vectorFromRecord<-function(sres){
-	listFromJson = convertToJSON(sres=sres)
+	listFromJson = convertFromJSON(sres=sres)
 	cleanList = scrubConvertedJson(jsl=listFromJson)
 	recordVector = flattenList(jsl2=cleanList)
+	rvMeasureParsed = parseMeasureData(recvec=recordVector)
 }
 
+parseMeasureData<-function(recvec){
+	if( !length(grep(pattern="measures", x=names(recvec), fixed=T)) ) return(recvec)
+	
+	mdat = recvec[grep(pattern="measures", x=names(recvec), fixed=T)]
+	mdat = gsub(pattern="[{}]", x=mdat, replacement="")
+	mdat2 = strsplit(x=mdat, split=",(?!\\s)", perl=T)[[1]]
+	mdat3 = strsplit(split=": ", x=mdat2)
+	mvector = unlist(lapply(X=mdat3, 
+													FUN=function(x){
+														vl = x[2]
+														vl = str_trim(string=vl, side="both")
+														names(vl) = paste0("measure_", x[1])
+														return(vl)
+													}))
+
+	recvec = recvec[!grepl(pattern="measures", x=names(recvec), fixed=T)]
+	rout = c(recvec, mvector)
+	return(rout)
+}
 
 addScrapedToWorkingCommitteesTable<-function(dbname){
 	
@@ -260,39 +312,30 @@ addScrapedToWorkingCommitteesTable<-function(dbname){
 }
 
 updateWorkingCommitteesTableWithScraped<-function(dbname){
-	
-
+	#first remove all committee ids that are being added from the scrapes
 	q0 = "delete from working_committees where committee_id in 
 	(select id from raw_committees_scraped)"
 	dbCall(sql=q0, dbname=dbname)
-	
+	#second, insert the new set of committees from raw committees to working committees. 
 	q1="insert into working_committees
-	(select id as committee_id, committee_name, 
-	committee_type, pac_type as committee_subtype, 
-	party_affiliation, election_office, candidate_name, 
-	candidate_email_address, candidate_work_phone_home_phone_fax, 
-	candidate_address, treasurer_name, treasurer_work_phone_home_phone_fax, 
-	treasurer_mailing_address
+	(select id as committee_id, 
+		name as committee_name, 
+		committee_type, 
+		pac_type as committee_subtype, 
+		candidate_party_affiliation as party_affiliation, 
+		candidate_election_office as election_office, 
+		candidate_name, 
+		candidate_email_address, 
+		candidate_work_phone_home_phone_fax, 
+		candidate_candidate_address as candidate_address,  
+		treasurer_name, 
+		treasurer_work_phone_home_phone_fax, 
+		treasurer_mailing_address, 
+		NULL as web_address,
+		concat(measure_support, ' - ', measure_election) as measure
 	from raw_committees_scraped);"
 	dbCall(sql=q1, dbname=dbname)
 }
-
-fillMissingWorkingCommitteesTableWithScraped<-function(dbname){
-	
-	q1="insert into working_committees
-	(select id as committee_id, committee_name, 
-	committee_type, pac_type as committee_subtype, 
-	party_affiliation, election_office, candidate_name, 
-	candidate_email_address, candidate_work_phone_home_phone_fax, 
-	candidate_address, treasurer_name, 
-	treasurer_work_phone_home_phone_fax, 
-	treasurer_mailing_address
-	from raw_committees_scraped
-	where id not in (select distinct committee_id from working_committees);"
-	dbCall(sql=q1, dbname=dbname)
-	
-}
-
 
 rawScrapeToTable<-function(committeeNumbers, rawdir="", attemptRetry=T, moveErrantScrapes=F){
 

@@ -248,6 +248,91 @@ BEGIN
   return result;
 END;
 $$ LANGUAGE plpgsql;
+
+
+DROP FUNCTION IF EXISTS http.get_oregon_individual_contributors(name1 text, name2 text, cname text, name4 text);
+CREATE FUNCTION http.get_oregon_individual_contributors(name1 text, name2 text, cname text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM
+    (
+		SELECT contributor_payee, sum(amount) 
+		FROM cc_working_transactions
+		WHERE book_type = 'Individual'
+		AND sub_type in ('Cash Contribution','In-Kind Contribution')
+		GROUP BY contributor_payee
+		ORDER BY sum(amount) DESC
+		LIMIT 5
+   ) qres
+  INTO result;
+
+  return result;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT addDocumentation('Summary of data for all of Oregon: contributions by individuals',
+	'oregon_individual_contributors',
+	'To compute contributions from individuals, transactions for the current campaign cycle are filtered to only those with the book type, Individual, and the sub types Cash Contribution and In-Kind Contribution. Then, for each unique contributor/payee all contribution amounts are added together.');
+
+DROP FUNCTION IF EXISTS http.get_oregon_committee_contributors(name1 text, name2 text, cname text, name4 text);
+CREATE FUNCTION http.get_oregon_committee_contributors(name1 text, name2 text, cname text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM
+    (
+    	SELECT contributor_payee, sum(amount)
+		FROM cc_working_transactions
+		WHERE book_type in ('Political Committee', 'Political Party Committee')
+		AND sub_type in  ('Cash Contribution','In-Kind Contribution')
+		GROUP BY contributor_payee
+		ORDER BY sum(amount) DESC
+		limit 5
+   ) qres
+  INTO result;
+
+  return result;
+END;
+$$ LANGUAGE plpgsql;
+
+
+SELECT addDocumentation('Summary of data for all of Oregon: contributions from committees',
+	'oregon_committee_contributors',
+	'To compute contributions from committees, transactions for the current campaign cycle are filtered to only those with the book types, Political Committee and Political Party Committee, and the sub types Cash Contribution and In-Kind Contribution. Then, for each unique contributor/payee all contribution amounts are added together.');
+
+DROP FUNCTION IF EXISTS http.get_oregon_business_contributors(name1 text, name2 text, cname text, name4 text);
+CREATE FUNCTION http.get_oregon_business_contributors(name1 text, name2 text, cname text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM
+    (
+    	SELECT contributor_payee, sum(amount)
+		FROM cc_working_transactions
+		WHERE book_type = 'Business Entity'
+		AND sub_type in  ('Cash Contribution','In-Kind Contribution')
+		GROUP BY contributor_payee
+		ORDER BY sum(amount) DESC
+		LIMIT 5
+   ) qres
+  INTO result;
+
+  return result;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT addDocumentation('Summary of data for all of Oregon: contributions from businesses',
+	'oregon_business_contributors',
+	'To compute contributions from businesses, transactions for the current campaign cycle are filtered to only those with the book type Business Entity, and the sub types Cash Contribution and In-Kind Contribution. Then, for each unique contributor/payee all contribution amounts are added together.');
+
+
 /*select http.get_all_oregon_sum('','','','');*/
 
 /* select * from all_oregon_sum */

@@ -6,6 +6,22 @@ CREATE FUNCTION http.get_args2(name1 text, name2 text, name3 text, name4 text, O
   'SELECT row_to_json(row(name1 , name2 ,  name3 , name4));'
 LANGUAGE SQL;
 
+CREATE FUNCTION http.get_all_documentation(name1 text, name2 text, commID text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM 
+    (SELECT *
+    FROM documentation) qres
+  INTO result;
+  
+  return result;
+END;
+$$ LANGUAGE plpgsql;
+
+
 CREATE FUNCTION http.get_committee_data_by_id(name1 text, name2 text, commID text, name4 text) RETURNS json AS $$
 DECLARE
   result json;

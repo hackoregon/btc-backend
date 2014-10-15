@@ -155,7 +155,11 @@ sendCommitteesToDb<-function(comtab, dbname, rawScrapeComTabName="raw_committees
 		cat("\nPreping scraped committee data for entry into database.\n")
 		comtab = prepCommitteeTableData(comtab=comtab)
 		cat("\nUploading committee data from scraping to the database,",dbname,"\n")
-		writeCommitteeDataToDatabase(comtab=comtab, rawScrapeComTabName=rawScrapeComTabName, dbname=dbname, appendTo=appendTo)
+		writeCommitteeDataToDatabase(comtab=comtab, 
+																 rawScrapeComTabName=rawScrapeComTabName, 
+																 dbname=dbname, 
+																 appendTo=appendTo)
+		cat("\ncommittee data uploaded\n")
 		makeRawCommitteesUnique(dbname=dbname,rawScrapeComTabName=rawScrapeComTabName)
 		cat(".")
 	}
@@ -174,13 +178,22 @@ writeCommitteeDataToDatabase<-function(comtab, rawScrapeComTabName, dbname, appe
 	#check that committee data is unique
 	#check if the table exists
 	if(dbTableExists(tableName=rawScrapeComTabName, dbname=dbname)){
+		cat("\nTable",rawScrapeComTabName,"already exists, rebuilding.. .\n")
 		#get the current set of records
 		fromdb = dbiRead(query=paste("select * from",rawScrapeComTabName), dbname=dbname)
+		#remove records whos ids are found in the incoming raw scrapes
+		fromdb = fromdb[ !fromdb$id %in% comtab$id, ,drop=FALSE]
+		#merge, filling in columns
+		fulltab = rbind.fill(fromdb, comtab)
+		
+		# 		idc = table(fulltab$id)
+		# 		duprec = names(idc[idc==2])
 		#delete any from the database that are in the current set
-		alreadyInDb = intersect(fromdb$id, comtab$id)
-		if(length(alreadyInDb)) dropRecordsFromDb(tname=rawScrapeComTabName, dbname=dbname, colname="id", ids=alreadyInDb)
+		# 		alreadyInDb = intersect(fromdb$id, comtab$id)
+		# 		if(length(alreadyInDb)) dropRecordsFromDb(tname=rawScrapeComTabName, dbname=dbname, colname="id", ids=alreadyInDb)
+	
 	}
-	dbiWrite(tabla=comtab, name=rawScrapeComTabName, appendToTable=appendTo, dbname=dbname)
+	dbiWrite(tabla=comtab, name=rawScrapeComTabName, appendToTable=FALSE, dbname=dbname)
 }
 
 dropRecordsFromDb<-function(tname, dbname, colname, ids){
