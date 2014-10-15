@@ -128,7 +128,7 @@ BEGIN
 
   SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
   FROM
-    (SELECT state, sum(value)
+    (SELECT state, sum(value) as value
     FROM candidate_by_state 
     where direction = 'in'
     group by state) qres
@@ -147,7 +147,7 @@ BEGIN
 
   SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
   FROM
-    (SELECT state, sum(value)
+    (SELECT state, sum(value) as value
     FROM candidate_by_state 
     WHERE direction = 'out'
     GROUP BY state) qres
