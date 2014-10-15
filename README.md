@@ -4,16 +4,26 @@ What the backend does
 ----------------------------------------------
 The Hack Oregon Backend fulfills the tasks involved in 1) procuring campaign finance transaction data from the Oregon Secretary of State, 2) cleaning and reformatting this data, and 3) deliviering the data to REST endpoints as JSON objects, for use by data visualizations on the front end. 
 
-Endpoints
+1) Data procurement / scraping
 ----------------------------------------------
+For documenation of data procurement, see the scraper's README.md here: https://github.com/hackoregon/backend/tree/master/orestar_scrape
 
-Hack Oregon serves a collection of endpoints from an AWS instance using a combination of Postgresql and OpenResty.
+2) Data processing
+----------------------------------------------
+For documentation on the data cleaning, data reformatting and database design, see the data processing readme here:
+https://github.com/hackoregon/backend/blob/master/data_processing_readme.md
 
-For documentation on each of these endpoints and their usage, please see https://github.com/hackoregon/backend/blob/master/endpoints/endpoint_use_readme.md
+3) Endpoints
+----------------------------------------------
+For documentation on endpoints usage, see the endpoint use readme here:
+https://github.com/hackoregon/backend/blob/master/endpoints/endpoint_use_readme.md
 
-To request additional endpoints, if you have access to the google docs spreadsheet, 'Hackoregon punch list to deployment', please describe the endpoint requirements there and/or send an email to Sam. If you do not yet have access to that spreadsheet, please create a git hub issue here: https://github.com/hackoregon/backend/issues
+For documentation on endpoints construction, see the endpoint construction and installation readme here:
+https://github.com/hackoregon/backend/blob/master/endpoints/endpointInstallation.md
 
-To request access to the google docs spreadsheet, please send an email to sam at hackoregon dot org  . 
+To request additional endpoints please create a git hub issue for them here: https://github.com/hackoregon/backend/issues
+
+
 
 ----------------------------------------------
 Back end construction and installation
