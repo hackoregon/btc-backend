@@ -9,7 +9,7 @@ Endpoints
 
 Hack Oregon serves a collection of endpoints from an AWS instance using a combination of Postgresql and OpenResty.
 
-For documentation on each of these endpoints and their usage, please see https://github.com/hackoregon/backend/blob/master/endpoint_readme.md
+For documentation on each of these endpoints and their usage, please see https://github.com/hackoregon/backend/blob/master/endpoints/endpoint_use_readme.md
 
 To request additional endpoints, if you have access to the google docs spreadsheet, 'Hackoregon punch list to deployment', please describe the endpoint requirements there and/or send an email to Sam. If you do not yet have access to that spreadsheet, please create a git hub issue here: https://github.com/hackoregon/backend/issues
 
