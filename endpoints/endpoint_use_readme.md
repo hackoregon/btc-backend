@@ -4,6 +4,66 @@ This page provides a list of available endpoints available from Hack Oregon. The
 
 To request additional endpoints or to report issues concerning those available please create a git hub issue here: https://github.com/hackoregon/backend/issues
 
+
+Get total contributions from top 5 contributing individuals, for all recipients, in all of Oregon:
+-------------------------------
+
+Usage:
+
+		http://54.213.83.132/hackoregon/http/oregon_individual_contributors/_/
+
+Example output:
+
+		[{"contributor_payee":"Loren Parks",
+		 "sum":874300},
+		 {"contributor_payee":"John Arnold",
+		 "sum":500000},
+		 {"contributor_payee":"Norman L Brenden",
+		 "sum":495000},
+		 {"contributor_payee":"Loren E Parks",
+		 "sum":364173.58},
+		 {"contributor_payee":"Philip Knight",
+		 "sum":355000}]
+
+
+
+Get total contributions from top 5 contributing businesses, for all recipients, in all of Oregon:
+-------------------------------
+
+Usage:
+
+		http://54.213.83.132/hackoregon/http/oregon_committee_contributors/_/
+
+Example output:
+
+		[{"contributor_payee":"Future PAC, House Builders (1524)",
+		 "sum":3554226.92},
+		 {"contributor_payee":"Democratic Party of Oregon (353)",
+		 "sum":1769467.27},
+		 {"contributor_payee":"Citizen Action for Political Education (33)",
+		 "sum":1652917.48},
+		 {"contributor_payee":"Senate Democratic Leadership Fund (1471)",
+		 "sum":1323317.99},
+		 {"contributor_payee":"Promote Oregon Leadership PAC (682)",
+		 "sum":1266427.24}]
+
+
+Get all available data processing documentation
+-------------------------------
+
+Usage:
+
+		http://54.213.83.132/hackoregon/http/all_documentation/_/
+
+Example output:
+
+		[{"title":"Summary of data for all of Oregon: contributions by individuals",
+		 "endpoint_name":"oregon_individual_contributors",
+		 "txt":"To compute contributions from individuals, transactions for the current campaign cycle are filtered to only those with the book type, Individual, and the sub types Cash Contribution and In-Kind Contribution. Then, for each unique contributor/payee all contribution amounts are added together."},
+		 ...
+		 }]
+
+
 All oregon summary
 ---------------------------------
 
@@ -57,6 +117,7 @@ Example output:
     ...
 
 Fields are as described above in the 'All oregon summary' endpoint. 
+
 
 Get candidate/committee total in and total out by day
 ---------------------------------
