@@ -7,13 +7,19 @@ This data must be scraped using two different approaches: one for the transactio
 
 Transaction data
 ------------------
-The transaction data can be obtained as excel documents, each with a maximum size of 5000 lines (header + 4999 records). 
+The transaction data can be obtained as excel documents, each with a maximum size of 5000 lines (header + 4999 records), by passing a date range to this web form:
+
+https://secure.sos.state.or.us/orestar/gotoPublicTransactionSearch.do
+
 Documentation for using this scraper can be found here:
 https://github.com/hackoregon/backend/blob/master/orestar_scrape/transaction_scraper_README.md
 
 Committee data
 ------------------
-Committee data is obtained by scraping JSON objects directly out of a web page. 
+Committee data is obtained by scraping JSON objects directly out of the web page returned by passing a committee id to this web form:
+
+https://secure.sos.state.or.us/orestar/GotoSearchByName.do
+
 Orestar does provide a form to download Excel sheets of committee data by the date the committees were registered, but in our experience, data for many committees (ex: John Kitzhaber's election committee) will come up missing if this technique is used. 
 
 Candidate filings data
