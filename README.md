@@ -1,7 +1,6 @@
 Hack Oregon Backend
 =================
-What the backend does
-----------------------------------------------
+
 The Hack Oregon Backend fulfills the tasks involved in 1) procuring campaign finance transaction data from the Oregon Secretary of State, 2) cleaning and reformatting this data, and 3) deliviering the data to REST endpoints as JSON objects, for use by data visualizations on the front end. 
 
 1) Data procurement / scraping
