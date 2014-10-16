@@ -11,7 +11,7 @@ The transaction data can be obtained as excel documents, each with a maximum siz
 
 https://secure.sos.state.or.us/orestar/gotoPublicTransactionSearch.do
 
-Documentation for using this scraper can be found here:
+A scraper was built in javascript to automate downloading of transaction data from this web form. Documentation for using this transactions scraper can be found here:
 https://github.com/hackoregon/backend/blob/master/orestar_scrape/transaction_scraper_README.md
 
 Committee data
@@ -19,6 +19,11 @@ Committee data
 Committee data is obtained by scraping JSON objects directly out of the web page returned by passing a committee id to this web form:
 
 https://secure.sos.state.or.us/orestar/GotoSearchByName.do
+
+A scraper was built in javascript to automate downloading of committee data from this web form.
+Documentation for the committee scraper can be found here:
+
+https://github.com/hackoregon/backend/blob/master/orestar_scrape/orestar_scrape_committees/README.md
 
 Orestar does provide a form to download Excel sheets of committee data by the date the committees were registered, but in our experience, data for many committees (ex: John Kitzhaber's election committee) will come up missing if this technique is used. 
 
