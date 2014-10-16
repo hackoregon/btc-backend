@@ -27,7 +27,7 @@ Example output:
 
 
 
-Get total contributions from top 5 contributing businesses, for all recipients, in all of Oregon:
+Get total contributions from top 5 contributing committees, for all recipients, in all of Oregon:
 -------------------------------
 
 Usage:
