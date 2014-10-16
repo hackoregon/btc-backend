@@ -62,6 +62,10 @@ These files should be in the folder:
 	guest machine prompt> cd /vagrant
 	guest machine prompt> sudo ./install3.sh
 	guest machine prompt> sudo /usr/local/openresty/nginx/sbin/nginx
+
+If the scraper is wanted in the installation, run:
+
+	guest machine prompt> sudo ./install4.sh
 	
 5) Enter ctrl + d to exit ssh
 
