@@ -27,6 +27,28 @@ Example output:
 
 
 
+Get total contributions from top 5 contributing businesses, for all recipients, in all of Oregon:
+-------------------------------
+
+Usage:
+
+		http://54.213.83.132/hackoregon/http/oregon_business_contributors/_/
+
+Example output:
+
+	[{"contributor_payee":"PDX Entertainment Group",
+	 "sum":5654126.96},
+	 {"contributor_payee":"Oregon Association of Realtors",
+	 "sum":2384848.29},
+	 {"contributor_payee":"Monsanto Company",
+	 "sum":1791444.1},
+	 {"contributor_payee":"Stimson Lumber Company",
+	 "sum":1238490.24},
+	 {"contributor_payee":"Fred Meyer",
+	 "sum":1145524}]
+		 
+		 
+
 Get total contributions from top 5 contributing committees, for all recipients, in all of Oregon:
 -------------------------------
 
