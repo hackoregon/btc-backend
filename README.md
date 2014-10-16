@@ -34,8 +34,3 @@ Once the back end is installed, there are several helper scripts that can help y
 Documentation for these scripts can be found here:
 https://github.com/hackoregon/backend/blob/master/runningTheBackend.md
 
-
-----------------------------------------------
-The scraper
-----------------------------------------------
-We have a scraper and data cleaning infrastructure to import data from the Oregon Secretary of State website (ORESTAR). The data cleaning consists of R and python scripts orchestrated by a central bash script. The scraper is built with bash scripts and node.js.
