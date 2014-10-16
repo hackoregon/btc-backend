@@ -5,6 +5,13 @@ The Hack Oregon 'Behind the Curtain' project uses financial transaction data, po
 ( http://sos.oregon.gov/elections/Pages/orestar.aspx ). 
 This data must be scraped using two different approaches: one for the transaction data and one for the committee data.
 
+Scraping is automated by running the script
+
+    ScrapeMostRecentTransactions.sh 
+    (this in turn calls ~/data_infrastructure/orestar_scrape/getMostRecentTransactions.R )
+
+This script 1) scrapes transactions between the current date and the newest transaction in the database, 2) checks if the maximum number of transactions was reached, download the remaining transactions if needed, and 3) checks if new committee IDs are found in the newly downloaded transactions and attempt to download data for any new committees.  
+
 Transaction data
 ------------------
 The transaction data can be obtained as excel documents, each with a maximum size of 5000 lines (header + 4999 records), by passing a date range to this web form:
