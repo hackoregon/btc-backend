@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 echo "running install3.sh"
 echo "current working directory:"
 pwd

@@ -23,22 +23,22 @@ pwd
 
 sudo chmod 755 hackOregonDbStatusLogger.R
 sudo chmod 755 exportTableToTsv.R
-sudo chmod 755 orestar_scrape/getMissingCommittees.R
+sudo chmod 755 ./orestar_scrape/getMissingCommittees.R
 sudo chmod 755 addDirectionCodes.sh
 sudo chmod 755 buildEndpointTables.sh
 sudo chmod 755 buildOutDBFromRawTables.sh
 sudo chmod 755 buildScraper.sh
 sudo chmod 755 workingTableCreation.sh
 sudo chmod 755 makeWorkingCandidateFilings.R
-sudo chmod 755 endpoints/makeGrassState.R
+sudo chmod 755 ./endpoints/makeGrassState.R
 sudo chmod 755 postSchemaInstallationEndpoints.sh
-sudo chmod 755 orestar_scrape/bulkLoadScrapedCommitteeData.R
+sudo chmod 755 ./orestar_scrape/bulkLoadScrapedCommitteeData.R
 sudo chmod 755 endpoints/candidateByState/buildCandidateByStateEndpoint.sh
 sudo chmod 755 makeCCWorkingTransactions.sh
 sudo chmod 755 ./orestar_scrape/bulkAddTransactions.R
 sudo chmod 755 ./orestar_scrape/getMostRecentTransactions.R
-
-
+sudo chmod 755 ./endpoints/add_simplified_sub_types.sh
+sudo chmod 755 ./endpoints/add_contributor_payee_class_column.sql
 #core raw database files
 sudo cp -vu ./.Rprofile ~/.Rprofile
 sudo cp -vu ./trimTransactionsTable.sql ~/data_infrastructure/trimTransactionsTable.sql
@@ -84,6 +84,7 @@ sudo cp -vu ./makeCCWorkingTransactions.sh ~/data_infrastructure/makeCCWorkingTr
 #endpoints
 sudo cp -vu ./postSchemaInstallationEndpoints.sh ~/data_infrastructure/postSchemaInstallationEndpoints.sh
 sudo cp -vu ./workingCommitteesFromInitialRaw.sql ~/data_infrastructure/workingCommitteesFromInitialRaw.sql
+
 
 cd
 sudo ./setPermissionsForCronTab.sh

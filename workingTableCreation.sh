@@ -11,6 +11,9 @@ sudo ./addDirectionCodes.sh
 echo "making db call to add the working_transactions table"
 echo "with script ./workingTransactionsTableCreation.sql"
 sudo -u postgres psql hackoregon < ./workingTransactionsTableCreation.sql
+echo "altering working_transactions table, adding contributor_payee_class column"
+pwd
+sudo ./endpoints/add_simplified_sub_types.sh
 echo "calling makeWorkingCandidateFilings.R"
 sudo ./makeWorkingCandidateFilings.R
 echo "calling workingCommitteesFromInitialRaw.sql"
@@ -19,3 +22,4 @@ echo "calling ./orestar_scrape/bulkLoadScrapedCommitteeData.R"
 sudo ./orestar_scrape/bulkLoadScrapedCommitteeData.R
 echo "creating cc_working_transactions"
 sudo ./makeCCWorkingTransactions.sh '2010-11-11'
+
