@@ -89,9 +89,11 @@ displayDistContAmount<-function(ctran, fname=NULL){
 
 addGrassRootCutCol<-function(ctran){
 	
-	grassRoots = rep("no", time=nrow(ctran))
-	grassRoots[ctran$amount<=200] = "yes"
-	out  = cbind.data.frame(ctran,grassRoots)
+ 	grassRoots = rep("no", time=nrow(ctran))
+# 	grassRoots[ctran$amount<=200] = "yes"
+# 	grassRoots[ctran$contributor_payee == "Miscellaneous Cash Contributions $100 and under "] = "yes"
+	grassRoots[ctran$contributor_payee_class == "grassroots_contributor"] = "yes"
+	out  = cbind.data.frame(ctran,grassRoots, stringsAsFactors=FALSE)
 	return(out)
 	
 }

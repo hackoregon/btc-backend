@@ -568,7 +568,7 @@ filterDupTransFromDB<-function(tableName, dbname){
 	uids = unique(eluent[,1])
 	#remove applicable transactions from the db
 	q2 = paste("DELETE FROM ",tableName,"
-				 			WHERE tran_id in (",paste0(uids, collapse=", "),")")
+				 			WHERE tran_id IN (",paste0(uids, collapse=", "),")")
 	dbCall(sql=q2, dbname=dbname)
 	#add the fixed set of transactions to the db
 	dbiWrite(tabla=eluent, name=tableName, appendToTable=T, dbname=dbname)
