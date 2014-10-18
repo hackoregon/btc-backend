@@ -1,7 +1,7 @@
 Hack Oregon Backend
 =================
 
-The Hack Oregon Backend fulfills the tasks involved in 1) procuring campaign finance transaction data from the Oregon Secretary of State, 2) cleaning and reformatting this data, and 3) deliviering the data to REST endpoints as JSON objects, for use by data visualizations on the front end. 4) Finally, the backend was constructed so that it can easily be installed in Vagrant/virtual box or on Amazon Web Services by running a set of install scripts constructed for bash. 
+The Hack Oregon Backend fulfills the tasks involved in 1) procuring campaign finance transaction data from the Oregon Secretary of State, 2) cleaning and reformatting this data, and 3) deliviering the data to REST endpoints as JSON objects, for use by data visualizations on the front end. 4) Finally, the backend was constructed so that it can easily be installed in Vagrant/virtual box or on Amazon Web Services by running a set of bash install scripts constructed. 
 
 1) Data procurement / scraping
 ----------------------------------------------
