@@ -14,7 +14,9 @@ if(!is.null(fname)){
 
 #make working_candidate_filings
 cat("\ncalling makeWorkingCandidateFilings(dbname=\"hackoregon\")\n")
-makeWorkingCandidateFilings(dbname="hackoregon", fname=fname)
+dbname="hackoregon"
+# dbname="hack_oregon"
+makeWorkingCandidateFilings(dbname=dbname, fname=fname)
 
 if(is.null(fname)){
 	cat("\nCandidate filings loaded from the default location:\n",

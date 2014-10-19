@@ -331,8 +331,7 @@ updateWorkingCommitteesTableWithScraped<-function(dbname){
 		treasurer_name, 
 		treasurer_work_phone_home_phone_fax, 
 		treasurer_mailing_address, 
-		NULL as web_address,
-		concat(measure_support, ' - ', measure_election) as measure
+		NULL as web_address
 	from raw_committees_scraped);"
 	dbCall(sql=q1, dbname=dbname)
 }

@@ -18,10 +18,16 @@ findLoadCandidateFilings<-function(cfilingsfname=NULL){
 		allfiles = dir()
 		cfilingsfname = allfiles[grepl(pattern="candidateFilings", x=allfiles)]
 	}
+	cfilingsfname = returnNewestFileName(fnames=cfilingsfname)
 	cat("Loading candidate filings from file:\n",cfilingsfname,"\n")
 	txtres = special.read.xls(xlsName=cfilingsfname)
 	cat("Dimensions of loaded data:", dim(txtres),"\n")
 	return(txtres)
+}
+
+returnNewestFileName<-function(fnames){
+	nindex = file.info(fnames)$mtime == max(file.info(fnames)$mtime)
+	return( fnames[nindex] )
 }
 
 cleanCells<-function(rawTab){
@@ -100,18 +106,35 @@ getMostRecent<-function(apres, dfcol="party_descr",dateCol="filed_date"){
 }
 
 
-makeWorkingCandidateFilings<-function(dbname,fname=NULL){
+makeWorkingCandidateFilings<-function( dbname, fname=NULL ){
 	candidateFilingsExcelToDb(cfTableName="raw_candidate_filings", fname=fname,
 														returnTable=FALSE, dbname=dbname)
 	cffdb = dbiRead(query="select * from raw_candidate_filings", dbname=dbname)
-	cat("Dimensions of retreived candidate filings:",dim(cffdb),"\n")
-	cffdb = cffdb[order(cffdb$candidate_file_rsn, decreasing=T),] #these two steps will get the newest for each candidate.
-	wcf = cffdb[!duplicated(x=cffdb$cand_ballot_name_txt),,drop=F]
+	cat("Dimensions of retreived raw candidate filings:",dim(cffdb),"\n")
+	# 	#these two steps will get the newest for each candidate.
+	# 	cffdb = makeCandidateNameNice(cffdb = cffdb0)
+	
+	#candidate_ballot_name is not unique enough, use first and last name appended to eachother. 
+	cffdb = cffdb[order(cffdb$candidate_file_rsn, decreasing=T),] 
+
+	wcf = cffdb[!duplicated(x=cffdb[,c("first_name","last_name")]),,drop=F]
 	colnames(wcf)<-tolower(colnames(wcf))
 	colnames(wcf)<-gsub(pattern="[.]",replacement="_",x=colnames(wcf))
 	
+	cat("Dimensions of working candidate filings being sent to the database:",dim(wcf),"\n")
 	dbiWrite(tabla=wcf, name="working_candidate_filings", dbname=dbname, appendToTable=FALSE)
 }
+
+makeCandidateNameNice<-function(cffdb){
+	cat("\nThe makeCandidateNameNice will attempt to use candidate\n",
+			"data to make a uniquely identifying name for the candidate.\n",
+			"This will include removing the middle initial.. .  .")
+	
+	#
+	
+	
+}
+
 
 old_makeWorkingCandidateFilings<-function(dbname){
 	

@@ -14,32 +14,35 @@ CREATE TABLE working_candidate_committees AS
 (SELECT  candidate_name, committee_id, committee_name, 
 		election_office, candidate_work_phone_home_phone_fax as phone, 
 		party_affiliation, web_address
-	FROM working_committees
-	WHERE committee_type='CC');
+	FROM working_committees);
 
 /*select * from working_candidate_committees where committee_type='CC';*/
 
 /*Join with cc_grass_roots_in_state*/
 DROP TABLE IF EXISTS campaign_detail;
 CREATE TABLE campaign_detail AS
-	(SELECT candidate_name, 
-		committee_name,
+	(SELECT  
+		cc_grass_roots_in_state.candidate_name,
+		filer as committee_name,
 		election_office as race, 
 		web_address as website,
-		phone,
+		cc_grass_roots_in_state.phone as phone,
 		total_money as total,
 		total_money_out as total_spent,
-		percent_grassroots as grassroots,
-		percent_instate as instate, 
+		percent_grass_roots as grassroots,
+		percent_in_state as instate, 
 		filer_id, 
-		party_affiliation as party
-	FROM 
-		(SELECT filer_id, total_money, total_money_out, percent_grassroots, percent_instate
-		FROM cc_grass_roots_in_state) as sub1
+		working_candidate_committees.party_affiliation as party
+	FROM cc_grass_roots_in_state
 	JOIN working_candidate_committees
-	ON committee_id = sub1.filer_id);
+	ON committee_id = cc_grass_roots_in_state.filer_id);
+
+
+
+
+	
 /*
-select * from campaign_detail;
+select * from working_candidate_committees;
 select * from cc_grass_roots_in_state;
 select * from raw_committees;
 */

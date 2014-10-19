@@ -8,9 +8,10 @@ sudo -u postgres psql hackoregon <  ~/data_infrastructure/addDocumentationTable.
 
 sudo ~/data_infrastructure/workingTableCreation.sh
 
+
 sudo ~/data_infrastructure/buildEndpointTables.sh
 
-sudo -u postgres psql hackoregon <  ./install.sql
+sudo -u postgres psql hackoregon <  ~/data_infrastructure/install.sql
 
 sudo ~/data_infrastructure/postSchemaInstallationEndpoints.sh
 

@@ -64,8 +64,7 @@ on all_in.tran_date  = to_out.tran_date
 join
 	(select tran_date, sum(amount) as total_grass_roots
 	from cc_working_transactions
-	where amount < 200
-	and direction = 'in'
+	where contributor_payee_class = 'grassroots_contributor'
 	group by tran_date ) as grass_roots
 on all_in.tran_date  = grass_roots.tran_date
 join
@@ -161,23 +160,25 @@ DROP TABLE IF EXISTS oregon_by_contributions;
 CREATE TABLE oregon_by_contributions AS
 (
 		WITH cc_working_transactions_agg AS (
-		  SELECT t.book_type, CASE
-		                        WHEN t.book_type IS NULL OR t.book_type = 'Individual' THEN
-		          CASE
-		            WHEN t.amount <= 200 OR t.contributor_payee = 'Miscellaneous Cash Contributions $100 and under ' THEN 'Grassroot'
-		                             ELSE 'Large Donor'
-		                           END
-		                         ELSE
-		                             t.book_type  
-		                       END AS contribution_type, t.amount
+		  SELECT t.book_type, 
+		  		CASE
+				WHEN t.book_type IS NULL OR t.book_type = 'Individual' 
+				THEN
+					CASE
+					WHEN t.contributor_payee_class = 'grassroots_contributor' 
+					THEN 'Grassroot'
+					ELSE 'Large Donor'
+					END
+				ELSE
+				t.book_type  
+				END AS contribution_type, t.amount
 		  FROM cc_working_transactions AS t
-		  WHERE t.sub_type = 'Cash Contribution'
+		  WHERE t.sub_type IN ('Cash Contribution','In-Kind Contribution')
 		)
 		SELECT a.contribution_type, sum(a.amount) as total
 		FROM cc_working_transactions_agg AS a
 		GROUP BY a.contribution_type
 		ORDER BY total
-
 );
 
 DROP FUNCTION IF EXISTS http.get_oregon_by_contributions(name1 text, name2 text, cname text, name4 text);
