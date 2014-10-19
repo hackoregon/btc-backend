@@ -71,6 +71,7 @@ dateRangeControler<-function(tranTableName="raw_committee_transactions",
 		scrapeDateRange(startDate=dseq[i], endDate=dseq[i+1], destDir=transactionsFolder)
 		scrapedTransactionsToDatabase(tsvFolder=transactionsFolder, tableName=tranTableName, dbname=dbname)
 	}
+
 }
 
 

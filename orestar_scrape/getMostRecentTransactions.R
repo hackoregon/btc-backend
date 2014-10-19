@@ -13,9 +13,17 @@ DBNAME="hack_oregon"
 if( file.exists( "~/data_infrastructure/orestar_scrape/" ) ) DBNAME="hackoregon"
 # setwd("orestar_scrape")
 cat("\nRunning getMostRecentTransactions.R")
-#scrape the transaction data, filling in missing committees. 
-dateRangeControler(dbname=DBNAME, tranTableName="raw_committee_transactions", workingComTabName="working_committees")
+#scrape the transaction data, filling in missing committees.
+tranTableName="raw_committee_transactions"
+workingComTabName="working_committees"
 
+dateRangeControler(dbname=DBNAME, tranTableName=tranTableName, workingComTabName=workingComTabName)
+
+cat("\nNow checking for missing committees and attempting to obtain any that are missing...\n")
+getMissingCommittees(transactionsTable=tranTableName, 
+										 dbname=dbname, 
+										 workingComTabName=workingComTabName)
+cat("\nMissing committees checked and delt with.\n")
 #rebuild the database working tables
 	#first assure the working directory is correct? yes, buildOutFromRaw... seem to require it. 
 cat("Inside getMostRecentTransactions.R, setting working directory to the data_infrastructure directory\n",getwd(), "\n")
