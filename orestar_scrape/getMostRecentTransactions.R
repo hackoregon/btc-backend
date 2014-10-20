@@ -21,7 +21,7 @@ dateRangeControler(dbname=DBNAME, tranTableName=tranTableName, workingComTabName
 
 cat("\nNow checking for missing committees and attempting to obtain any that are missing...\n")
 getMissingCommittees(transactionsTable=tranTableName, 
-										 dbname=dbname, 
+										 dbname=DBNAME, 
 										 workingComTabName=workingComTabName)
 cat("\nMissing committees checked and delt with.\n")
 #rebuild the database working tables
