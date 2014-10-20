@@ -21,6 +21,21 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE FUNCTION http.get_endpoint_faq(name1 text, name2 text, endpointName text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM 
+    (SELECT *
+    FROM documentation
+    WHERE endpoint_name like '%'||endpointName ||'%') qres
+  INTO result;
+  
+  return result;
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE FUNCTION http.get_committee_data_by_id(name1 text, name2 text, commID text, name4 text) RETURNS json AS $$
 DECLARE
