@@ -17,7 +17,6 @@ if(!require("stringr")){
 
 ERRORLOGFILENAME="affiliationScrapeErrorlog.txt"
 
-
 # committeefolder = "raw_committee_data"
 # dbname = "hack_oregon"
 # comTabName = "raw_committees_scraped"
@@ -34,7 +33,7 @@ bulkLoadScrapedCommitteeData<-function(committeefolder, dbname, comTabName){
 		sendCommitteesToDb( comtab=rawScrapeDat, 
 												dbname=dbname, 
 												rawScrapeComTabName=comTabName )
-		updateWorkingCommitteesTableWithScraped(dbname=dbname)
+	# 		updateWorkingCommitteesTableWithScraped(dbname=dbname)
 	}else{
 		if(!file.exists(committeefolder)) dir.create(committeefolder)
 		message("No scraped committee files found in folder\n'",committeefolder,"'")
@@ -313,27 +312,35 @@ addScrapedToWorkingCommitteesTable<-function(dbname){
 
 updateWorkingCommitteesTableWithScraped<-function(dbname){
 	#first remove all committee ids that are being added from the scrapes
-	q0 = "delete from working_committees where committee_id in 
-	(select id from raw_committees_scraped)"
-	dbCall(sql=q0, dbname=dbname)
-	#second, insert the new set of committees from raw committees to working committees. 
-	q1="insert into working_committees
-	(select id as committee_id, 
-		name as committee_name, 
-		committee_type, 
-		pac_type as committee_subtype, 
-		candidate_party_affiliation as party_affiliation, 
-		candidate_election_office as election_office, 
-		candidate_name, 
-		candidate_email_address, 
-		candidate_work_phone_home_phone_fax, 
-		candidate_candidate_address as candidate_address,  
-		treasurer_name, 
-		treasurer_work_phone_home_phone_fax, 
-		treasurer_mailing_address, 
-		NULL as web_address
-	from raw_committees_scraped);"
-	dbCall(sql=q1, dbname=dbname)
+	# 	q0 = "delete from working_committees where committee_id in 
+	# 	(select id from raw_committees_scraped)"
+	# 	dbCall(sql=q0, dbname=dbname)
+	# 	#second, insert the new set of committees from raw committees to working committees. 
+	# 	q1="insert into working_committees
+	# 	(select id as committee_id, 
+	# 		name as committee_name, 
+	# 		committee_type, 
+	# 		pac_type as committee_subtype, 
+	# 		candidate_party_affiliation as party_affiliation, 
+	# 		campaign_phone as phone,
+	# 		candidate_election_office as election_office, 
+	# 		candidate_name, 
+	# 		candidate_email_address, 
+	# 		candidate_work_phone_home_phone_fax, 
+	# 		candidate_candidate_address as candidate_address,  
+	# 		treasurer_name, 
+	# 		treasurer_work_phone_home_phone_fax, 
+	# 		treasurer_mailing_address, 
+	# 		NULL as web_address
+	# 	from raw_committees_scraped);"
+	# 	dbCall(sql=q1, dbname=dbname)
+
+	if( file.exists("~/data_infrastructure") ){ #check this is the ubuntu installation
+		setwd("..")
+		system("sudo -u postgres psql hackoregon < ./makeWorkingCommittees.sql")
+		setwd("./orestar_scrape/")
+	}
+
 }
 
 rawScrapeToTable<-function(committeeNumbers, rawdir="", attemptRetry=T, moveErrantScrapes=F){

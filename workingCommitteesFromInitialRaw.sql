@@ -5,6 +5,7 @@ create table working_committees as
 	committee_type, 
 	committee_subtype, 
 	party_descr as party_affiliation,
+	candidate_work_phone as phone,
 	concat(active_election, ' ', candidate_office_group,' ',raw_committees.candidate_office) as election_office, 
 	candidate_first_name ||' '|| candidate_last_name as candidate_name,
 	candidate_email as candidate_email_address,

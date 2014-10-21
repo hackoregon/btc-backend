@@ -1,5 +1,5 @@
 #run scraper
-
+cat("\nInside runScraper.R\nThis file must be run from the /orestar_scrape/ directory.\n")
 source("./finDataImport.R")
 source("./dbi.R")
 source("./scrapeAffiliation.R")
@@ -68,13 +68,13 @@ dateRangeControler<-function(tranTableName="raw_committee_transactions",
 	dseq = c(seq.Date(from=sd, to=ed, by="month"),ed)
 	
 	for(i in 1:(length(dseq)-1) ){
+		gc()
 		scrapeDateRange(startDate=dseq[i], endDate=dseq[i+1], destDir=transactionsFolder)
+		gc()
 		scrapedTransactionsToDatabase(tsvFolder=transactionsFolder, tableName=tranTableName, dbname=dbname)
 	}
 
 }
-
-
 
 readme<-function(){
 	
@@ -136,6 +136,8 @@ getMissingCommittees<-function(transactionsTable,
 	
 	#find committees missing from both
 	missingCommittees = intersect(dbres, dbres2)
+	
+	#scrape committees missing from both
 	if(length(missingCommittees)){
 		cat("\n",length(missingCommittees),"committee IDs found to be in transaction records but not in committee records...\n")
 		scrapeTheseCommittees(committeeNumbers=missingCommittees, commfold=rawCommitteeDataFolder)

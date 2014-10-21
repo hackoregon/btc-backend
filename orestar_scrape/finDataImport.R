@@ -365,7 +365,7 @@ importAllXLSFiles<-function(indir="~/prog/hack_oregon/orestar/fins",
 		cat("checking #",i,"of",length(files),"files:",files[i],"..")
 		if( !file.exists(dest)|forceImport ){
 			curtab = try(expr=special.read.xls(xlsName=srce), silent=TRUE)
-			
+			cat("\nFile dimensions:",nrow(curtab),"rows by",ncol(curtab),"columns.\n")
 			if( is.null(nrow(curtab)) ){
 				cat("\nerror while reading file\n")
 				addToErrorLog(errorLogFname=paste0(errorDir,"/","errorLog.txt"),

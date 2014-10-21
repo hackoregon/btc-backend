@@ -18,7 +18,6 @@ echo "altering working_transactions table, adding contributor_payee_class column
 sudo -u postgres psql hackoregon < ./workingTransactionsTableCreation.sql
 #pwd
 
-
 echo "calling makeWorkingCandidateFilings.R"
 sudo ./makeWorkingCandidateFilings.R
 
@@ -29,10 +28,14 @@ echo "calling ./orestar_scrape/bulkLoadScrapedCommitteeData.R"
 echo "This script calls bulkLoadScrapedCommitteeData() from the R script"
 echo "scrapeAffiliation.R"
 echo "That function cleans and loads all the raw committe scrapes into raw_committees_scraped"
-echo "then calls updateWorkingCommitteesTableWithScraped(), which"
+sudo ./orestar_scrape/bulkLoadScrapedCommitteeData.R
+
+echo "calling makeWorkingCommittees.sql"
+echo "This SQL script:"
 echo "1) removes from working_committees any committees with ids found in the scraped committees"
 echo "2) adds to the working_committees from the raw_committees_scraped table."
-sudo ./orestar_scrape/bulkLoadScrapedCommitteeData.R
+echo "3) attempts to fill in empty phone fields with the candidate work phone/home phone/fax then treasurer phone information"
+sudo -u postgres psql hackoregon < ./makeWorkingCommittees.sql
 
 echo "creating cc_working_transactions"
 echo "this operation is kept modular because it will be updated to add"

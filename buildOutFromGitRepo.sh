@@ -39,6 +39,7 @@ sudo chmod 755 ./orestar_scrape/bulkAddTransactions.R
 sudo chmod 755 ./orestar_scrape/getMostRecentTransactions.R
 sudo chmod 755 ./endpoints/add_simplified_sub_types.sh
 sudo chmod 755 ./endpoints/add_contributor_payee_class_column.sql
+
 #core raw database files
 sudo cp -vu ./.Rprofile ~/.Rprofile
 sudo cp -vu ./trimTransactionsTable.sql ~/data_infrastructure/trimTransactionsTable.sql
@@ -80,7 +81,7 @@ sudo cp -vu ./workingTransactionsTableCreation.sql ~/data_infrastructure/working
 sudo cp -vu ./makeWorkingCandidateFilings.R ~/data_infrastructure/makeWorkingCandidateFilings.R
 sudo cp -vu ./buildEndpointTables.sh ~/data_infrastructure/buildEndpointTables.sh
 sudo cp -vu ./makeCCWorkingTransactions.sh ~/data_infrastructure/makeCCWorkingTransactions.sh
-
+sudo cp -vu ./makeWorkingCommittees.sql ~/data_infrastructure/makeWorkingCommittees.sql
 #endpoints
 sudo cp -vu ./postSchemaInstallationEndpoints.sh ~/data_infrastructure/postSchemaInstallationEndpoints.sh
 sudo cp -vu ./workingCommitteesFromInitialRaw.sql ~/data_infrastructure/workingCommitteesFromInitialRaw.sql
