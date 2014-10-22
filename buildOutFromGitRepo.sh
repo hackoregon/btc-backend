@@ -63,6 +63,7 @@ sudo cp -vu exportTableToTsv.R ~/exportTableToTsv.R
 sudo chmod 544 dailycron.txt
 sudo cp -vu dailycron.txt ~/dailycron.txt
 sudo cp -vu hackOregonDbStatusLogger.R ~/hackOregonDbStatusLogger.R
+sudo cp -vu hackOregonDbStatusLogger.R ~/data_infrastructure/hackOregonDbStatusLogger.R
 sudo chmod 755 ./setPermissionsForCronTab.sh
 sudo cp -vu setPermissionsForCronTab.sh ~/setPermissionsForCronTab.sh
 

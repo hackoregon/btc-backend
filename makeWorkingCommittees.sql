@@ -1,4 +1,3 @@
-/*makeWorkingCommittees.sql*/
 
 drop table if exists working_committees;
 create table working_committees as
@@ -60,3 +59,12 @@ UPDATE working_committees
 SET phone  = '(Phone number not found)'
 WHERE phone IS NULL
 OR phone = 'wk: hm: fx:';
+
+
+ALTER TABLE working_committees ADD COLUMN simple_election text;
+UPDATE working_committees SET simple_election = regexp_replace(election_office, 'Primary |General ','');
+
+UPDATE working_committees
+SET candidate_name = committee_name
+WHERE candidate_name = '   '
+OR candidate_name is null;

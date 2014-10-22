@@ -1,16 +1,16 @@
-﻿DROP TABLE IF EXISTS cc_grass_roots_in_state;
+﻿
+
+DROP TABLE IF EXISTS cc_grass_roots_in_state;
 CREATE TABLE cc_grass_roots_in_state AS
-(SELECT committee_type, 
-	candidate_name, 
-	phone, 
-	party, 
-	all_trans.filer_id as filer_id, 
+(SELECT 
+	all_trans.filer_id AS filer_id, 
 	filer, 
+	num_transactions,
 	in_state, 
 	grass AS grass_roots, 
 	total_contributions, 
-	money_in as total_money, 
-	money_out as total_money_out
+	money_in AS total_money, 
+	money_out AS total_money_out
 FROM (SELECT DISTINCT filer_id
 	FROM cc_working_transactions) AS all_trans
 LEFT OUTER JOIN
@@ -44,17 +44,15 @@ LEFT OUTER JOIN
 	WHERE sub_type IN ('Cash Contribution', 'In-Kind Contribution')
 	GROUP BY filer_id) AS total_contributions
 ON all_trans.filer_id = total_contributions.filer_id
+LEFT OUTER JOIN
+	(SELECT filer_id, count(*) AS num_transactions
+	FROM cc_working_transactions
+	GROUP BY filer_id) AS trans_count
+ON all_trans.filer_id = trans_count.filer_id
 LEFT OUTER JOIN 
-	(SELECT committee_id, 
-		committee_type, 
-		committee_name AS filer, 
-		candidate_name, 
-		candidate_work_phone_home_phone_fax AS phone, 
-		party_affiliation AS party
+	(SELECT committee_id AS filer_id, committee_name AS filer
 	FROM working_committees) AS committee_data
-ON all_trans.filer_id = committee_data.committee_id);
-
-
+ON all_trans.filer_id = committee_data.filer_id);
 
 ALTER TABLE cc_grass_roots_in_state
 ADD COLUMN percent_grass_roots real;
@@ -68,7 +66,3 @@ SET percent_grass_roots = grass_roots/total_contributions;
 UPDATE cc_grass_roots_in_state
 SET percent_in_state = in_state/total_contributions;
 
-UPDATE cc_grass_roots_in_state
-SET candidate_name = filer
-WHERE candidate_name = '   '
-OR candidate_name is null;
