@@ -39,7 +39,6 @@ sudo chmod 755 ./orestar_scrape/bulkAddTransactions.R
 sudo chmod 755 ./orestar_scrape/getMostRecentTransactions.R
 sudo chmod 755 ./endpoints/add_simplified_sub_types.sh
 sudo chmod 755 ./endpoints/add_contributor_payee_class_column.sql
-sudo chmod 755 ./orestar_scrape/bulkAddTransactionsFromXls.R
 
 #core raw database files
 sudo cp -vu ./.Rprofile ~/.Rprofile
@@ -67,7 +66,8 @@ sudo cp -vu hackOregonDbStatusLogger.R ~/hackOregonDbStatusLogger.R
 sudo cp -vu hackOregonDbStatusLogger.R ~/data_infrastructure/hackOregonDbStatusLogger.R
 sudo chmod 755 ./setPermissionsForCronTab.sh
 sudo cp -vu setPermissionsForCronTab.sh ~/setPermissionsForCronTab.sh
-
+sudo chmod 755 ./orestar_scrape/bulkAddTransactionsFromXls.R
+sudo cp -vu ./orestar_scrape/bulkAddTransactionsFromXls.R ~/bulkAddTransactionsFromXls.R
 
 #scraper infrastructure
 sudo cp -avru ./endpoints ~/data_infrastructure/ 
