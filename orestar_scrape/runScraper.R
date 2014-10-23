@@ -252,6 +252,46 @@ scrapeDateRange<-function(startDate, endDate, destDir = "./transConvertedToTsv/"
 	
 }
 
+logFileImport<-function(fname, dbname){
+	library(tools)
+	fname="originalXLSdocs/01-02-2014_12-26-2013.xls"
+	#make table
+	dbCall(dbname=dbname, "create table if not exists file_import_log
+													(file_name text,
+													file_extension text,
+													mod_date text,
+													size int);")
+	
+	#get mod/import date
+	newrow = data.frame(file_name=basename(fname),
+						 file_extension = file_ext(fname),
+						 mod_date = file.info(fname)$mtime, 
+						 size = file.info(fname)$size)
+	
+	cat("Logging file import:", fname,"\n")
+	dbiWrite(tabla=newrow, 
+					 appendToTable=T, 
+					 name="file_import_log", 
+					 dbname=dbname)
+	
+}
+
+file.logged<-function(fname, dbname){
+	newrow = data.frame(file_name=basename(fname),
+											file_extension = file_ext(fname),
+											mod_date = file.info(fname)$mtime, 
+											size = file.info(fname)$size)
+	rows = dbiRead(dbname=dbname, query=paste0("select * from 
+											file_import_log 
+											where file_name = '",newrow$file_name,"'
+											and file_extension = '",newrow$file_extension,"' 
+											and mod_date = '",newrow$mod_date,"'
+											and size = ",newrow$size,";"))
+	
+	if(nrow(rows)) return(TRUE)
+	return(FALSE)
+}
+
 reImportXLS<-function(tableName, dbname, destDir="./transConvertedToTsv/", indir="./"){
 	converted = importAllXLSFiles(remEscapes=T,
 																remQuotes=T,

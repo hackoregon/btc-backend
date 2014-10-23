@@ -39,6 +39,7 @@ sudo chmod 755 ./orestar_scrape/bulkAddTransactions.R
 sudo chmod 755 ./orestar_scrape/getMostRecentTransactions.R
 sudo chmod 755 ./endpoints/add_simplified_sub_types.sh
 sudo chmod 755 ./endpoints/add_contributor_payee_class_column.sql
+sudo chmod 755 ./orestar_scrape/bulkAddTransactionsFromXls.R
 
 #core raw database files
 sudo cp -vu ./.Rprofile ~/.Rprofile

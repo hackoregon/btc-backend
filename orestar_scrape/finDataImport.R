@@ -334,7 +334,7 @@ importAllXLSFiles<-function(indir="~/prog/hack_oregon/orestar/fins",
 														remQuotes=F, 
 														remEscapes=T, 
 														grepPattern=".xls$"){
-	
+	cat("Importing transactions from directory:\n",indir,"\n")
 	indir = gsub(pattern="[/]$", replacement="", x=indir)
 	
 	if(is.null(destDir)){
@@ -353,8 +353,12 @@ importAllXLSFiles<-function(indir="~/prog/hack_oregon/orestar/fins",
 	
 	errorlog = c()
 	errorFileNames = c()
-	
+	cat("files found:\n")
+	print(files)
+	cat("searching for pattern,",grepPattern,"...\n")
 	files = files[grepl(pattern=grepPattern, files)]
+	cat(".xls files found:\n")
+	print(files)
 	convertedFileNames = gsub(pattern=".xls",replacement=".txt",x=files)
 	convertedFiles = c()
 	if(!length(files)) return(convertedFiles)
