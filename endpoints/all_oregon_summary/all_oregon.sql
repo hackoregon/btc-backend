@@ -257,6 +257,10 @@ DECLARE
   result json;
 BEGIN
 
+	IF cname='_' THEN
+	cname = '5';
+	END IF;
+
   SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
   FROM
     (
@@ -266,7 +270,7 @@ BEGIN
 		AND sub_type in ('Cash Contribution','In-Kind Contribution')
 		GROUP BY contributor_payee
 		ORDER BY sum(amount) DESC
-		LIMIT 5
+		LIMIT cname::int
    ) qres
   INTO result;
 
@@ -278,22 +282,36 @@ SELECT addDocumentation('Summary of data for all of Oregon: contributions by ind
 	'oregon_individual_contributors',
 	'To compute contributions from individuals, transactions for the current campaign cycle are filtered to only those with the book type, Individual, and the sub types Cash Contribution and In-Kind Contribution. Then, for each unique contributor/payee all contribution amounts are added together.');
 
+
+DROP TABLE IF EXISTS oregon_committee_agg;
+CREATE TABLE oregon_committee_agg
+AS (    	SELECT contributor_payee, contributor_payee_committee_id, sum(amount) AS sum
+		FROM cc_working_transactions
+		WHERE book_type in ('Political Committee', 'Political Party Committee')
+		AND sub_type in  ('Cash Contribution','In-Kind Contribution')
+		GROUP BY contributor_payee, contributor_payee_committee_id
+		ORDER BY sum(amount) DESC );
+
+
+
+
 DROP FUNCTION IF EXISTS http.get_oregon_committee_contributors(name1 text, name2 text, cname text, name4 text);
 CREATE FUNCTION http.get_oregon_committee_contributors(name1 text, name2 text, cname text, name4 text) RETURNS json AS $$
 DECLARE
   result json;
 BEGIN
 
+  IF cname='_' THEN
+    cname = '5';
+  END IF;
+  
   SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
   FROM
     (
-    	SELECT contributor_payee, sum(amount)
-		FROM cc_working_transactions
-		WHERE book_type in ('Political Committee', 'Political Party Committee')
-		AND sub_type in  ('Cash Contribution','In-Kind Contribution')
-		GROUP BY contributor_payee
-		ORDER BY sum(amount) DESC
-		limit 5
+    	SELECT * 
+    	FROM oregon_committee_agg
+		ORDER BY sum DESC
+		LIMIT cname::int
    ) qres
   INTO result;
 
@@ -312,6 +330,10 @@ DECLARE
   result json;
 BEGIN
 
+  IF cname='_' THEN
+    cname = '5';
+  END IF;
+
   SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
   FROM
     (
@@ -321,7 +343,7 @@ BEGIN
 		AND sub_type in  ('Cash Contribution','In-Kind Contribution')
 		GROUP BY contributor_payee
 		ORDER BY sum(amount) DESC
-		LIMIT 5
+		LIMIT cname::int
    ) qres
   INTO result;
 
