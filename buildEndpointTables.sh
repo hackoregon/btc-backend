@@ -8,6 +8,9 @@ echo "~/data_infrastructure/"
 echo "Current working directory:"
 pwd
 
+cd ~/data_infrastructure/
+echo "Current working directory:"
+pwd
 # echo "Calling sudo ./endpoints/makeGrassState.R,"
 # echo "the script which orchestrates construction of"
 # echo "percent grass roots and percent instate data."
