@@ -10,7 +10,9 @@ Get total contributions from top 5 contributing individuals, for all recipients,
 
 Usage:
 
-		http://54.213.83.132/hackoregon/http/oregon_individual_contributors/_/
+		http://54.213.83.132/hackoregon/http/oregon_individual_contributors/5/
+		
+(The number of records to return is specified by the number 5. For backwards compatibility, putting "_" in the place of the number will give the default top 5 records) 
 
 Example output:
 
@@ -32,7 +34,9 @@ Get total contributions from top 5 contributing businesses, for all recipients, 
 
 Usage:
 
-		http://54.213.83.132/hackoregon/http/oregon_business_contributors/_/
+		http://54.213.83.132/hackoregon/http/oregon_business_contributors/5/
+		
+(The number of records to return is specified by the number 5. For backwards compatibility, putting "_" in the place of the number will give the default top 5 records) 
 
 Example output:
 
@@ -49,25 +53,23 @@ Example output:
 		 
 		 
 
-Get total contributions from top 5 contributing committees, for all recipients, in all of Oregon:
+Get total contributions from top 5 contributing committees and their filer IDs, for all recipients, in all of Oregon:
 -------------------------------
 
 Usage:
 
-		http://54.213.83.132/hackoregon/http/oregon_committee_contributors/_/
+		http://54.213.83.132/hackoregon/http/oregon_committee_contributors/2/
+		
+(The number of records to return is specified by the number 2. For backwards compatibility, putting "_" in the place of the number will give the default top 5 records) 
 
 Example output:
 
 		[{"contributor_payee":"Future PAC, House Builders (1524)",
-		 "sum":3554226.92},
+		 "contributor_payee_committee_id":1524,
+		 "sum":3565070.88000001},
 		 {"contributor_payee":"Democratic Party of Oregon (353)",
-		 "sum":1769467.27},
-		 {"contributor_payee":"Citizen Action for Political Education (33)",
-		 "sum":1652917.48},
-		 {"contributor_payee":"Senate Democratic Leadership Fund (1471)",
-		 "sum":1323317.99},
-		 {"contributor_payee":"Promote Oregon Leadership PAC (682)",
-		 "sum":1266427.24}]
+		 "contributor_payee_committee_id":353,
+		 "sum":1786957.09}]
 
 
 Get all available data processing documentation
