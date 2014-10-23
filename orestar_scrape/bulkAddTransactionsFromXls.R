@@ -24,6 +24,7 @@ scrapedTransactionsToDatabase(tsvFolder=destDir,
 															tableName=tableName, 
 															dbname=dbname)
 
-system(command="sudo ../buildOutDBFromRawTables.sh")
+setwd("..")
+system(command="sudo ./buildOutDBFromRawTables.sh")
 
 system(command=paste("sudo ~/hackOregonDbStatusLogger.R 'bulkAddTransactionsFromXls.R",indir,"'"))
