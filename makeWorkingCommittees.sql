@@ -68,3 +68,9 @@ UPDATE working_committees
 SET candidate_name = committee_name
 WHERE candidate_name = '   '
 OR candidate_name is null;
+
+
+ALTER TABLE working_committees ADD COLUMN db_update_status text;
+UPDATE working_committees SET db_update_status = 'Last full update: 3/14/2014' WHERE committee_id IN (SELECT committee_id FROM raw_committees);
+UPDATE working_committees SET db_update_status = 'Last full update: 10/25/2014' WHERE committee_id IN (SELECT id FROM raw_committees_scraped);
+

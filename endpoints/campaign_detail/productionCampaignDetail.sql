@@ -36,7 +36,8 @@ CREATE TABLE campaign_detail AS
 		party_affiliation as party, 
 		num_transactions, 
 		committee_type, 
-		committee_subtype
+		committee_subtype,
+		db_update_status
 	FROM cc_grass_roots_in_state
 	JOIN working_committees
 	ON committee_id = cc_grass_roots_in_state.filer_id);

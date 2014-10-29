@@ -10,7 +10,7 @@ var request = require('request'),
 
 	request = request.defaults({jar: cookieJar});
 
-var searchUrl = 'https://secure.sos.state.or.us/orestar/gotoPublicTransactionSearchResults.do?cneSearchButtonName=newSearch&cneSearchPageIdx=0&sort=desc&by=TRAN_DATE',
+var searchUrl = 'https://secure.sos.state.or.us/orestar/gotoPublicTransactionSearchResults.do?cneSearchButtonName=newSearch&cneSearchPageIdx=0&sort=desc&by=FILED_DATE',
 	postUrl = 'https://secure.sos.state.or.us/orestar/gotoPublicTransactionSearchResults.do',
 	exportUrl = 'https://secure.sos.state.or.us/orestar/XcelCNESearch';
 	
@@ -75,6 +75,6 @@ var searchUrl = 'https://secure.sos.state.or.us/orestar/gotoPublicTransactionSea
 
 function getSearchOptions(to, from) {
 
-	return 'cneSearchButtonName=search&cneSearchPageIdx=&cneSearchContributorTypeName=&cneSearchTranTypeName=&cneSearchTranSubTypeName=&cneSearchTranPurposeName=&cneSearchFilerCommitteeId=&cneSearchFilerCommitteeTxt=&cneSearchFilerCommitteeTxtSearchType=C&cneSearchTranStartDate=' + from + '&cneSearchTranEndDate=' + to + '&cneSearchTranFiledStartDate=&cneSearchTranFiledEndDate=&transactionId=&cneSearchTranType=&cneSearchTranAmountFrom=&cneSearchTranAmountTo=&cneSearchContributorTxt=&cneSearchContributorTxtSearchType=C&cneSearchContributorType=&addressLine1=&city=&state=&zip=&zipPlusFour=&occupation=&employer=&employerCity=&employerState=';
+	return 'cneSearchButtonName=search&cneSearchPageIdx=&cneSearchContributorTypeName=&cneSearchTranTypeName=&cneSearchTranSubTypeName=&cneSearchTranPurposeName=&cneSearchFilerCommitteeId=&cneSearchFilerCommitteeTxt=&cneSearchFilerCommitteeTxtSearchType=C&cneSearchTranStartDate=&cneSearchTranEndDate=&cneSearchTranFiledStartDate=' + from + '&cneSearchTranFiledEndDate=' + to + '&transactionId=&cneSearchTranType=&cneSearchTranAmountFrom=&cneSearchTranAmountTo=&cneSearchContributorTxt=&cneSearchContributorTxtSearchType=C&cneSearchContributorType=&addressLine1=&city=&state=&zip=&zipPlusFour=&occupation=&employer=&employerCity=&employerState=';
 }
 
