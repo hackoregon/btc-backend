@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 echo "running install3.sh"
 echo "current working directory:"
 pwd
@@ -56,6 +56,10 @@ sudo -u postgres psql -c 'CREATE DATABASE hackoregon;'
 sudo -u postgres psql hackoregon < ./hackoregon.sql
 
 sudo -u postgres psql hackoregon < ./trimTransactionsTable.sql
+
+sudo -u postgres psql hackoregon -c 'CREATE TABLE raw_committee_transactions_errors AS SELECT * FROM raw_committee_transactions LIMIT 0;'
+
+sudo -u postgres psql hackoregon < ./makeImportDatesTable.sql
 
 sudo -u postgres createlang plpgsql
 
