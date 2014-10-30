@@ -252,12 +252,14 @@ scrapeDateRange<-function(startDate, endDate, destDir = "./transConvertedToTsv/"
 	
 	if(!file.exists(destDir)) dir.create(path=destDir)
 	scrapeByDate(sdate=startDate, edate=endDate)
+	cat("\nScrape complete... converting xls files..\n")
 	converted = importAllXLSFiles(remEscapes=T,
 																grepPattern="^[0-9]+(-)[0-9]+(-)[0-9]+(_)[0-9]+(-)[0-9]+(-)[0-9]+(.xls)$",
 																remQuotes=T,
 																forceImport=T,
 																indir=indir,
 																destDir=destDir)
+	cat("\nxls conversion complete, checking download limit.\n")
 	checkHandleDlLimit(converted=converted)
 	
 }
