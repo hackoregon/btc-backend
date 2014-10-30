@@ -21,6 +21,7 @@ tab = data.frame(id=ids, scrape_date=fdates, file_name=fnames)
 #remove rows where id is null
 tab = tab[!is.na(tab$id),]
 
+cat("\n",nrow(tab),"committee specific transaction files found.\n")
 #adjust dates in actual table
 
 dbiWrite(tabla=tab, name="import_dates", appendToTable=T, dbname=dbname)

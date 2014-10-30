@@ -343,7 +343,7 @@ checkHandleDlLimitForId<-function(converted){
 
 getIdFromFileName<-function(fname="./transConvertedToTsv/275_10-30-2014_01-01-2010.txt"){
 	fname = basename(fname)
-	id = as.numeric(gsub(pattern="_[0-9_-]+.txt", replacement="", x=fname))
+	id = as.numeric(gsub(pattern="_[0-9_-]+[.](txt|tsv)", replacement="", x=fname))
 	return(id)
 }
 
