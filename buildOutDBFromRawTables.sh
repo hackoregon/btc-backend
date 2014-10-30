@@ -7,6 +7,7 @@ echo "rebuilds the working tables and the endpoint tables"
 echo "then reloads the actual endpoint handling functions."
 echo "----------------------------------------------"
 
+cd  ~/data_infrastructure/
 sudo -u postgres psql hackoregon <  ~/data_infrastructure/addDocumentationTable.sql
 
 sudo ~/data_infrastructure/workingTableCreation.sh
