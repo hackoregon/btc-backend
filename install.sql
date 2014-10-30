@@ -15,7 +15,7 @@ BEGIN
   FROM 
     (SELECT * 
     FROM hack_oregon_db_status
-    ORDER BY date ASC
+    ORDER BY date DESC
     LIMIT 3) qres
   INTO result;
   
