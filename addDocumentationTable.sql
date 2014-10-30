@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS documentation;
 CREATE TABLE documentation (
-	title varchar(100),
-	endpoint_name varchar(100),
+	title text,
+	endpoint_name text,
 	txt text
 	);
 
