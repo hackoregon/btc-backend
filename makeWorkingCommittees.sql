@@ -74,3 +74,12 @@ ALTER TABLE working_committees ADD COLUMN db_update_status text;
 UPDATE working_committees SET db_update_status = 'Last full update: 3/14/2014' WHERE committee_id IN (SELECT committee_id FROM raw_committees);
 UPDATE working_committees SET db_update_status = 'Last full update: 10/25/2014' WHERE committee_id IN (SELECT id FROM raw_committees_scraped);
 
+UPDATE working_committees SET db_update_status =
+    (SELECT 'Last full update: '||sdate as smess
+    FROM
+	(SELECT id, MAX(scrape_date) AS sdate
+	FROM import_dates 
+	GROUP BY id ) idat
+     WHERE working_committees.committee_id = idat.id);
+
+

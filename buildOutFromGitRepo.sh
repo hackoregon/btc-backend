@@ -39,14 +39,14 @@ sudo chmod 755 ./orestar_scrape/bulkAddTransactions.R
 sudo chmod 755 ./orestar_scrape/getMostRecentTransactions.R
 sudo chmod 755 ./endpoints/add_simplified_sub_types.sh
 sudo chmod 755 ./endpoints/add_contributor_payee_class_column.sql
-
+sudo chmod 755 ./orestar_scrape/adjustUpdateDates.R
 #core raw database files
 sudo cp -vu ./.Rprofile ~/.Rprofile
 sudo cp -vu ./trimTransactionsTable.sql ~/data_infrastructure/trimTransactionsTable.sql
 sudo cp -vu ./install.sql ~/data_infrastructure/install.sql
 sudo cp -avru ./successfullyMerged ~/data_infrastructure/
 sudo cp -vu ./addDocumentationTable.sql ~/data_infrastructure/
-
+sudo cp -vu ./makeImportDatesTable.sql ~/data_infrastructure/
 #control script
 sudo cp -vu ./buildOutDBFromRawTables.sh ~/data_infrastructure/buildOutDBFromRawTables.sh
 sudo chmod 755 getMissingCommittees.sh

@@ -22,7 +22,13 @@ dbiWrite<-function(tabla,
   {
     print("warning, writing table data to test_table")
   }
-  
+	
+	if(appendToTable){
+		cat("\nAdding to table '",name,"' in database '",dbname,"' ...")
+	}else{
+		cat("\nWriting table",name,"to database",dbname,"...")
+	}
+	
   if(clean) colnames(tabla) = gsub(pattern="[.]", replacement="_", x=colnames(tabla))
 
   drv <- dbDriver("PostgreSQL")
@@ -158,7 +164,12 @@ fileToDb<-function(tableName, dbname,  fname, copyFromFile=F, app=F, port=5432, 
 
 #safeWrite will write a table to a postgres database, while attempting to fix non-standard/latin characters.
 safeWrite<-function(tab, tableName, dbname, port=5432, append=F){
-	cat("\nWriting table",tableName,"to database",dbname,"...")
+	if(append){
+		cat("\nAdding to table '",tableName,"' in database '",dbname,"' ...")
+	}else{
+		cat("\nWriting table",tableName,"to database",dbname,"...")
+	}
+	
 	exRows = c()
 	goodRows = 1:nrow(tab)
 	badRows = NULL
@@ -205,7 +216,11 @@ safeWrite<-function(tab, tableName, dbname, port=5432, append=F){
 
 #safeWrite will write a table to a postgres database, while attempting to fix non-standard/latin characters.
 safeWrite2<-function(tab, tableName, dbname, port=5432, append=F){
-	cat("\nWriting table",tableName,"to database",dbname,"...")
+	if(append){
+		cat("\nAdding to table '",tableName,"' in database '",dbname,"' ...")
+	}else{
+		cat("\nWriting table",tableName,"to database",dbname,"...")
+	}
 	exRows = c()
 	goodRows = 1:nrow(tab)
 	badRows = NULL

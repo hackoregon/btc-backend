@@ -37,53 +37,53 @@ ERRORLOGFILENAME="affiliationScrapeErrorlog.txt"
 # dateRangeControler(startDate="3/1/2014", endDate="10/1/2014", dbname="hackoregon")
 # dbname = "hack_oregon"
 # tableName="raw_committee_transactions"
-dateRangeControler<-function(tranTableName="raw_committee_transactions", 
+
+# startDate="1/1/1983"
+# endDate="10/30/2014"
+# neededIds = c(17040, 17044, 17015, 17007)
+
+dateRangeIdControler<-function(neededIds,
+															 tranTableName="raw_committee_transactions", 
 														 startDate=NULL, 
 														 endDate=NULL, 
 														 dbname="hackoregon", 
 														 workingComTabName="working_committees"){
-
+	
 	DBNAME=dbname #a check for the DBNAME artifact
 	
 	transactionsFolder="./transConvertedToTsv/"
-	if( is.null(startDate)&is.null(endDate) ){
-		
-		#get the current date to the current date minus on month.
-		ed = Sys.Date()
-		m <- as.POSIXlt(ed)
-		m$mon <- m$mon - 1
-		m <- as.Date(m)
-		sd  = m
-			
-	}else{
-		if( is.null(startDate) ){
-			#first get the most recent record
-			q1=paste0("select distinct filed_date 
-			from working_transactions 
-			order by filed_date desc limit 1")
-			sd = dbiRead(query=q1, dbname=dbname)[,1,drop=T]
-		}else{ 
-			sd=as.Date(startDate, format="%m/%d/%Y") 
-		}
-		if(is.null(endDate)){
-			#second, get the max date
-			ed = Sys.Date()
-		}else{ 
-			ed=as.Date(endDate, format="%m/%d/%Y") 
-		}
-	}
-
-	cat("\nGetting data range",as.character(sd),"to",as.character(ed),"\n")
-	#get one month at a time
-	dseq = c(seq.Date(from=sd, to=ed, by="month"),ed)
 	
-	for(i in 1:(length(dseq)-1) ){
+	if( is.null(startDate) ){
+		#first get the most recent record
+		q1=paste0("select distinct tran_date 
+							from ",tranTableName," 
+							order by tran_date desc limit 1")
+		sd = dbiRead(query=q1, dbname=dbname)[,1,drop=T]
+	}else{ 
+		sd=as.Date(startDate, format="%m/%d/%Y") 
+	}
+	
+	if(is.null(endDate)){
+		#second, get the max date
+		ed = Sys.Date()
+	}else{ 
+		ed=as.Date(endDate, format="%m/%d/%Y") 
+	}
+	
+	#get one month at a time
+	# 	dseq = c(seq.Date(from=sd, to=ed, by="month"),ed)
+	
+	for(i in 1:length(neededIds) ){
+		cat("\n_________________________________________________\n")
+		cat("Current committee:",neededIds[i],". Number", i, "of", length(neededIds) )
+		cat("\n_________________________________________________\n")
+		cat("\nGetting data range",as.character(sd),"to",as.character(ed)," for committee",neededIds[i],"\n")
 		gc()
-		scrapeDateRange(startDate=dseq[i], endDate=dseq[i+1], destDir=transactionsFolder)
+		scrapeIdDateRange(startDate=sd, endDate=ed, destDir=transactionsFolder, id=neededIds[i])
 		gc()
 		scrapedTransactionsToDatabase(tsvFolder=transactionsFolder, tableName=tranTableName, dbname=dbname)
 	}
-
+	
 }
 
 readme<-function(){
@@ -98,7 +98,7 @@ readme<-function(){
 			" in a folder named ./orestar_scrape/problemSpreadsheets/\n",
 			" along with any applicable error log output. Attempt to deal\n",
 			" with the errors by normalizing the the document syntax,\n",
-			" then run the function retryXLSImport() to retry the import.\n",
+			" then run the function retryXLSImportWithIds() to retry the import.\n",
 			" Spreadsheets successfully converted to .tsv documents will be\n",
 			" placed in the folder ./orestar_scrape/transConvertedToTsv/")
 	
@@ -157,7 +157,7 @@ getMissingCommittees<-function(transactionsTable,
 	}else{
 		cat("\nNo missing committees found\n")
 	}
-
+	
 	# 	setwd(wdtmp)
 }
 
@@ -204,7 +204,7 @@ writeCommitteeDataToDatabase<-function(comtab, rawScrapeComTabName, dbname, appe
 		#delete any from the database that are in the current set
 		# 		alreadyInDb = intersect(fromdb$id, comtab$id)
 		# 		if(length(alreadyInDb)) dropRecordsFromDb(tname=rawScrapeComTabName, dbname=dbname, colname="id", ids=alreadyInDb)
-	
+		
 	}
 	dbiWrite(tabla=comtab, name=rawScrapeComTabName, appendToTable=FALSE, dbname=dbname)
 }
@@ -248,171 +248,28 @@ getMostRecentMissingTransactions<-function(){
 }
 
 #08-12-2014_09-12-2014
-scrapeDateRange<-function(startDate, endDate, destDir = "./transConvertedToTsv/", indir="./"){
+scrapeIdDateRange<-function(startDate, 
+														endDate, 
+														id, 
+														destDir = "./transConvertedToTsv/", 
+														indir="./scrape_by_filed_date_and_id/"){
 	
 	if(!file.exists(destDir)) dir.create(path=destDir)
-	scrapeByDate(sdate=startDate, edate=endDate)
+	scrapeByDateAndId(sdate=startDate, edate=endDate, id=id)
+	# 	grepPattern="^[0-9]+(-)[0-9]+(-)[0-9]+(_)[0-9]+(-)[0-9]+(-)[0-9]+(.xls)$"
 	converted = importAllXLSFiles(remEscapes=T,
-																grepPattern="^[0-9]+(-)[0-9]+(-)[0-9]+(_)[0-9]+(-)[0-9]+(-)[0-9]+(.xls)$",
+																grepPattern="(.xls)$",
 																remQuotes=T,
 																forceImport=T,
 																indir=indir,
 																destDir=destDir)
-	checkHandleDlLimit(converted=converted)
+	checkHandleDlLimitForId(converted=converted)
 	
 }
 
-logFileImport<-function(fname, dbname){
-	library(tools)
-	fname="originalXLSdocs/01-02-2014_12-26-2013.xls"
-	#make table
-	dbCall(dbname=dbname, "create table if not exists file_import_log
-													(file_name text,
-													file_extension text,
-													mod_date text,
-													size int);")
-	
-	#get mod/import date
-	newrow = data.frame(file_name=basename(fname),
-						 file_extension = file_ext(fname),
-						 mod_date = file.info(fname)$mtime, 
-						 size = file.info(fname)$size)
-	
-	cat("Logging file import:", fname,"\n")
-	dbiWrite(tabla=newrow, 
-					 appendToTable=T, 
-					 name="file_import_log", 
-					 dbname=dbname)
-	
-}
-
-file.logged<-function(fname, dbname){
-	newrow = data.frame(file_name=basename(fname),
-											file_extension = file_ext(fname),
-											mod_date = file.info(fname)$mtime, 
-											size = file.info(fname)$size)
-	rows = dbiRead(dbname=dbname, query=paste0("select * from 
-											file_import_log 
-											where file_name = '",newrow$file_name,"'
-											and file_extension = '",newrow$file_extension,"' 
-											and mod_date = '",newrow$mod_date,"'
-											and size = ",newrow$size,";"))
-	
-	if(nrow(rows)) return(TRUE)
-	return(FALSE)
-}
-
-reImportXLS<-function(tableName, dbname, destDir="./transConvertedToTsv/", indir="./"){
-	converted = importAllXLSFiles(remEscapes=T,
-																remQuotes=T,
-																forceImport=T,
-																indir=indir,
-																destDir=destDir)
-	cat("\nImported and converted these .xls files:\n")
-	print(converted)
-	storeConvertedXLS(converted=converted)
-	scrapedTransactionsToDatabase(tsvFolder=destDir, tableName=tableName, dbname=dbname)
-}
-
-# tsvFolder = "~/prog/hack_oregon/hackOregonBackEnd/successfullyMerged/"
-#main function to put finance data in database
-scrapedTransactionsToDatabase<-function(tableName, dbname, tsvFolder="./transConvertedToTsv/"){
-	
-	# 	fins = mergeTxtFiles(folderName=tsvFolder)
-	# 	finfile = paste0(tsvFolder,"joinedTables.tsv")
-	# 	tab = readFinData(fname=finfile)
-	# 	tab = fixTextFiles(tab=tab)
-	# 	tab = unique(tab)
-	# 	cat("Re-writing repaired file\n")
-	# 	write.finance.txt(dat=tab, fname=finfile)
-	# 	importTransactionsTableToDb(tab=tab, tableName=tableName, dbname=dbname)
-	allTextFilesToDb(folderName=tsvFolder, tableName=tableName, dbname=dbname)
-}
-
-depricated_importTransactionsTableToDb<-function(tab, tableName, dbname){
-	
-	tab = setColumnDataTypesForDB(tab=tab)
-	# 	tabtmp  = tab
-	badRows = safeWrite(tab=tab, tableName=tableName, dbname=dbname, append=T)
-	if( !is.null(badRows) ){
-		badRowFile = "./orestar_scrape/problemSpreadsheets/notPutIntoDb.txt"
-		write.finance.txt(dat=badRows, fname=badRowFile)
-		em = paste("Some lines could not be read into the database, these lines can be found in this file:\n",
-							 badRowFile,"\nTo input this data, please attempt to fix the data, checking for special or\n",
-							 "non-standard characters, then run the function retryDbImport()")
-		message(em)
-		warning(em)
-	}
-	removeDuplicateRecords(tableName=tableName, keycol="tran_id", dbname=dbname)
-	blnk=checkAmmendedTransactions(tableName=tableName, dbname=dbname)
-	filterDupTransFromDB(tableName=tableName, dbname=dbname)
-	
-}
-
-depricated_checkAmmendedTransactions<-function(tableName, dbname){
-	#get all the original ids for the ammended transactions
-	tids = getAmmendedTransactionIds(tableName=tableName, dbname=dbname)
-	if(!length(tids)) return()
-	message("Ammended transaction issue found!")
-	cat("\nAmmended transaction IDs:\n")
-	print(tids)
-	#copy the originals to the ammended to the ammended_transactions table
-	amendedTableName = paste0(tableName,"_ammended_transactions")
-	if( !dbTableExists( tableName=amendedTableName, dbname=dbname ) ){
-		cat(" .. ")
-		dbCall(dbname=dbname, sql=paste0("create table ", amendedTableName, " as
-																							 select * from ",tableName,"
-																							 where filer='abraham USA lincoln';") )
-	}
-	cat(" . adding original trasactions to table '", amendedTableName, "'.\n")
-	q2 = paste("insert into", amendedTableName,
-							"select * from ",tableName,
-						 "where tran_id in (",paste(tids,collapse=", "), ")")
-	dbCall(sql=q2, dbname=dbname)
-	#remove the originals from the tableName table
-
-	cat(" . deleting original transactions from main transactions table, '",tableName,"'\n")
-	q2 = paste("delete from",tableName,
-						 "where tran_id in (",paste(tids,collapse=", "), ")")
-	dbCall(sql=q2, dbname=dbname)
-	cat(" . ")
-	return()
-}
-
-depricated_getAmmendedTransactionIds<-function(tableName,dbname){
-	q1 = paste0("select tran_id 
-							from ",tableName," 
-							where tran_id in
-							(select original_id
-							from ",tableName,"
-							where tran_status = 'Amended');")
-	amdid = dbiRead(dbname=dbname, query=q1)
-	if(nrow(amdid)) return(amdid[,1,drop=T])
-	return(c())
-}
 
 
-#run this function if there are errors that you corrected
-retryDbImport<-function( tableName, dbname ){
-	badRowFile = "./orestar_scrape/problemSpreadsheets/notPutIntoDb.txt"
-	tab = readFinData(fname=badRowFile)
-	tab = fixTextFiles(tab=tab)
-	tab = fixColumns(tab=tab)
-	cat("Re-writing repaired file\n")
-	write.finance.txt(dat=tab, fname=badRowFile)
-	badRows = safeWrite(tab=tab, tableName=tableName, dbname=dbname, append=T)
-	if(!is.null(badRows)){
-		badRowFile = "./orestar_scrape/problemSpreadsheets/notPutIntoDb.txt"
-		write.finance.txt(dat=badRows, fname=badRowFile)
-		em = paste("Some lines could not be read into the database, these lines can be found in this file:\n",
-							 badRowFile,"\nTo input this data, please attempt to fix the data, checking for special or\n",
-							 "non-standard characters, then run the function retryDbImport()")
-		message(em)
-		warning(em)
-	}
-}
-
-retryXLSImport<-function(){
+retryXLSImportWithIds<-function(){
 	#first copy the xls documents from the problemSpreadsheets folder to the root folder
 	errorDocs = dir("./orestar_scrape/problemSpreadsheets/")
 	errorXLS = errorDocs[grepl(pattern=".xls$", x=errorDocs)]
@@ -422,17 +279,23 @@ retryXLSImport<-function(){
 		for(ss in errorXLS) file.rename(ss, gsub("problemSpreadsheets/","", x=ss))
 	}
 	converted = importAllXLSFiles(remEscapes=T,
+																grepPattern="[.]xls$",
 																remQuotes=T,
 																forceImport=T,
 																indir="./orestar_scrape/",
 																destDir=destDir)
-	checkHandleDlLimit(converted=converted)
+
+	checkHandleDlLimitForId(converted=converted)
+	
 	storeConvertedXLS(converted=converted)
+	
 }
 
-storeConvertedXLS<-function(converted){
+
+
+storeConvertedXLSForId<-function(converted){
 	convxls = gsub(pattern=".txt$", replacement=".xls", x=converted)
-	convxls = gsub(pattern="/transConvertedToTsv",replacement="",x=convxls)
+	convxls = gsub(pattern="/transConvertedToTsv",replacement="/scrape_by_filed_date_and_id",x=convxls)
 	if(!file.exists("./originalXLSdocs/")) dir.create("./originalXLSdocs/")
 	for(fn in convxls){
 		cat("Moving\n",fn,"\nto\n ./originalXLSdocs/\n")
@@ -444,7 +307,11 @@ storeConvertedXLS<-function(converted){
 # converted = paste0(destDir,dir(path=destDir))
 
 #check each of the converted to see if they have 4999 rows
-checkHandleDlLimit<-function(converted){
+checkHandleDlLimitForId<-function(converted){
+	
+	# 	cat("Getting ids from file names.\n")
+	# 	stop("not yet implamented: retryXLSImportWithIds/get ids from file names")
+
 	if(!length(converted)) return()
 	oldestRecs = c()
 	maxedFn = c()
@@ -452,32 +319,40 @@ checkHandleDlLimit<-function(converted){
 	for(cf in converted){
 		# 	cf = converted[1]
 		tab = read.table(cf, header=T, stringsAsFactors=F)
-		print(nrow(tab))
-
+		cat("file:",cf,"rows:",nrow(tab),"\n")
+		
 		if(nrow(tab)==4999){
-			cat("\nFound exactly 4999 records, this may indicate the record return limit was reached...\n")
+			cat("Found exactly 4999 records, this may indicate the record return limit was reached...\n")
 			oldestRecs = c(oldestRecs, as.character(min(as.Date(x=tab$Filed.Date, format="%m/%d/%Y"))))
 			maxedFn = c(maxedFn, cf)
 		}
 	}
 	#move the converted xls documents to another folder so they don't clutter.  
-	storeConvertedXLS(converted=converted)
+	storeConvertedXLSForId(converted=converted)
 	
-	if(length(maxedFn)){
+	if( length(maxedFn) ){
 		for( mi in 1:length(maxedFn) ){
 			cfn = maxedFn[mi]
 			cold = oldestRecs[mi]
-			getAdditionalRecords(fname=cfn, oldestRec=cold)
+			id = getIdFromFileName(cfn)
+			getAdditionalRecordsWithIds(fname=cfn, oldestRec=cold, id=id)
 		}
 	}
 	
 }
 
-getAdditionalRecords<-function(fname, oldestRec){
+getIdFromFileName<-function(fname="./transConvertedToTsv/275_10-30-2014_01-01-2010.txt"){
+	fname = basename(fname)
+	id = as.numeric(gsub(pattern="_[0-9_-]+.txt", replacement="", x=fname))
+	return(id)
+}
+
+getAdditionalRecordsWithIds<-function(fname, oldestRec, id){
 	
 	cat("\nAttempting to get remaining records in the date range that should be found in the file named\n",fname,"\n")
 	#get the date range that would be expected
-	drange = getStartAndEndDates(fname=fname)
+	fnameNoId = gsub(pattern=paste0("^",id,"_"), replacement="", x=basename(fname))
+	drange = getStartAndEndDates(fname=fnameNoId)
 	
 	#figure out the new date range
 	sdate = drange$start
@@ -486,7 +361,9 @@ getAdditionalRecords<-function(fname, oldestRec){
 	#find oldest record that was retreived
 	
 	cat("\nRe-scraping to fill in date range.\nScrape limits:",as.character(sdate), as.character(oldestRec),"\n")
-	scrapeDateRange(startDate=sdate, endDate=as.Date(oldestRec))
+	scrapeIdDateRange(startDate=sdate, 
+										endDate=as.Date(oldestRec), 
+										id=id)
 	
 }
 
@@ -498,31 +375,27 @@ getStartAndEndDates<-function(fname){
 	return(list(start=drange[2], end=drange[1]))
 }
 
-# getAdditionalRecords(fname=fname, tb=tab)
-
-
 
 # dates should be entered in in the format:
 # 07/01/2014 (month/day/year)
 # sdate = "07/01/2014"
 # edate = "07/12/2014"
 #
-scrapeByDate<-function(sdate, edate, delay=10){
+scrapeByDateAndId<-function(sdate, edate, id){
+	delay=sample(x=10:30, size=1)
 	sdate = gsub(pattern="-",replacement="/",x=sdate)
 	edate = gsub(pattern="-",replacement="/",x=edate)
 	wdtmp = getwd()
-	if(basename(wdtmp)!="orestar_scrape"){
-		if(!file.exists("orestar_scrape")) dir.create(path="./orestar_scrape/")
-		setwd("./orestar_scrape/")	
-	}
+	setwd("./scrape_by_filed_date_and_id/")	
+	
 	nodeString = "/usr/local/bin/node"
 	
 	if(!file.exists(nodeString)) nodeString = "/usr/bin/nodejs"
-
-	comString = paste(nodeString," scraper", edate, sdate, delay) #"node scraper 08/12/2014 07/12/2014 5"
+	
+	comString = paste(nodeString," scraper", edate, sdate, 10, id) #"node scraper 08/1/2014 07/1/2014 5 13920"
 	cat("\nCalling the scraper with this string:\n",comString,"\n")
 	sysres = system(command=comString, wait=T, intern=T)
-	
+	Sys.sleep(delay)
 	setwd(wdtmp)
 }
 

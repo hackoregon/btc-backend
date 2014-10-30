@@ -1,4 +1,5 @@
 #!/usr/bin/Rscript
+cat("setting working directory to ~/data_infrastructure/orestar_scrape/")
 setwd("~/data_infrastructure/orestar_scrape/")
 
 cat("This script should be run with one argument:

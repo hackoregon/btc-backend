@@ -1,0 +1,12 @@
+"read.xls error: Error in ls(envir = envir, all.names = private) : 
+  invalid 'envir' argument
+"	"470_10-31-2014_01-01-1980.xls"
+"read.xls error: Error in ls(envir = envir, all.names = private) : 
+  invalid 'envir' argument
+"	"17015_10-30-2014_01-01-1983.xls"
+"read.xls error: Error in ls(envir = envir, all.names = private) : 
+  invalid 'envir' argument
+"	"16613_10-30-2014_01-01-2010.xls"
+"read.xls error: Error in ls(envir = envir, all.names = private) : 
+  invalid 'envir' argument
+"	"6105_10-31-2014_03-01-2014.xls"

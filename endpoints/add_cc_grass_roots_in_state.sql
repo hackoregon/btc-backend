@@ -66,3 +66,10 @@ SET percent_grass_roots = grass_roots/total_contributions;
 UPDATE cc_grass_roots_in_state
 SET percent_in_state = in_state/total_contributions;
 
+
+SELECT addDocumentation('How is Grassroots calculated?',
+	'campaign_detail',
+	'Grassroots contibutions are contributions which are marked In-Kind or Cash Contribution, are of $200 or less and which come from Individuals.  Contributions of $100 and less are occasionally reported in bulk and given contributor_payee names such as Miscellaneous Cash Contributions $100 and under; these contributions are considered to be grassroots as well. 
+	It is noted that contributions reported in bulk may contain contributions from non-Individuals (ex: businesses or political committees), thus our calculations may over-estimate the true grassroots support a committee or candidate actually has.');
+
+
