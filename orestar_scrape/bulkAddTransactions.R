@@ -5,6 +5,7 @@
 #make sure this is run from the correct directory
 if(basename(getwd())!="orestar_scrape") setwd("orestar_scrape")
 
+# ex: sudo nohup ./bulkAddTransactions.R ~/data_infrastructure/orestar_scrape/transConvertedToTsv/ rebuild quick
 # source("./productionLoadCandidateFilings.R")
 # source("./productionCandidateCommitteeDataWithGrassroots.R")
 source("./runScraper.R")
@@ -13,6 +14,7 @@ DBNAME="hackoregon"
 args <- commandArgs(trailingOnly=TRUE)
 fname = args[1]
 # fname = "/Users/samhiggins2001_worldperks/prog/hack_oregon/hackOregonBackEnd/raw_committee_transactions.csv"
+# fname = "./problemtxt/"
 skipDbUpdate = args[2]
 ff = args[3]
 
