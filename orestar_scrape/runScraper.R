@@ -54,7 +54,7 @@ dateRangeControler<-function(tranTableName="raw_committee_transactions",
 		m$mon <- m$mon - 1
 		m <- as.Date(m)
 		sd  = m
-			
+		dseq = c(sd, ed)
 	}else{
 		if( is.null(startDate) ){
 			#first get the most recent record
@@ -71,15 +71,16 @@ dateRangeControler<-function(tranTableName="raw_committee_transactions",
 		}else{ 
 			ed=as.Date(endDate, format="%m/%d/%Y") 
 		}
+		dseq = c(seq.Date(from=sd, to=ed, by="month"),ed)
 	}
 
 	cat("\nGetting data range",as.character(sd),"to",as.character(ed),"\n")
 	#get one month at a time
-	dseq = c(seq.Date(from=sd, to=ed, by="month"),ed)
+
 	
 	for(i in 1:(length(dseq)-1) ){
 		gc()
-		scrapeDateRange(startDate=dseq[i], endDate=dseq[i+1], destDir=transactionsFolder)
+		scrapeDateRange( startDate=dseq[i], endDate=dseq[i+1], destDir=transactionsFolder )
 		gc()
 		scrapedTransactionsToDatabase(tsvFolder=transactionsFolder, tableName=tranTableName, dbname=dbname)
 	}
@@ -248,9 +249,10 @@ getMostRecentMissingTransactions<-function(){
 }
 
 #08-12-2014_09-12-2014
+indir = "./testTransactionsXls/"
 scrapeDateRange<-function(startDate, endDate, destDir = "./transConvertedToTsv/", indir="./"){
 	
-	if(!file.exists(destDir)) dir.create(path=destDir)
+	if( !file.exists(destDir) ) dir.create(path=destDir)
 	scrapeByDate(sdate=startDate, edate=endDate)
 	cat("\nScrape complete... converting xls files..\n")
 	converted = importAllXLSFiles(remEscapes=T,
@@ -445,6 +447,11 @@ storeConvertedXLS<-function(converted){
 
 # converted = paste0(destDir,dir(path=destDir))
 
+checkForMaxInOneDay<-function(fname){
+	dr = getStartAndEndDates(fname=fname)
+	return(dr$start == dr$end)
+}
+
 #check each of the converted to see if they have 4999 rows
 checkHandleDlLimit<-function(converted){
 	if(!length(converted)) return()
@@ -469,7 +476,12 @@ checkHandleDlLimit<-function(converted){
 		for( mi in 1:length(maxedFn) ){
 			cfn = maxedFn[mi]
 			cold = oldestRecs[mi]
-			getAdditionalRecords(fname=cfn, oldestRec=cold)
+			if(!checkForMaxInOneDay(fname=cfn)){
+				getAdditionalRecords( fname=cfn, oldestRec=cold )
+			}else{
+				warning("ERROR: failed to download all records because the maximum download reached in a one day span. See file: ",cfn)
+			}
+			
 		}
 	}
 	
@@ -494,7 +506,8 @@ getAdditionalRecords<-function(fname, oldestRec){
 
 getStartAndEndDates<-function(fname){
 	bname = basename(fname)
-	bname =gsub(pattern=".txt$", replacement="", x=bname)
+	bname =gsub(pattern=".txt$|.tsv$|.csv$|.xls$", replacement="", x=bname)
+	bname = gsub(pattern="^[0-9]+_", replacement="", x=bname)
 	drange = strsplit(x=bname, split="_")[[1]]
 	drange = as.Date(x=gsub(pattern="-",replacement="/", x=drange), format="%m/%d/%Y")
 	return(list(start=drange[2], end=drange[1]))
