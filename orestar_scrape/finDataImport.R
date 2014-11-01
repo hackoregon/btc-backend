@@ -165,7 +165,7 @@ bulkImportTransactions<-function(fname, dbname="hackoregon", tablename="raw_comm
 }
 
 bulkImportFolder<-function(fname, dbname, tablename, rapid=FALSE){
-	errorLogFname = paste0(fname,"/importErrors.txt")
+	errorLogFname = paste0(fname,"/importErrors.log")
 	errorLogFname = gsub(pattern="//",replacement="/", x=errorLogFname)
 	failedImports=c()
 	cat("\nImporting .tsv and .csv files in folder : \n",fname,"\n")
@@ -177,8 +177,8 @@ bulkImportFolder<-function(fname, dbname, tablename, rapid=FALSE){
 		fn = allFiles[i]
 		cat("\nCurrent file:",fn,"(",i,"of",length(allFiles),")\n")
 		tres = try(expr={
-							bulkImportSingleFile(fname=fn, dbname=dbname, tablename=tablename, rapid=rapid)
-						}, silent=TRUE )
+			bulkImportSingleFile(fname=fn, dbname=dbname, tablename=tablename, rapid=rapid)
+		}, silent=TRUE )
 		if(grepl(pattern="error", x=class(tres), ignore.case=T)){
 			failedImports = c(failedImports, fn)
 			logError(err=tres, additionalData=fn, errorLogFname=errorLogFname)
@@ -409,7 +409,7 @@ checkAndNoteCommitteeImport<-function(fname, mess){
 	#check if it was a committee transaction scrape
 	id = getIdFromFileName(fname=fname)
 	if( !is.na(id) ){
-
+		
 		fdate = file.info(fname)$mtime
 		#write data to database
 		dbiWrite(tabla=cbind.data.frame(id=id, scrape_date=fdate, file_name=paste(fname, mess)), 
@@ -417,13 +417,13 @@ checkAndNoteCommitteeImport<-function(fname, mess){
 						 appendToTable=T, 
 						 dbname=dbname)
 	}
-
+	
 }
 
 
 
 exportTransactionsTable<-function(dbname, destFileName=NULL){
-
+	
 	if(is.null(destFileName)) destFileName = paste0("rawtransactionsdump",gsub(pattern=":|-|[ ]", replacement="_", x=Sys.time()),".txt")
 	tab = dbiRead(query="select * from raw_committee_transactions;", dbname=dbname)
 	cat("\nTransactions table found with dimensions",dim(tab),".\n")
@@ -466,13 +466,13 @@ read.finance.txt<-function(fname){
 }
 
 write.finance.txt<-function(dat,fname){
-
+	
 	if(grepl(pattern=".csv$", x=fname)){
 		write.csv(x=dat, 
 							file=fname, 
 							row.names=F)
 	}else{
-	
+		
 		write.table(x=dat,
 								file=fname, 
 								append=F, 
@@ -494,8 +494,8 @@ debug.importAllXLSFiles<-function(){
 	remQuotes=T
 	indir = gsub(pattern="[/]$", replacement="", x=indir)
 	if(is.null(destDir)){
-	destDir = paste0(indir,"/RecordsConvertedToTxt")
-	dir.create(path=destDir, showWarnings=F, recursive=T)
+		destDir = paste0(indir,"/RecordsConvertedToTxt")
+		dir.create(path=destDir, showWarnings=F, recursive=T)
 	}
 	destDir = gsub(pattern="[/]$", replacement="", x=destDir)
 	errorDir=paste0(indir,"/problemSpreadsheets")
@@ -507,7 +507,7 @@ debug.importAllXLSFiles<-function(){
 	errorFileNames = c()
 	files = files[grepl(pattern=".xls$", files)]
 	convertedFileNames = gsub(pattern=".xls",replacement=".txt",x=files)
-
+	
 	
 }
 
@@ -606,7 +606,7 @@ makeIntegerColumn<-function(colVals, tab, printErrors=T, printErrorValues=F){
 		if(printErrors) print(tab[errorIndexes,])	
 		if(printErrorValues) print(colVals[errorIndexes])
 		cat(length(errorIndexes), "values could not easily be coorsed to integer\n")
-	
+		
 	}else{
 		cat("\nColumns transformed to integer data type..\n")
 	}
@@ -676,7 +676,7 @@ importAllXLSFiles<-function(indir="~/prog/hack_oregon/orestar/fins",
 	dir.create(path=errorDir, showWarnings=F,recursive=T)
 	
 	curtab=NULL
-
+	
 	errorlog = c()
 	errorFileNames = c()
 	
@@ -774,7 +774,7 @@ addToErrorLog<-function(vals, errorLogFname){
 							col.names=F, 
 							row.names=F,
 							file=errorLogFname)
-
+	
 }
 
 fixColumnNames<-function(cnames){
@@ -875,7 +875,7 @@ mergeTxtFiles<-function( folderName ){
 	allFiles = dir(folderName)
 	
 	#see if they can be ordered by file name
-
+	
 	txtFiles = allFiles[grepl(pattern=".txt$|.tsv$", x=allFiles, ignore.case=F, perl=T)]
 	txtFiles = txtFiles[txtFiles!="problemSpreadsheetserrorLogTable.txt"]
 	txtfilesfp = paste0(folderName,"/",txtFiles)
@@ -930,7 +930,7 @@ mergeTxtFiles<-function( folderName ){
 	# 	tabout = tabout[1:curline-1,]
 	
 	cat("Total dimensions of final merged file:", dim(tabout)[1],"rows", dim(tabout)[2],"columns\n")
-
+	
 	write.table(x=tabout, sep="\t",col.names=T, row.names=F, qmethod="escape",quote=T,
 							file=joinedTableName)
 	
@@ -1092,7 +1092,7 @@ scrubQuotes<-function(tab){
 fixTextFiles<-function(tab){
 	
 	cur = tab
-
+	
 	cat("unifying NAs..\n")
 	cur = unifyNAs(tab=cur)
 	cat("Fixing headers..\n")

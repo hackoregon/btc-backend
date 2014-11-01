@@ -480,12 +480,65 @@ checkHandleDlLimit<-function(converted){
 				getAdditionalRecords( fname=cfn, oldestRec=cold )
 			}else{
 				warning("ERROR: failed to download all records because the maximum download reached in a one day span. See file: ",cfn)
+				handleMaxInOneDay( fname=cfn )
 			}
 			
 		}
 	}
 	
 }
+
+#fname = "./transConvertedToTsv/2012-10-02_2012-10-02.txt"
+#fname = "./transConvertedToTsv/09-30-2014_09-30-2014.txt"
+handleMaxInOneDay<-function(fname){
+	
+	cat("When a single day has more than 4999 transactions, 
+			getting all transactions required they be downloaded 
+			by filed_date and by tran_date
+			This function gets two ranges of tran_date 
+			(filed_date to (filed_date - 4 days) and (filed_date - 4 days) to (filed_date - 1000 days))
+			while using the same filed_date.")
+	
+	dr = getStartAndEndDates(fname=fname)
+	
+	fdate = as.Date(dr$start)
+	tranStart1 = fdate - 5
+	tranStart2 = fdate - 1000
+	fdate = as.character(fdate)
+	tranStart1 = as.character(tranStart1)
+	tranStart2 = as.character(tranStart2)
+	
+	filedTranDateScrape( filed=fdate, tran_start=tranStart1, tran_end=fdate	)
+	filedTranDateScrape( filed=fdate, tran_start=tranStart2, tran_end=tranStart1	)
+	
+	scraperdir = "./filed_date_and_tran_date/"
+	allF = dir(scraperdir)
+	allF = allF[grepl(pattern="[.]xls$", x=allF)]
+	for(fl in allF) file.rename(from=paste0(scraperdir,fl), to=paste0("./",fl))
+	
+}
+
+filedTranDateScrape<-function(filed, tran_start, tran_end){
+	
+	sdate = gsub(pattern="-",replacement="/",x=tran_start)
+	edate = gsub(pattern="-",replacement="/",x=tran_end)
+	filed = gsub(pattern="-",replacement="/",x=filed)
+	wdtmp = getwd()
+	setwd("./filed_date_and_tran_date/")
+	
+	nodeString = "/usr/local/bin/node"
+	if(!file.exists(nodeString)) nodeString = "/usr/bin/nodejs"
+	
+	cat("The scraper should be called with a string like this:\nnode  scraper 2014/09/30 2014/09/25 2014/09/30 20")
+	comString = paste(nodeString," scraper", edate, sdate, filed, delay=20) #"node scraper 08/12/2014 07/12/2014 5"
+	cat("\nThe scraper is being called with this string:\n",comString,"\n")
+	sysres = system(command=comString, wait=T, intern=T)
+	
+	setwd("..")
+	
+}
+
+
 
 getAdditionalRecords<-function(fname, oldestRec){
 	
@@ -509,8 +562,9 @@ getStartAndEndDates<-function(fname){
 	bname =gsub(pattern=".txt$|.tsv$|.csv$|.xls$", replacement="", x=bname)
 	bname = gsub(pattern="^[0-9]+_", replacement="", x=bname)
 	drange = strsplit(x=bname, split="_")[[1]]
-	drange = as.Date(x=gsub(pattern="-",replacement="/", x=drange), format="%m/%d/%Y")
-	return(list(start=drange[2], end=drange[1]))
+	daterange = as.Date(x=gsub(pattern="-",replacement="/", x=drange), format="%m/%d/%Y")
+	if( sum(is.na(daterange)) ) daterange = as.Date(x=gsub(pattern="-",replacement="/", x=drange), format="%Y/%m/%d")
+	return(list(start=daterange[2], end=daterange[1]))
 }
 
 # getAdditionalRecords(fname=fname, tb=tab)
@@ -531,11 +585,11 @@ scrapeByDate<-function(sdate, edate, delay=10){
 		setwd("./orestar_scrape/")	
 	}
 	nodeString = "/usr/local/bin/node"
-	
+
 	if(!file.exists(nodeString)) nodeString = "/usr/bin/nodejs"
 
 	comString = paste(nodeString," scraper", edate, sdate, delay) #"node scraper 08/12/2014 07/12/2014 5"
-	cat("\nCalling the scraper with this string:\n",comString,"\n")
+	cat("\n:\n",comString,"\n")
 	sysres = system(command=comString, wait=T, intern=T)
 	
 	setwd(wdtmp)
