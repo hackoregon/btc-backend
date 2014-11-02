@@ -15,7 +15,8 @@ BEGIN
   FROM 
     (SELECT * 
     FROM hack_oregon_db_status
-    ORDER BY date DESC
+    WHERE hack_oregon_db_status IS NOT NULL
+    ORDER BY hack_oregon_db_status DESC
     LIMIT 3) qres
   INTO result;
   
