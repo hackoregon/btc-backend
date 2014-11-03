@@ -60,6 +60,9 @@ CREATE FUNCTION http.get_committee_data_by_id(name1 text, name2 text, commID tex
 DECLARE
   result json;
 BEGIN
+  
+  INSERT INTO access_log (committee_id, date)
+  VALUES (commID::integer, CURRENT_TIMESTAMP);
 
   SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
   FROM 

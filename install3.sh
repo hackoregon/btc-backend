@@ -60,6 +60,7 @@ sudo -u postgres psql hackoregon < ./trimTransactionsTable.sql
 sudo -u postgres psql hackoregon -c 'CREATE TABLE raw_committee_transactions_errors AS SELECT * FROM raw_committee_transactions LIMIT 0;'
 
 sudo -u postgres psql hackoregon < ./makeImportDatesTable.sql
+sudo -u postgres psql hackoregon < ./makeAccessLogTable.sql
 
 sudo -u postgres createlang plpgsql
 
