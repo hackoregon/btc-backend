@@ -24,6 +24,35 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE FUNCTION http.get_searches(name1 text, name2 text, tabname text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM 
+    (select access_log.committee_id, date, committee_name 
+      from access_log join working_committees 
+      on access_log.committee_id = working_committees.committee_id) qres
+  INTO result;
+  
+  return result;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE FUNCTION http.get_search_terms(name1 text, name2 text, tabname text, name4 text) RETURNS json AS $$
+DECLARE
+  result json;
+BEGIN
+
+  SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
+  FROM 
+    (select * from search_log) qres
+  INTO result;
+  
+  return result;
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE FUNCTION http.get_all_documentation(name1 text, name2 text, commID text, name4 text) RETURNS json AS $$
 DECLARE
