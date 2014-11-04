@@ -3,6 +3,9 @@ CREATE OR REPLACE FUNCTION http.get_candidate_search(name1 text, name2 text, sea
 DECLARE
   result json;
 BEGIN
+  
+  INSERT INTO search_log (search_term, date)
+  VALUES (searchString, CURRENT_TIMESTAMP);
 
   SELECT array_to_json(array_agg(row_to_json(qres, true)), true)
   FROM
