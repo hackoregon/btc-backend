@@ -43,7 +43,8 @@ CREATE TABLE campaign_detail AS
 	ON committee_id = cc_grass_roots_in_state.filer_id);
 
 
-
+UPDATE campaign_detail
+SET PARTY = NULL;
 	
 /*
 select * from working_candidate_committees;
