@@ -17,3 +17,8 @@ sudo -u postgres psql hackoregon < ./endpoints/getTransactions/get_current_candi
 echo "Building all Oregon aggregate summary tables and endpoints"
 sudo -u postgres psql hackoregon < ./endpoints/all_oregon_summary/all_oregon.sql
 
+#get donors endpoint
+#transactionsByContributorPayee
+echo "Running ./endpoints/getDonors/get_transactions_by_contributor_payee.sql"
+echo "Script allows accumulating donation data for donors"
+sudo -u postgres psql hackoregon < ./endpoints/getDonors/get_transactions_by_contributor_payee.sql
