@@ -22,3 +22,8 @@ sudo -u postgres psql hackoregon < ./endpoints/all_oregon_summary/all_oregon.sql
 echo "Running ./endpoints/getDonors/get_transactions_by_contributor_payee.sql"
 echo "Script allows accumulating donation data for donors"
 sudo -u postgres psql hackoregon < ./endpoints/getDonors/get_transactions_by_contributor_payee.sql
+
+#get donors with transactions count endpoint
+echo "Running ./endpoints/getTransactionCount/get_oregon_transaction_count.sql"
+echo "Script allows us to see the count of total transactions by donors in descending order"
+sudo -u postgres psql hackoregon < ./endpoints/getTransactionCount/get_oregon_transaction_count.sql
