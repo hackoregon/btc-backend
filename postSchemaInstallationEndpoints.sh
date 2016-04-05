@@ -27,3 +27,8 @@ sudo -u postgres psql hackoregon < ./endpoints/getDonors/get_transactions_by_con
 echo "Running ./endpoints/getTransactionCount/get_oregon_transaction_count.sql"
 echo "Script allows us to see the count of total transactions by donors in descending order"
 sudo -u postgres psql hackoregon < ./endpoints/getTransactionCount/get_oregon_transaction_count.sql
+
+#endpoints for all transactions by date, current candidate's week, latest with limit
+echo "Running ./endpoints/getNewTransactions/get_new_transactions.sql"
+echo "Allows us to see all transactions on a certain date, a candidate's week's transactions, and certain number of transactions on lates filed date"
+sudo -u postgres psql hackoregon < ./endpoints/getNewTransactions/get_new_transactions.sql
